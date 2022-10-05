@@ -1,9 +1,95 @@
+
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import {useState, lazy, Suspense, useEffect, useRef} from "react";
+
+import * as d3 from 'd3';
+function loading(){
+
+
+  let Plot = React.lazy(() => import('react-plotly.js'))
+  let loaded, setLoaded = useState(false)
+  let PlotComponent,SetPlotComponent = useState(null)
+
+  if (!PlotComponent) return <div id={"hi"}>Loading graphics....</div>
+  return <div id={"hi"}><PlotComponent
+      data={[
+        {
+          x: [1, 2, 3],
+          y: [2, 6, 3],
+          type: 'scatter',
+          mode: 'lines+markers',
+          marker: {color: 'red'},
+        },
+        {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
+      ]}
+      layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
+  /></div>
+
+}
+
+/*(async () => {
+let Plot = await import('react-plotly.js');
+return <Plot
+data={[
+{
+x: [1, 2, 3],
+y: [2, 6, 3],
+type: 'scatter',
+mode: 'lines+markers',
+marker: {color: 'red'},
+},
+{type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
+]}
+layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
+/>
+
+})()
+
+}
+
+        {typeof window !== 'undefined' && typeof document !== 'undefined' &&
+            loading()}
+
+ */
+
+function getPlotterData(){
+    let [data,setData] = useState([])
+    d3.json("s-killers.json").then(setData)
+
+    const sterotype_data = {
+        "2d": {
+            x : data.map(entry => entry["stereotype_pos2D"][0]),
+            y : data.map(entry => entry["stereotype_pos2D"][1])
+        },
+
+        "3d":{
+            x : data.map(entry => entry["stereotype_pos3D"][0]),
+            y : data.map(entry => entry["stereotype_pos3D"][1]),
+            z : data.map(entry => entry["stereotype_pos3D"][2])
+        },
+        groups: data.map(entry => entry["stereotype"])
+
+    }
+    return sterotype_data
+}
 
 export default function Home() {
-  return (
+    let [f, sf] = useState(false)
+    let mainPlot = useRef(null)
+    useEffect(() => {
+        import("react-plotly.js").then(p => sp(p))
+    }
+    ,[])
+
+    let [p, sp] = useState(null)
+    let Plot = "div"
+    if(p) Plot = p.default
+
+    console.log(p)
+    let sterotype_data = getPlotterData()
+    return (
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
@@ -12,6 +98,41 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+
+          <div ref={(r) => {mainPlot.current = r; sf(true) }}>
+              hiiiiiiiiiiiiiiiiiii
+          </div>
+
+          <Plot
+              style={{background:"black", width:"100%"}}
+              data={[
+                  {
+
+                      x: sterotype_data["3d"].x,
+                      y: sterotype_data["3d"].y,
+                      z : sterotype_data["3d"].z,
+
+                      type: 'scatter3d',
+                      mode: "markers",
+                      marker: {color: sterotype_data.groups },
+                  },
+              ]}
+              layout={
+                  {
+                      //modebar: {remove: ["zoom2d","zoom3d","pan2d", "pan3d"]},
+                      scene: {
+                          xaxis: {ticks: "", showaxeslabels: false,spikesides:false, backgroundcolor: "white", color:"white"},
+                          zaxis: {ticks: "", showaxeslabels: false,spikesides:false,backgroundcolor: "white", color:"white"},
+                          yaxis: {ticks: "", showaxeslabels: false,spikesides:false,backgroundcolor: "white", color:"white"},
+                          //annotations: data.map(d => ({"text":d.name, "visible": true})), --> this is global
+
+
+                      }, paper_bgcolor: "black",  autosize:true, title: 'A Fancy Plot'} }
+              config={{setBackground: "transparent"}}
+
+          />
+
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>

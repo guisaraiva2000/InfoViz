@@ -2,11 +2,19 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    loader: 'akamai',
-    path: '',
-  },
-  assetPrefix: './'
+  assetPrefix: './',
+  images : {unoptimized : true},
+
+  /*webpack: (config, { isServer }) => {
+    // Fixes npm packages that depend on `fs` module
+      config.node = {...config.node,
+        fs: 'empty'
+      }
+
+    return config
+}
+*/
+
 }
 
 module.exports = nextConfig
