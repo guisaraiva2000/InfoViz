@@ -56,7 +56,8 @@ layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
 
 function getPlotterData(){
     let [data,setData] = useState([])
-    d3.json("s-killers.json").then(setData)
+    useEffect(() => {d3.json("s-killers.json").then(setData)}, [])
+
 
     const sterotype_data = {
         "2d": {
@@ -76,19 +77,17 @@ function getPlotterData(){
 }
 
 export default function Home() {
-    let [f, sf] = useState(false)
-    let mainPlot = useRef(null)
     useEffect(() => {
-        import("react-plotly.js").then(p => sp(p))
+        import("react-plotly.js").then(p => setPlotComponent(p))
     }
     ,[])
 
-    let [p, sp] = useState(null)
+    let [plotComponent, setPlotComponent] = useState(null)
     let Plot = "div"
-    if(p) Plot = p.default
+    if(plotComponent) Plot = plotComponent.default
 
-    console.log(p)
     let sterotype_data = getPlotterData()
+    console.log("Re renderd!")
     return (
     <div className={styles.container}>
       <Head>
@@ -98,11 +97,6 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-
-          <div ref={(r) => {mainPlot.current = r; sf(true) }}>
-              hiiiiiiiiiiiiiiiiiii
-          </div>
-
           <Plot
               style={{background:"black", width:"100%"}}
               data={[
