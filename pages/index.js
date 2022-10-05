@@ -78,13 +78,13 @@ function getPlotterData(){
 
 export default function Home() {
     useEffect(() => {
-        import("react-plotly.js").then(p => setPlotComponent(p))
+        import("react-plotly.js").then(p => sp(p))
     }
     ,[])
 
-    let [plotComponent, setPlotComponent] = useState(null)
+    let [p, sp] = useState(null)
     let Plot = "div"
-    if(plotComponent) Plot = plotComponent.default
+    if(p) Plot = p.default
 
     let sterotype_data = getPlotterData()
     console.log("Re renderd!")
