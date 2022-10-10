@@ -11,3 +11,8 @@ Access the **_/out_** directory and run:
 python -m http.server
 ```
 Open [http://localhost:8000](http://localhost:3000) with your browser to see the visualizations.
+
+### Authors
+Guilherme Saraiva
+Alexandre Bento
+Vasco Piussa
