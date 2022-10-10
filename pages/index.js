@@ -1,93 +1,9 @@
-
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import {useState, lazy, Suspense, useEffect, useRef} from "react";
+import StereotypePlot from "../visualizations/StereotypePlot";
 
-import * as d3 from 'd3';
-function loading(){
-
-
-  let Plot = React.lazy(() => import('react-plotly.js'))
-  let loaded, setLoaded = useState(false)
-  let PlotComponent,SetPlotComponent = useState(null)
-
-  if (!PlotComponent) return <div id={"hi"}>Loading graphics....</div>
-  return <div id={"hi"}><PlotComponent
-      data={[
-        {
-          x: [1, 2, 3],
-          y: [2, 6, 3],
-          type: 'scatter',
-          mode: 'lines+markers',
-          marker: {color: 'red'},
-        },
-        {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
-      ]}
-      layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
-  /></div>
-
-}
-
-/*(async () => {
-let Plot = await import('react-plotly.js');
-return <Plot
-data={[
-{
-x: [1, 2, 3],
-y: [2, 6, 3],
-type: 'scatter',
-mode: 'lines+markers',
-marker: {color: 'red'},
-},
-{type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
-]}
-layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
-/>
-
-})()
-
-}
-
-        {typeof window !== 'undefined' && typeof document !== 'undefined' &&
-            loading()}
-
- */
-
-function getPlotterData(){
-    let [data,setData] = useState([])
-    useEffect(() => {d3.json("s-killers.json").then(setData)}, [])
-
-
-    const sterotype_data = {
-        "2d": {
-            x : data.map(entry => entry["stereotype_pos2D"][0]),
-            y : data.map(entry => entry["stereotype_pos2D"][1])
-        },
-
-        "3d":{
-            x : data.map(entry => entry["stereotype_pos3D"][0]),
-            y : data.map(entry => entry["stereotype_pos3D"][1]),
-            z : data.map(entry => entry["stereotype_pos3D"][2])
-        },
-        groups: data.map(entry => entry["stereotype"])
-
-    }
-    return sterotype_data
-}
 
 export default function Home() {
-    useEffect(() => {
-        import("react-plotly.js").then(p => sp(p))
-    }
-    ,[])
-
-    let [p, sp] = useState(null)
-    let Plot = "div"
-    if(p) Plot = p.default
-
-    let sterotype_data = getPlotterData()
-    console.log("Re renderd!")
     return (
     <div className={styles.container}>
       <Head>
@@ -97,88 +13,10 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-          <Plot
-              style={{background:"black", width:"100%"}}
-              data={[
-                  {
+        {/* insert visualizations here */}
+        <StereotypePlot/>
 
-                      x: sterotype_data["3d"].x,
-                      y: sterotype_data["3d"].y,
-                      z : sterotype_data["3d"].z,
-
-                      type: 'scatter3d',
-                      mode: "markers",
-                      marker: {color: sterotype_data.groups },
-                  },
-              ]}
-              layout={
-                  {
-                      //modebar: {remove: ["zoom2d","zoom3d","pan2d", "pan3d"]},
-                      scene: {
-                          xaxis: {ticks: "", showaxeslabels: false,spikesides:false, backgroundcolor: "white", color:"white"},
-                          zaxis: {ticks: "", showaxeslabels: false,spikesides:false,backgroundcolor: "white", color:"white"},
-                          yaxis: {ticks: "", showaxeslabels: false,spikesides:false,backgroundcolor: "white", color:"white"},
-                          //annotations: data.map(d => ({"text":d.name, "visible": true})), --> this is global
-
-
-                      }, paper_bgcolor: "black",  autosize:true, title: 'A Fancy Plot'} }
-              config={{setBackground: "transparent"}}
-
-          />
-
-
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }
