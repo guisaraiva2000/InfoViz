@@ -33,7 +33,6 @@ export default function StereotypePlot(){
   let stereotypeData = GetPlotterData()
   console.log("Re renderd!")
   return <Plot
-    style={{background: "black", width: "100%"}}
     data={[
       {
         x: stereotypeData["3d"].x,
@@ -71,7 +70,7 @@ export default function StereotypePlot(){
             color: "white"
           },
           //annotations: data.map(d => ({"text":d.name, "visible": true})), --> this is global
-        }, paper_bgcolor: "black", autosize: true, title: 'A Fancy Plot'
+        }, paper_bgcolor: "black", autosize: true,
       }}
     config={{setBackground: "transparent"}}
   />
