@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import StereotypePlot from "../visualizations/StereotypePlot";
+import RadarChart from "../visualizations/Hexagon.tsx";
 
 
 export default function Home() {
@@ -32,7 +33,7 @@ export default function Home() {
           </div>
           <div className={styles.card}>
             <h2>Hexagon</h2>
-            <StereotypePlot/>
+            <RadarChart className={styles.chart}/>
           </div>
           <div className={styles.card}>
             <h2>Index Scatter</h2>
