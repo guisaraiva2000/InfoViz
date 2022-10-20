@@ -1,11 +1,36 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import StereotypePlot from "../visualizations/StereotypePlot";
 import RadarChart from "../visualizations/Hexagon.tsx";
+import UsaChart from "../visualizations/USA.tsx";
+import {useEffect, useState} from "react";
+import * as d3 from "d3";
 
 
 export default function Home() {
-    return (
+  let [data, setData] = useState([]);
+  let [killersData, setKillersData] = useState([]);
+  let [victimsData, setVictimsData] = useState([]);
+  const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+  const [loading3, setLoading3] = useState(true);
+
+  useEffect(() => {
+    d3.json("clean_final.json").then((d) => {
+      setData(d);
+      setLoading1(false);
+    });
+    d3.json("testmap.json").then((d) => {
+      setKillersData(d);
+      setLoading2(false);
+    });
+    d3.csv("victims_by_state.csv").then((d) => {
+      setVictimsData(d);
+      setLoading3(false);
+    });
+    return () => undefined;
+  }, []);
+
+  return (
     <div>
       <Head>
         <title>Create Next App</title>
@@ -18,26 +43,25 @@ export default function Home() {
         <div className={styles.grid}>
           <div className={styles.card}>
             <h2>U.S. Map</h2>
-            <StereotypePlot/>
+            {loading2 && loading3 && <div>loading</div>}
+            {!loading2 && !loading3 && <UsaChart className={styles.chart} killersData={killersData} victimsData={victimsData}/>}
           </div>
           <div className={styles.card}>
             <h2>Sankey Diagram</h2>
-            <StereotypePlot/>
           </div>
         </div>
 
         <div className={styles.grid}>
           <div className={styles.card}>
             <h2>Stereotypes</h2>
-            <StereotypePlot/>
           </div>
           <div className={styles.card}>
             <h2>Hexagon</h2>
-            <RadarChart className={styles.chart}/>
+            {loading1 && <div>loading</div>}
+            {!loading1 && <RadarChart className={styles.chart} data={data}/>}
           </div>
           <div className={styles.card}>
             <h2>Index Scatter</h2>
-            <StereotypePlot/>
           </div>
         </div>
 
