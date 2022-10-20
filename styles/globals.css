@@ -7,6 +7,8 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+path { pointer-events: visibleFill	}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -15,6 +17,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
 
 @media (prefers-color-scheme: dark) {
   html {

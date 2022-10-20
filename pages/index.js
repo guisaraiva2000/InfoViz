@@ -8,11 +8,14 @@ import * as d3 from "d3";
 
 export default function Home() {
 
-  let [data,setData] = useState([])
-  useEffect(() => {d3.json("clean_final.json").then(setData)}, [])
+    let [data, setData] = useState([])
+    useEffect(() => {
+        d3.json("s-killers.json").then(setData)
+    }, [])
     return (
         <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
-        );}
+    );
+}
 /*
     <div>
       <Head>

@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 
 import {MutableRefObject, useEffect, useRef, useState} from "react";
-import {sankeyJustify, sankeyLinkHorizontal, sankey} from "d3-sankey";
+import {sankeyJustify, sankeyLinkHorizontal, sankey, SankeyGraph} from "d3-sankey";
+import {group} from "d3";
 
 const size = {
     width: 700,
@@ -46,8 +47,15 @@ const Rect = ({index, x0, x1, y0, y1, name, value, length, colors}) => {
         </>
     );
 };
+
+function getSterotypeColor(sterotype: number) {
+    return ["red", "yellow", "blue", "white", "orange"][sterotype]
+
+}
+
 const Link = ({data, width, length, colors}) => {
     const link = sankeyLinkHorizontal();
+
 
     return (
         <>
@@ -58,16 +66,20 @@ const Link = ({data, width, length, colors}) => {
                     x1={data.source.x1}
                     x2={data.target.x0}
                 >
-                    <stop offset="0" stopColor={"#dddddd" //colors(data.source.index / length)} />}
+                    <stop offset="0" stopColor={data.killerid //colors(data.source.index / length)} />}
                     }></stop>
                     <stop offset="100%" stopColor={"red"}/>
                 </linearGradient>
             </defs>
             <path
+                data-killerid={data.killerid}
+                data-stereotype={data.stereotype}
+
                 d={link(data)}
                 fill={"none"}
                 stroke={`url(#gradient-${data.index})`}
-                strokeOpacity={0.5}
+                //stroke={getSterotypeColor(data.stereotype)}
+                strokeOpacity={0.1}
                 strokeWidth={width}
             />
         </>
@@ -490,6 +502,45 @@ class Props {
     targets: []  // datapoints of interest
 }
 
+function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, type) {
+    let line: SVGPathElement = e.target as SVGPathElement
+    console.log(line)
+    let killer_id = line.dataset["killerid"]
+    let stereotype = line.dataset["stereotype"]
+    document.querySelectorAll(`path[data-stereotype="${stereotype}"]`).forEach((e, p) => {
+        e.setAttributeNS(null, "stroke", getSterotypeColor(Number(stereotype)))
+    })
+    return
+
+    if (type == "leave") {
+        document.querySelectorAll(`path[data-killerid="${killer_id}"]`).forEach((e, p) => {
+            console.log("LEAVE")
+            e.setAttributeNS(null, "stroke-width", "1")
+            e.style.stopcolor = "black"
+            console.log(e, p)
+        })
+
+    }
+    document.querySelectorAll(`path[data-killerid="${killer_id}"]`).forEach((e, p) => {
+        e.setAttributeNS(null, "stroke-width", "10")
+        e.style.stopcolor = "yellow"
+
+        console.log(e, p)
+    })
+    graph.links.forEach((l) => {
+
+            if (l.killerid == killer_id) {
+                console.log("OMG")
+
+            }
+        }
+    )
+
+}
+
+const sterotypes_types = [...Array(8).keys()]
+
+
 export default function SankeyDiagram(props: Props) {
     /* Select killer by line One line -> one killer
     * Color killers by sterotype
@@ -520,13 +571,15 @@ export default function SankeyDiagram(props: Props) {
         };
     }, []);
     let som = "stereotype"
-    let keysOfInterst = ["Served in the military?",
+    let keysOfInterst = [
+        "Served in the military?",
         "Marital status",
-        //"Sexual preference",
-       // "Gender of victims",
-        //"Gender"
+        "Spend time in jail?",
+        "Sexual preference", "Gender of victims", "Gender"
     ]
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
+    let labelsRef = useRef(null)
+
     // find the most uniform attributes for the targets
     let killers: [Killers] = props.data
     if (killers.length === 1) return <div> Loding</div>
@@ -544,6 +597,22 @@ export default function SankeyDiagram(props: Props) {
             }
         }
     }
+
+    useEffect(
+        () => {
+            let labels = Array(...document.querySelectorAll("text"))
+            console.log("Labels", labels.reduce(
+                (group, label) => {
+                    console.log("l", label)
+                    let x_axis = label.getAttribute("x")
+                    group[x_axis] = label
+                    return group
+                }, {}
+            ))
+        }
+        , [sankeyRef.current, labelsRef.current])
+
+
     // data keys// values of the data // their frequencies
 
     if (killers.length == 0) return <div>Loas</div>
@@ -555,6 +624,20 @@ export default function SankeyDiagram(props: Props) {
         console.log("mean", mean, "res", res)
         return res
     }
+
+    /*
+    document.querySelectorAll('text').forEach((t) => {
+        let your_text = t.innerHTML
+        let _ = document.createElement("div")
+            _.innerText = your_text.split("<br>")[0]
+        let _1 = document.createElement("div")
+            _1.innerText = your_text.split("<br>")[1]
+        t.innerHTML = ""
+        t.appendChild(_)
+        t.appendChild(_1)
+    })
+
+     */
 
     let ordered_frequencies = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
     console.log(ordered_frequencies)
@@ -578,8 +661,8 @@ export default function SankeyDiagram(props: Props) {
      */
 
     let _nodes = []
-    for (let attribute in frequencies){
-        for( let  category in frequencies[attribute]){
+    for (let attribute in frequencies) {
+        for (let category in frequencies[attribute]) {
             _nodes.push(
                 {
                     name: attribute + " " + category
@@ -587,24 +670,38 @@ export default function SankeyDiagram(props: Props) {
             )
         }
     }
+    let _s_nodes = []
+    for (let n of _nodes) {
+        for (let s of sterotypes_types) {
+            _s_nodes.push({...n, name: n.name + " " + s})
+        }
+    }
+    _nodes = _s_nodes
+    _nodes = _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
 
     console.log("Frequencies", frequencies)
     let _links = []
     for (let kil of killers) {
-        for (let i = 1; i < ordered_frequencies.length-2; i++) {
+        for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
             let source_value = kil[source_name]
+            //console.log(source_name, source_value)
 
-            let target_name = ordered_frequencies[i ][0]
+            let target_name = ordered_frequencies[i][0]
             let target_value = kil[target_name]
+          // console.log(target_name, target_value)
             _links.push({
-                source: _nodes.findIndex(v => v.name == source_name + " " + source_value),
-                target: _nodes.findIndex(v => v.name == target_name + " " + target_value),
-                value: 1,
-                color: "#ddddd"
+                source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + kil.stereotype),
+                target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + kil.stereotype),
+                value: kil.stereotype,
+                color: "#ddddd",
+                killerid: killers.indexOf(kil),
+                stereotype: kil.stereotype
             })
         }
     }
+    _links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
+    console.log("links", _links)
     //for (let i = 1; i < ordered_frequencies.length; i++) {
     //   let l = {
     //       source: keysOfInterst.indexOf(ordered_frequencies[i - 1][0]),
@@ -613,7 +710,7 @@ export default function SankeyDiagram(props: Props) {
     //       color: "#ddddd"
     //   }
     //   _links.push(l)
-  // }
+    // }
     let sankeyData = {
         nodes: _nodes,
         links: _links
@@ -622,15 +719,15 @@ export default function SankeyDiagram(props: Props) {
 
 
     //sankeyData = data
-    if (data === null) return <div> hi</div>
     console.log("sank", data)
 
 
-    const _sankey = sankey(sankeyData)
-        .nodeAlign(sankeyJustify)
+    let _sankey = sankey(sankeyData)
         .nodeWidth(10)
         .nodePadding(10)
-        .extent([[0, 0], [size.width, size.height]]);
+        .extent([[0, 0], [size.width, size.height]])
+    _sankey = _sankey.iterations(0)
+
 
     const onMouseUp = e => {
         dragElement.current = null;
@@ -651,42 +748,93 @@ export default function SankeyDiagram(props: Props) {
         }
     };
 
-
-    graph.current = _sankey(sankeyData);
+    graph.current = _sankey(sankeyData)
+    //graph.current.linkSort(null);
     const {links, nodes} = graph.current;
-    if (links.map == null || nodes == null) return <div>Loading</div>
+    console.log(graph.current)
+    if (links == null || nodes == null) return <div>Loading</div>
+    console.log(nodes)
+    console.log(links)
+
 
     return (
-        <svg width={size.width} height={size.height}>
-            <g>
-                {links.map((d, i) => (
-                    <Link
-                        data={d}
-                        width={d.width}
-                        length={nodes.length}
-                        colors={"#dddddd"}
+        <div>
+            <svg ref={(s) => {
+                sankeyRef["current"] = s
+                if (s === null) return
+                document.querySelectorAll("path").forEach((p) => {
+                    p.onclick = (e) => handleClick(e, graph.current)
 
-                    />
-                ))}
-            </g>
-            <g>
-                {nodes.map((d, i) => (
-                    <Rect
-                        index={d.index}
-                        x0={d.x0}
-                        x1={d.x1}
-                        y0={d.y0}
-                        y1={d.y1}
-                        name={d.name}
-                        value={d.value}
-                        length={nodes.length}
-                        colors={"#dddddd"}
-                    />
-                ))}
-            </g>
-        </svg>
+                    //    p.onmouseenter = (e)=>handleClick(e,graph.current)
+                    //   p.onmouseleave = (e)=>handleClick(e,graph.current,"leave")
+                })
+                /* D3 SUCKS!
+                d3.selectAll("path").on({
+                    "click" : console.log,
+                    "mouseover" : console.log,
+                    "mouseout" : console.log,
+                })
+                 */
+
+                //.forEach(t=> t.innerHTML  = "")
+                //s.querySelector()
+
+            }
+            } width={size.width} height={size.height}>
+                <g>
+                    {links.map((d, i) => (
+                        <Link
+                            data={d}
+                            width={3 //d.width}
+                            }
+                            length={nodes.length}
+                            colors={"#dddddd"}
+                        />
+                    ))}
+                </g>
+                <g>
+                    {nodes.map((d, i) => (
+                        <Rect
+                            index={d.index}
+                            x0={d.x0}
+                            x1={d.x1}
+                            y0={d.y0}
+                            y1={d.y1}
+                            name={d.name}
+                            value={d.value}
+                            length={nodes.length}
+                            colors={"#dddddd"}
+                        />
+                    ))}
+                </g>
+            </svg>
+            <div>
+                <Labels></Labels>
+            </div>
+        </div>
     );
 
+    function Labels(){
+        let labels = Array(...document.querySelectorAll("text"))
+        let attrs = ( labels.reduce(
+            (group, label) => {
+                let x_axis = label.getAttribute("x")
+                group[x_axis] = label
+                return group
+            }, {}
+        ))
+        console.log("HERE", attrs)
+        if(Object.keys(attrs).length === 0 ) return <div></div>
+
+        let final_labels = []
+        for (let group in attrs){
+            final_labels.push(<div>group[3].innerHTML</div>)
+            console.log(final_labels)
+        }
+        console.log(attrs)
+        return <div style={{"display":"flex", "fontSize": "100px" }}><div>hii</div>{final_labels
+        }</div>
+    }
 
     /*
     console.log(sankey.sankey())
