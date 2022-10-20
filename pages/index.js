@@ -1,10 +1,19 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import StereotypePlot from "../visualizations/StereotypePlot";
+import SankeyDiagram from "../visualizations/SankeyDiagram";
+import {useEffect, useState} from "react"
+import * as d3 from "d3";
 
 
 export default function Home() {
+
+  let [data,setData] = useState([])
+  useEffect(() => {d3.json("clean_final.json").then(setData)}, [])
     return (
+        <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
+        );}
+/*
     <div>
       <Head>
         <title>Create Next App</title>
@@ -13,7 +22,7 @@ export default function Home() {
       </Head>
 
       <main>
-        {/* insert visualizations here */}
+        {/* insert visualizations here
         <div className={styles.grid}>
           <div className={styles.card}>
             <h2>U.S. Map</h2>
@@ -21,7 +30,7 @@ export default function Home() {
           </div>
           <div className={styles.card}>
             <h2>Sankey Diagram</h2>
-            <StereotypePlot/>
+            <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
           </div>
         </div>
 
@@ -44,3 +53,4 @@ export default function Home() {
     </div>
   )
 }
+*/
