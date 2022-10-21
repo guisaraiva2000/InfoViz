@@ -69,6 +69,15 @@ const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStere
     console.log(final_name)
     final_name = currentStereotype == null ? final_name.slice(final_name.length-3, final_name.length-1) : // -2 to take the stereotype
         final_name.slice(final_name.length-2, final_name.length).join(" ")
+    if(final_name.indexOf("4") != -1){
+        final_name = final_name.split(" ")[0] + " "
+    } else if(final_name.indexOf("0") != -1) {
+
+        final_name = "----------"
+    }
+    else if(final_name.indexOf("7") != -1) {
+        final_name = "----------"
+    } else final_name = " "
     console.log(final_name)
     return (
         <>
@@ -82,6 +91,7 @@ const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStere
                 data-index={index}
             />
             <text
+                xmlSpace={"preserve"}
                 x={x0 < size.width / 2 ? x1 + 6 : x0 - 6}
                 y={(y1 + y0) / 2}
                 style={{
@@ -90,9 +100,6 @@ const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStere
                     fontSize: 9,
                     textAnchor: x0 < size.width / 2 ? "start" : "end",
                     zIndex: 1330,
-                    display: "none"
-
-
                 }}
             >
                 {final_name}
@@ -857,6 +864,33 @@ export default function SankeyDiagram(props: Props) {
             }
             } width={size.width} height={size.height}>
                 <g>
+                    <defs>
+                        <filter id="red-glow" filterUnits="userSpaceOnUse"
+                                x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5"/>
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur10"/>
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur20"/>
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30"/>
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blur50"/>
+                            <feMerge result="blur-merged">
+                                <feMergeNode in="blur10"/>
+                                <feMergeNode in="blur20"/>
+                                <feMergeNode in="blur30"/>
+                                <feMergeNode in="blur50"/>
+                            </feMerge>
+                            <feColorMatrix result="red-blur" in="blur-merged" type="matrix"
+                                           values="1 0 0 0 0
+                             0 0.06 0 0 0
+                             0 0 0.44 0 0
+                             0 0 0 1 0" />
+                            <feMerge>
+                                <feMergeNode in="red-blur"/>
+                                <feMergeNode in="blur5"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
                     {links.map((d, i) => (
                         <Link
                             data={d}

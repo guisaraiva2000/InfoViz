@@ -11,14 +11,18 @@ path {
     pointer-events: visibleFill
 }
 
-.sankey  text {
-    /*transform: rotate(-90deg)*/
-}
+
 text {
-    display:none;
+    display: none;
 }
-g:hover text{
+svg:hover text{
     display: block !important;
+   /* filter: url(#red-glow);
+    fill: white;
+    font-family: Helvetica, Arial, sansserif;
+
+    */
+
 }
 
 a {
