@@ -1,32 +1,8 @@
 {
-  "name": "info-viz",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build && next export",
-    "start": "next start",
-    "lint": "next lint"
-  },
+  "name": "ist",
+  "packageManager": "yarn@3.2.4",
   "dependencies": {
-    "d3": "^7.6.1",
-    "d3-sankey": "^0.12.3",
-    "next": "12.3.1",
-    "plotly.js": "^1.44.4",
-    "plotly.js-dist": "^2.14.0",
-    "plotly.js-dist-min": "^2.14.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-plotly.js": "^2.6.0"
-  },
-  "devDependencies": {
-    "@types/d3": "^7.4.0",
-    "@types/d3-sankey": "^0.11.2",
-    "@types/node": "^18.8.2",
-    "@types/plotly.js": "^2.12.5",
-    "@types/plotly.js-dist-min": "^2.3.1",
-    "@types/react": "18.0.21",
-    "eslint": "8.24.0",
-    "eslint-config-next": "12.3.1"
+    "@dnd-kit/core": "^6.0.5",
+    "@dnd-kit/sortable": "^7.0.1"
   }
 }

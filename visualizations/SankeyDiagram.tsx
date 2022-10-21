@@ -1,14 +1,58 @@
 import * as d3 from "d3";
 
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {sankeyJustify, sankeyLinkHorizontal, sankey, SankeyGraph} from "d3-sankey";
-import {group} from "d3";
+import {group, lab} from "d3";
+import Labels from "./Labels";
 
 const size = {
     width: 700,
     height: 600
 };
 
+function findLabels(){
+    let labels = Array(...document.querySelectorAll("text"))
+    labels = labels.reduce(
+        (group, label) => {
+            let x_axis = label.getAttribute("x")
+            if (group[x_axis] == "undefined") group[x_axis] = []
+            group[x_axis].push(label)
+            return group
+        }, {})
+    return labels
+}
+/*
+let [labels, setLabels] = useState(null)
+useLayoutEffect(() => {
+    setTimeout( () => { () => setLabels(findLabels())}, 1000)
+    return
+
+}, [])
+
+ */
+var observeDOM = (function () {
+    if (typeof window === 'undefined') return
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    return function (obj, callback) {
+        if (!obj || obj.nodeType !== 1) return;
+
+        if (MutationObserver) {
+            // define a new observer
+            var mutationObserver = new MutationObserver(callback)
+
+            // have the observer observe foo for changes in children
+            mutationObserver.observe(obj, {childList: true, subtree: true})
+            return mutationObserver
+        }
+
+        // browser support fallback
+        else if (window.addEventListener) {
+            obj.addEventListener('DOMNodeInserted', callback, false)
+            obj.addEventListener('DOMNodeRemoved', callback, false)
+        }
+    }
+})()
 const getMousePosition = event => {
     const CTM = event.target.getScreenCTM();
 
@@ -559,18 +603,6 @@ export default function SankeyDiagram(props: Props) {
             .then(data => setData(data));
     }, []);
 
-    useEffect(() => {
-        window.addEventListener("mouseup", onMouseUp);
-        window.addEventListener("mousedown", onMouseDown);
-        window.addEventListener("mousemove", onMouseMove);
-
-        return () => {
-            window.removeEventListener("mouseup", onMouseUp);
-            window.removeEventListener("mousedown", onMouseDown);
-            window.removeEventListener("mousemove", onMouseMove);
-        };
-    }, []);
-    let som = "stereotype"
     let keysOfInterst = [
         "Served in the military?",
         "Marital status",
@@ -600,20 +632,25 @@ export default function SankeyDiagram(props: Props) {
 
     useEffect(
         () => {
-            let labels = Array(...document.querySelectorAll("text"))
-            console.log("Labels", labels.reduce(
-                (group, label) => {
-                    console.log("l", label)
-                    let x_axis = label.getAttribute("x")
-                    group[x_axis] = label
-                    return group
-                }, {}
-            ))
+            observeDOM([document], () => {
+                let labels = Array(...document.querySelectorAll("text"))
+                console.log("Labels", labels.reduce(
+                    (group, label) => {
+                        console.log("l", label)
+                        let x_axis = label.getAttribute("x")
+                        group[x_axis] = label
+                        return group
+                    }, {}
+                ))
+                document.getElementById("sankeylabels").innerHTML = <div>GOOD BYE</div>
+            })
+
         }
-        , [sankeyRef.current, labelsRef.current])
+        , [])
 
 
     // data keys// values of the data // their frequencies
+
 
     if (killers.length == 0) return <div>Loas</div>
 
@@ -639,7 +676,7 @@ export default function SankeyDiagram(props: Props) {
 
      */
 
-    let ordered_frequencies = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
+    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
     console.log(ordered_frequencies)
     let n = ordered_frequencies.sort((key1, key2) =>
         standard_deviation(
@@ -648,6 +685,7 @@ export default function SankeyDiagram(props: Props) {
             Object.values(key2[1])
         ) ? -1 : 1
     )
+
     console.log("Sorted", n)
 
 
@@ -689,7 +727,7 @@ export default function SankeyDiagram(props: Props) {
 
             let target_name = ordered_frequencies[i][0]
             let target_value = kil[target_name]
-          // console.log(target_name, target_value)
+            // console.log(target_name, target_value)
             _links.push({
                 source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + kil.stereotype),
                 target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + kil.stereotype),
@@ -723,30 +761,12 @@ export default function SankeyDiagram(props: Props) {
 
 
     let _sankey = sankey(sankeyData)
+        .nodeAlign(sankeyJustify)
         .nodeWidth(10)
         .nodePadding(10)
         .extent([[0, 0], [size.width, size.height]])
     _sankey = _sankey.iterations(0)
 
-
-    const onMouseUp = e => {
-        dragElement.current = null;
-    };
-
-    const onMouseDown = e => {
-        if (e.target.tagName === "rect") {
-            dragElement.current = e.target;
-            offset.current = getMousePosition(e);
-            offset.current.y -= parseFloat(e.target.getAttributeNS(null, "y"));
-        }
-    };
-
-    const onMouseMove = e => {
-        if (dragElement.current) {
-            const coord = getMousePosition(e);
-            dragElement.current.setAttributeNS(null, "y", coord.y - offset.current.y);
-        }
-    };
 
     graph.current = _sankey(sankeyData)
     //graph.current.linkSort(null);
@@ -779,13 +799,14 @@ export default function SankeyDiagram(props: Props) {
                 //.forEach(t=> t.innerHTML  = "")
                 //s.querySelector()
 
+
             }
             } width={size.width} height={size.height}>
                 <g>
                     {links.map((d, i) => (
                         <Link
                             data={d}
-                            width={3 //d.width}
+                            width={6 //d.width}
                             }
                             length={nodes.length}
                             colors={"#dddddd"}
@@ -809,32 +830,11 @@ export default function SankeyDiagram(props: Props) {
                 </g>
             </svg>
             <div>
-                <Labels></Labels>
+                <Labels setLabels={console.log} label_names={ordered_frequencies.map(f => f[0])}></Labels>
             </div>
         </div>
     );
 
-    function Labels(){
-        let labels = Array(...document.querySelectorAll("text"))
-        let attrs = ( labels.reduce(
-            (group, label) => {
-                let x_axis = label.getAttribute("x")
-                group[x_axis] = label
-                return group
-            }, {}
-        ))
-        console.log("HERE", attrs)
-        if(Object.keys(attrs).length === 0 ) return <div></div>
-
-        let final_labels = []
-        for (let group in attrs){
-            final_labels.push(<div>group[3].innerHTML</div>)
-            console.log(final_labels)
-        }
-        console.log(attrs)
-        return <div style={{"display":"flex", "fontSize": "100px" }}><div>hii</div>{final_labels
-        }</div>
-    }
 
     /*
     console.log(sankey.sankey())
