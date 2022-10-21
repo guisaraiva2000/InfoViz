@@ -42,6 +42,7 @@ interface LabelsProps {
 export  default function Labels(props : LabelsProps) {
     let labels = props.label_names.map( (v,i) => Object.create({"id":i }))
     let [items, setItems] = useState(props.label_names)
+    if(props.label_names != items) setItems(props.label_names) // the library has to handle the change of values!
 
     const sensors = useSensors(
         useSensor(PointerSensor),
