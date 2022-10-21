@@ -3,15 +3,18 @@ import styles from '../styles/Home.module.css'
 import StereotypePlot from "../visualizations/StereotypePlot";
 import SankeyDiagram from "../visualizations/SankeyDiagram";
 import {useEffect, useState} from "react"
+import Context from "../visualizations/context"
 import * as d3 from "d3";
 
 
 export default function Home() {
-
   let [data, setData] = useState([])
   useEffect(() => {
     d3.json("s-killers.json").then(setData)
   }, [])
+  let [kill, setKill] = useState(null)
+  let [ster, setSter] = useState(null)
+  const StereotypeProvider =  Context.Provider
   return <div>
     <Head>
       <title>Create Next App</title>
@@ -19,6 +22,7 @@ export default function Home() {
       <link rel="icon" href="/favicon.ico"/>
     </Head>
     <main>
+      <StereotypeProvider value={{setKill:setKill,setSter:setSter, val : {stereotype: ster, killer : kill}}}>
       <div className={styles.grid}>
         <div className={styles.card}>
           <h2>U.S. Map</h2>
@@ -40,6 +44,7 @@ export default function Home() {
           <h2>Index Scatter</h2>
         </div>
       </div>
+      </StereotypeProvider>
 
     </main>
   </div>

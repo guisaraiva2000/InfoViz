@@ -10,6 +10,7 @@ import {
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
+import {render} from "react-dom";
 
 export function SortableItem(props) {
     const {
@@ -58,11 +59,15 @@ export  default function Labels(props : LabelsProps) {
                 const oldIndex = items.indexOf(active.id);
                 const newIndex = items.indexOf(over.id);
 
-                return arrayMove(items, oldIndex, newIndex);
+                let new_items =   arrayMove(items, oldIndex, newIndex);
+                props.onLabelChange(new_items)
+                return new_items
             });
         }
     }
-    return <div id={"sankeylabels"} style={{display: "flex",width:"100%", fontSize: "10px", justifyContent: "space-between"}}>
+    return <div id={"sankeylabels"} style={{ display: "flex",width:
+        document.getElementById("sankey")?.offsetWidth
+        , fontSize: "10px", justifyContent: "space-between"}}>
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -73,7 +78,7 @@ export  default function Labels(props : LabelsProps) {
                 strategy={horizontalListSortingStrategy}
             >
                 {items.map(
-                    attr => <SortableItem key={attr} id={attr} style={{fontSize: "10px", display: "flex"}}>{attr}</SortableItem>
+                    attr => <SortableItem key={attr} id={attr} style={{fontSize: "20px", display: "flex", width: "50px"}}>{attr}</SortableItem>
                 )}
             </SortableContext>
         </DndContext>

@@ -1,14 +1,15 @@
 import * as d3 from "d3";
 
-import {MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {sankeyJustify, sankeyLinkHorizontal, sankey, SankeyGraph} from "d3-sankey";
 import {group, lab} from "d3";
 import Labels from "./Labels";
 
 const size = {
-    width: 700,
+    width: 1000,
     height: 600
 };
+import Context from "../visualizations/context"
 
 function findLabels(){
     let labels = Array(...document.querySelectorAll("text"))
@@ -97,7 +98,7 @@ function getSterotypeColor(sterotype: number) {
 
 }
 
-const Link = ({data, width, length, colors}) => {
+const Link = ({data, width, length, colors, currentKiller, currentStereotype}) => {
     const link = sankeyLinkHorizontal();
 
 
@@ -110,7 +111,7 @@ const Link = ({data, width, length, colors}) => {
                     x1={data.source.x1}
                     x2={data.target.x0}
                 >
-                    <stop offset="0" stopColor={data.killerid //colors(data.source.index / length)} />}
+                    <stop offset="0" stopColor={0 //colors(data.source.index / length)} />}
                     }></stop>
                     <stop offset="100%" stopColor={"red"}/>
                 </linearGradient>
@@ -121,10 +122,14 @@ const Link = ({data, width, length, colors}) => {
 
                 d={link(data)}
                 fill={"none"}
-                stroke={`url(#gradient-${data.index})`}
+                stroke={data.killerid == currentKiller ? "white" :   `url(#gradient-${data.index})`}
                 //stroke={getSterotypeColor(data.stereotype)}
-                strokeOpacity={0.1}
-                strokeWidth={width}
+                strokeOpacity={
+                    currentStereotype == null ? 0.5 : (
+                    data.killerid == currentKiller ? 1 : 0.1 //1/currentStereotype.killers.length}
+                    )
+                }
+                strokeWidth={data.killerid == currentKiller ? 4 : width}
             />
         </>
     );
@@ -546,16 +551,20 @@ class Props {
     targets: []  // datapoints of interest
 }
 
-function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, type) {
+function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretype) {
     let line: SVGPathElement = e.target as SVGPathElement
     console.log(line)
     let killer_id = line.dataset["killerid"]
     let stereotype = line.dataset["stereotype"]
+    setSteoretype(stereotype)
+    console.log(stereotype)
     document.querySelectorAll(`path[data-stereotype="${stereotype}"]`).forEach((e, p) => {
+        if(e.getAttribute( "stroke") == "white") return
         e.setAttributeNS(null, "stroke", getSterotypeColor(Number(stereotype)))
     })
     return
 
+    let type = null;
     if (type == "leave") {
         document.querySelectorAll(`path[data-killerid="${killer_id}"]`).forEach((e, p) => {
             console.log("LEAVE")
@@ -582,9 +591,16 @@ function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, type) {
 
 }
 
-const sterotypes_types = [...Array(8).keys()]
 
+function standard_deviation(values_by_category, data_length) {
+    let values = values_by_category
+    const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
+    let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
+    console.log("mean", mean, "res", res)
+    return res
+}
 
+let III = 0
 export default function SankeyDiagram(props: Props) {
     /* Select killer by line One line -> one killer
     * Color killers by sterotype
@@ -593,15 +609,32 @@ export default function SankeyDiagram(props: Props) {
     * On highlight fade everyone else
     * Add reorder hability
     * */
+    const [size, setSize] = useState({width: 400, height: 300})
+    if(typeof document != "undefined"){
+        let el = document?.getElementById("sankeyContainer")?.getBoundingClientRect()
+        //if (el &&(  size.width != 100 || size.height != 100) ) setSize({ width: size.width,height: size.height})
+
+    }
     const [data, setData] = useState(null);
     const dragElement = useRef(null);
     const graph = useRef(null);
     const offset = useRef(null);
+    let context  = useContext(Context)
+    console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOON", context)
+    let setStereotype = context.setSter
+    let setKiller = context.setKill
+    let currentKiller = context.currentKiller
+    let currentStereotype = context.val.stereotype
+
+
+
     useEffect(() => {
         fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
             .then(res => res.json())
             .then(data => setData(data));
     }, []);
+
+    let sankeyContainerRef = useRef(null)
 
     let keysOfInterst = [
         "Served in the military?",
@@ -609,14 +642,24 @@ export default function SankeyDiagram(props: Props) {
         "Spend time in jail?",
         "Sexual preference", "Gender of victims", "Gender"
     ]
+
+    let simpleKeys = {
+        "Served in the military?" : "Military",
+        "Marital status" : "Marriage",
+        "Spend time in jail?" : "Jail",
+        "Sexual preference" : "Orientation",
+        "Gender of victims":  "Victim's Gender",
+        "Gender" : "Gender"
+    }
+
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let labelsRef = useRef(null)
 
     // find the most uniform attributes for the targets
     let killers: [Killers] = props.data
+    //const [currentStereotype, setCurrentStereotype] = useState(null) //{id: 4, killers: killers.filter(e => e.stereotype == 4)})
     if (killers.length === 1) return <div> Loding</div>
     let frequencies = {}
-    let data_length = props.data.length
     for (let k of keysOfInterst) frequencies[k] = {}
     if (props.targets.length == 0) {// use all data
         // get frequencies of values
@@ -629,7 +672,8 @@ export default function SankeyDiagram(props: Props) {
             }
         }
     }
-
+    if (sankeyRef.current != null)
+        sankeyRef.current.onresize = setSize
     useEffect(
         () => {
             observeDOM([document], () => {
@@ -649,19 +693,34 @@ export default function SankeyDiagram(props: Props) {
         }
         , [])
 
+    useEffect(
+
+        () => {
+            let r = sankeyContainerRef.current
+            if (r == null) return
+            setSize({width: size.width, height: r.getBoundingClientRect().height})
+        }
+        , [sankeyContainerRef, sankeyRef]
+    )
 
     // data keys// values of the data // their frequencies
 
+    let data_length = props.data.length
+
+    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
+    console.log(ordered_frequencies)
+    let n = ordered_frequencies.sort((key1, key2) =>
+        standard_deviation(
+            Object.values(key1[1]), data_length
+        ) > standard_deviation(
+            Object.values(key2[1]), data_length
+        ) ? -1 : 1
+    )
+
+    let [attributeOrder, setAttributeOrder] =  useState(ordered_frequencies.map(v => v[0]))
 
     if (killers.length == 0) return <div>Loas</div>
 
-    function standard_deviation(values_by_category) {
-        let values = values_by_category
-        const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
-        let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
-        console.log("mean", mean, "res", res)
-        return res
-    }
 
     /*
     document.querySelectorAll('text').forEach((t) => {
@@ -677,17 +736,8 @@ export default function SankeyDiagram(props: Props) {
 
      */
 
-    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
-    console.log(ordered_frequencies)
-    let n = ordered_frequencies.sort((key1, key2) =>
-        standard_deviation(
-            Object.values(key1[1])
-        ) > standard_deviation(
-            Object.values(key2[1])
-        ) ? -1 : 1
-    )
-
     console.log("Sorted", n)
+    ordered_frequencies.sort((a,b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
 
 
     /*
@@ -698,25 +748,28 @@ export default function SankeyDiagram(props: Props) {
     }
 
      */
+    const sterotypes_types = currentStereotype != null ? [...Array(9).keys()] :   [" "]
 
-    let _nodes = []
-    for (let attribute in frequencies) {
-        for (let category in frequencies[attribute]) {
-            _nodes.push(
-                {
-                    name: attribute + " " + category
-                }
-            )
+        let _nodes = []
+        for (let attribute in frequencies) {
+            for (let category in frequencies[attribute]) {
+                _nodes.push(
+                    {
+                        name: attribute + " " + category
+                    }
+                )
+            }
         }
-    }
-    let _s_nodes = []
-    for (let n of _nodes) {
-        for (let s of sterotypes_types) {
-            _s_nodes.push({...n, name: n.name + " " + s})
+        let _s_nodes = []
+        for (let n of _nodes) {
+            for (let s of sterotypes_types) {
+                _s_nodes.push({...n, name: n.name + " " + s})
+            }
         }
-    }
-    _nodes = _s_nodes
-    _nodes = _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
+        _nodes = _s_nodes
+        _nodes =  _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
+
+
 
     console.log("Frequencies", frequencies)
     let _links = []
@@ -730,8 +783,8 @@ export default function SankeyDiagram(props: Props) {
             let target_value = kil[target_name]
             // console.log(target_name, target_value)
             _links.push({
-                source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + kil.stereotype),
-                target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + kil.stereotype),
+                source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
+                target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
                 value: kil.stereotype,
                 color: "#ddddd",
                 killerid: killers.indexOf(kil),
@@ -739,8 +792,9 @@ export default function SankeyDiagram(props: Props) {
             })
         }
     }
-    _links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
-    console.log("links", _links)
+    //_links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
+    _links = _links.sort((e, b) => e.killerid == currentKiller ? 1:  -1)
+    console.log("links ftw", _links)
     //for (let i = 1; i < ordered_frequencies.length; i++) {
     //   let l = {
     //       source: keysOfInterst.indexOf(ordered_frequencies[i - 1][0]),
@@ -777,14 +831,20 @@ export default function SankeyDiagram(props: Props) {
     console.log(nodes)
     console.log(links)
 
+    //if (size.width != s.clientWidth || size.height != s.clientHeight) setSize({width: s.getBBox().width, height : s.getBBox().height})
+    let r : Element = sankeyContainerRef.current
+    if( r != null && r.getBoundingClientRect().height != size.height&& r.getBoundingClientRect().width != size.width ) {
+        console.log(r)
+        setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})}
+
 
     return (
-        <div>
-            <svg className="sankey" style={{transform: "rotate(90deg)"}} ref={(s) => {
+        <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"scroll", width: "90%", height: "90%"}}>
+            <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {
                 sankeyRef["current"] = s
                 if (s === null) return
                 document.querySelectorAll("path").forEach((p) => {
-                    p.onclick = (e) => handleClick(e, graph.current)
+                    p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
 
                     //    p.onmouseenter = (e)=>handleClick(e,graph.current)
                     //   p.onmouseleave = (e)=>handleClick(e,graph.current,"leave")
@@ -807,10 +867,11 @@ export default function SankeyDiagram(props: Props) {
                     {links.map((d, i) => (
                         <Link
                             data={d}
-                            width={6 //d.width}
-                            }
+                            width={ currentStereotype == null ? d.width : 6}
                             length={nodes.length}
                             colors={"#dddddd"}
+                            currentKiller={currentKiller}
+                            currentStereotype={currentStereotype}
                         />
                     ))}
                 </g>
@@ -830,9 +891,10 @@ export default function SankeyDiagram(props: Props) {
                     ))}
                 </g>
             </svg>
-            <div>
-                <Labels setLabels={console.log} label_names={ordered_frequencies.map(f => f[0])}></Labels>
-            </div>
+                <Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
+                    Object.keys(simpleKeys).find(key=> simpleKeys[key] == v)   // convert to "complex" key name
+                ))
+                } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>
         </div>
     );
 
