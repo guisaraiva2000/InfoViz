@@ -28,7 +28,6 @@ export default function Home() {
           <h2>U.S. Map</h2>
         </div>
         <div className={styles.card}>
-          <h2>Sankey Diagram</h2>
           <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
         </div>
       </div>

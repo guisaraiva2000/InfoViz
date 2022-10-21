@@ -64,14 +64,20 @@ const getMousePosition = event => {
 };
 
 
-const Rect = ({index, x0, x1, y0, y1, name, value, length, colors}) => {
+const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStereotype}) => {
+    let final_name =  name.split(" ")
+    console.log(final_name)
+    final_name = currentStereotype == null ? final_name.slice(final_name.length-3, final_name.length-1) : // -2 to take the stereotype
+        final_name.slice(final_name.length-2, final_name.length).join(" ")
+    console.log(final_name)
     return (
         <>
+            <g>
             <rect
                 x={x0}
-                y={y0}
+                y={y0-5}
                 width={x1 - x0}
-                height={y1 - y0}
+                height={5 +y1 - y0}
                 fill={"#dddddd"} //colors(index / length)}
                 data-index={index}
             />
@@ -83,12 +89,15 @@ const Rect = ({index, x0, x1, y0, y1, name, value, length, colors}) => {
                     alignmentBaseline: "middle",
                     fontSize: 9,
                     textAnchor: x0 < size.width / 2 ? "start" : "end",
-                    pointerEvents: "none",
-                    userSelect: "none"
+                    zIndex: 1330,
+                    display: "none"
+
+
                 }}
             >
-                {name}
+                {final_name}
             </text>
+            </g>
         </>
     );
 };
@@ -686,7 +695,7 @@ export default function SankeyDiagram(props: Props) {
                         return group
                     }, {}
                 ))
-               labels.forEach(e => e.innerHTML = "")
+                //labels.forEach(e => e.innerHTML = "")
                 //document.getElementById("sankeylabels").innerHTML = <div>GOOD BYE</div>
             })
 
@@ -707,9 +716,9 @@ export default function SankeyDiagram(props: Props) {
 
     let data_length = props.data.length
 
-    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
-    console.log(ordered_frequencies)
-    let n = ordered_frequencies.sort((key1, key2) =>
+    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
+
+    ordered_frequencies = ordered_frequencies.sort((key1, key2) =>
         standard_deviation(
             Object.values(key1[1]), data_length
         ) > standard_deviation(
@@ -718,37 +727,12 @@ export default function SankeyDiagram(props: Props) {
     )
 
     let [attributeOrder, setAttributeOrder] =  useState(ordered_frequencies.map(v => v[0]))
+    ordered_frequencies = ordered_frequencies.sort((a,b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
 
     if (killers.length == 0) return <div>Loas</div>
 
 
-    /*
-    document.querySelectorAll('text').forEach((t) => {
-        let your_text = t.innerHTML
-        let _ = document.createElement("div")
-            _.innerText = your_text.split("<br>")[0]
-        let _1 = document.createElement("div")
-            _1.innerText = your_text.split("<br>")[1]
-        t.innerHTML = ""
-        t.appendChild(_)
-        t.appendChild(_1)
-    })
-
-     */
-
-    console.log("Sorted", n)
-    ordered_frequencies.sort((a,b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
-
-
-    /*
-    for (let k of keysOfInterst) {
-       let f = frequencies[k]
-       for (let v of f) f[v]= f[v] / data_length
-       }
-    }
-
-     */
-    const sterotypes_types = currentStereotype != null ? [...Array(9).keys()] :   [" "]
+    const sterotypes_types = currentStereotype != null ? [0,1,2,3,4,5,6,7,8] :   [" "]
 
         let _nodes = []
         for (let attribute in frequencies) {
@@ -793,7 +777,7 @@ export default function SankeyDiagram(props: Props) {
         }
     }
     //_links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
-    _links = _links.sort((e, b) => e.killerid == currentKiller ? 1:  -1)
+    //_links = _links.sort((e, b) => e.killerid == currentKiller ? 1:  -1)
     console.log("links ftw", _links)
     //for (let i = 1; i < ordered_frequencies.length; i++) {
     //   let l = {
@@ -839,7 +823,16 @@ export default function SankeyDiagram(props: Props) {
 
 
     return (
-        <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"scroll", width: "90%", height: "90%"}}>
+        <>
+        <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+            standard_deviation(
+                Object.values(key1[1]), data_length
+            ) > standard_deviation(
+                Object.values(key2[1]), data_length
+            ) ? -1 : 1
+        ).map(v => v[0]))}>Sankey Diagram</h2>
+        <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"show",zIndex: "1000", width: "100%", height: "80%"}}>
+
             <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {
                 sankeyRef["current"] = s
                 if (s === null) return
@@ -878,6 +871,7 @@ export default function SankeyDiagram(props: Props) {
                 <g>
                     {nodes.map((d, i) => (
                         <Rect
+                            currentStereotype={currentStereotype}
                             index={d.index}
                             x0={d.x0}
                             x1={d.x1}
@@ -891,11 +885,12 @@ export default function SankeyDiagram(props: Props) {
                     ))}
                 </g>
             </svg>
-                <Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
+            {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
                     Object.keys(simpleKeys).find(key=> simpleKeys[key] == v)   // convert to "complex" key name
                 ))
-                } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>
+                } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>}
         </div>
+        </>
     );
 
 

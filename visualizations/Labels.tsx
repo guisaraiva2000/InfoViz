@@ -27,7 +27,7 @@ export function SortableItem(props) {
     };
 
     return (
-        <div ref={setNodeRef} style={{style, ...props.style}} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={{...style, ...props.style}} {...attributes} {...listeners}>
             {props.children}
         </div>
     );

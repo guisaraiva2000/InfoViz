@@ -12,7 +12,13 @@ path {
 }
 
 .sankey  text {
-    transform: rotate(-90deg)
+    /*transform: rotate(-90deg)*/
+}
+text {
+    display:none;
+}
+g:hover text{
+    display: block !important;
 }
 
 a {
