@@ -642,7 +642,8 @@ export default function SankeyDiagram(props: Props) {
                         return group
                     }, {}
                 ))
-                document.getElementById("sankeylabels").innerHTML = <div>GOOD BYE</div>
+               labels.forEach(e => e.innerHTML = "")
+                //document.getElementById("sankeylabels").innerHTML = <div>GOOD BYE</div>
             })
 
         }
@@ -779,7 +780,7 @@ export default function SankeyDiagram(props: Props) {
 
     return (
         <div>
-            <svg ref={(s) => {
+            <svg className="sankey" style={{transform: "rotate(90deg)"}} ref={(s) => {
                 sankeyRef["current"] = s
                 if (s === null) return
                 document.querySelectorAll("path").forEach((p) => {

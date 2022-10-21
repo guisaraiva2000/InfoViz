@@ -1,6 +1,8 @@
 import {useLayoutEffect, useState} from "react";
 
 import {
+    arrayMove,
+    horizontalListSortingStrategy,
     SortableContext,
     sortableKeyboardCoordinates,
     useSortable,
@@ -24,7 +26,7 @@ export function SortableItem(props) {
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={{style, ...props.style}} {...attributes} {...listeners}>
             {props.children}
         </div>
     );
@@ -35,8 +37,10 @@ interface LabelsProps {
     setLabels: (any) => null
 }
 
+
 export  default function Labels(props : LabelsProps) {
     let labels = props.label_names.map( (v,i) => Object.create({"id":i }))
+    let [items, setItems] = useState(props.label_names)
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -44,17 +48,34 @@ export  default function Labels(props : LabelsProps) {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+    console.log("items",items)
 
-    let handleDragEnd;
-    return <div id={"sankeylabels"} style={{"display": "flex"}}>
+    function handleDragEnd(event) {
+        const {active, over} = event;
+
+        if (active.id !== over.id) {
+            setItems((items) => {
+                const oldIndex = items.indexOf(active.id);
+                const newIndex = items.indexOf(over.id);
+
+                return arrayMove(items, oldIndex, newIndex);
+            });
+        }
+    }
+    return <div id={"sankeylabels"} style={{display: "flex",width:"100%", fontSize: "10px", justifyContent: "space-between"}}>
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
         >
-            {labels.map(
-                attr => <SortableItem style={{fontSize: "12px"}}>{attr}</SortableItem>
-            )}
+            <SortableContext
+                items={items}
+                strategy={horizontalListSortingStrategy}
+            >
+                {items.map(
+                    attr => <SortableItem key={attr} id={attr} style={{fontSize: "10px", display: "flex"}}>{attr}</SortableItem>
+                )}
+            </SortableContext>
         </DndContext>
     </div>
     //if (labels == null) return <div>Loading labels</div>
