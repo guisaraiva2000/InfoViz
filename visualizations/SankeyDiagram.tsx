@@ -616,15 +616,25 @@ function standard_deviation(values_by_category, data_length) {
     return res
 }
 
+let keysOfInterst = [
+    "Served in the military?",
+    "Marital status",
+    "Spend time in jail?",
+    "Sexual preference", "Gender of victims", "Gender"
+]
+
+let simpleKeys = {
+    "Served in the military?" : "Military",
+    "Marital status" : "Marriage",
+    "Spend time in jail?" : "Jail",
+    "Sexual preference" : "Orientation",
+    "Gender of victims":  "Victim's Gender",
+    "Gender" : "Gender"
+}
+
+
 let III = 0
 export default function SankeyDiagram(props: Props) {
-    /* Select killer by line One line -> one killer
-    * Color killers by sterotype
-    * Filter/Reorder&Highlight data according to idxs
-    *
-    * On highlight fade everyone else
-    * Add reorder hability
-    * */
     const [size, setSize] = useState({width: 400, height: 300})
     if(typeof document != "undefined"){
         let el = document?.getElementById("sankeyContainer")?.getBoundingClientRect()
@@ -632,64 +642,16 @@ export default function SankeyDiagram(props: Props) {
 
     }
     const [data, setData] = useState(null);
-    const dragElement = useRef(null);
     const graph = useRef(null);
-    const offset = useRef(null);
     let context  = useContext(Context)
-    console.log("COOOOOOOOOOOOOOOOOOOOOOOOOOOOON", context)
     let setStereotype = context.setSter
     let setKiller = context.setKill
     let currentKiller = context.currentKiller
     let currentStereotype = context.val.stereotype
 
-
-
-    useEffect(() => {
-        fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
-            .then(res => res.json())
-            .then(data => setData(data));
-    }, []);
-
-    let sankeyContainerRef = useRef(null)
-
-    let keysOfInterst = [
-        "Served in the military?",
-        "Marital status",
-        "Spend time in jail?",
-        "Sexual preference", "Gender of victims", "Gender"
-    ]
-
-    let simpleKeys = {
-        "Served in the military?" : "Military",
-        "Marital status" : "Marriage",
-        "Spend time in jail?" : "Jail",
-        "Sexual preference" : "Orientation",
-        "Gender of victims":  "Victim's Gender",
-        "Gender" : "Gender"
-    }
-
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
+    let sankeyContainerRef = useRef(null)
     let labelsRef = useRef(null)
-
-    // find the most uniform attributes for the targets
-    let killers: [Killers] = props.data
-    //const [currentStereotype, setCurrentStereotype] = useState(null) //{id: 4, killers: killers.filter(e => e.stereotype == 4)})
-    if (killers.length === 1) return <div> Loding</div>
-    let frequencies = {}
-    for (let k of keysOfInterst) frequencies[k] = {}
-    if (props.targets.length == 0) {// use all data
-        // get frequencies of values
-        for (let i = 0; i < props.data.length; i++) {
-            let person = killers[i]
-            for (let k of keysOfInterst) {
-                let f = frequencies[k]
-                let value = person[k]
-                f[value] = f[value] === undefined ? 1 : f[value] + 1
-            }
-        }
-    }
-    if (sankeyRef.current != null)
-        sankeyRef.current.onresize = setSize
     useEffect(
         () => {
             observeDOM([document], () => {
@@ -719,27 +681,50 @@ export default function SankeyDiagram(props: Props) {
         , [sankeyContainerRef, sankeyRef]
     )
 
+
+    useEffect(() => {
+        fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
+            .then(res => res.json())
+            .then(data => setData(data));
+    }, []);
+
+
+    // find the most uniform attributes for the targets
+    let killers: [Killers] = props.data
+    let frequencies = {}
+    for (let k of keysOfInterst) frequencies[k] = {}
+    let killers_for_order = currentStereotype ? killers.filter(k => k.stereotype == currentStereotype) : killers
+        // get frequencies of values
+        for (let i = 0; i < killers.length; i++) {
+            let person = killers[i]
+            for (let k of keysOfInterst) {
+                let f = frequencies[k]
+                let value = person[k]
+                if(killers_for_order.indexOf(person) == -1){
+                    f[value] = f[value] === undefined ? 1 : f[value]
+                } else f[value] = f[value] === undefined ? 1 : f[value] + 1
+            }
+        }
     // data keys// values of the data // their frequencies
 
-    let data_length = props.data.length
 
     let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
 
     ordered_frequencies = ordered_frequencies.sort((key1, key2) =>
         standard_deviation(
-            Object.values(key1[1]), data_length
+            Object.values(key1[1]), killers_for_order.length
         ) > standard_deviation(
-            Object.values(key2[1]), data_length
+            Object.values(key2[1]), killers_for_order.length
         ) ? -1 : 1
     )
 
     let [attributeOrder, setAttributeOrder] =  useState(ordered_frequencies.map(v => v[0]))
     ordered_frequencies = ordered_frequencies.sort((a,b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
 
-    if (killers.length == 0) return <div>Loas</div>
+    if (killers.length == 0) return <div>Loading :)</div>
 
 
-    const sterotypes_types = currentStereotype != null ? [0,1,2,3,4,5,6,7,8] :   [" "]
+    const sterotypes_types = currentStereotype != null ? [0,1,2,3,4,5,6,7] :   [" "]
 
         let _nodes = []
         for (let attribute in frequencies) {
@@ -833,9 +818,9 @@ export default function SankeyDiagram(props: Props) {
         <>
         <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
             standard_deviation(
-                Object.values(key1[1]), data_length
+                Object.values(key1[1]), killers_for_order.length
             ) > standard_deviation(
-                Object.values(key2[1]), data_length
+                Object.values(key2[1]), killers_for_order.length
             ) ? -1 : 1
         ).map(v => v[0]))}>Sankey Diagram</h2>
         <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"show",zIndex: "1000", width: "100%", height: "80%"}}>
