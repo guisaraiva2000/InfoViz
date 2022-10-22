@@ -41,12 +41,14 @@ export default function Home() {
   let [ster, setSter] = useState([0, 1, 2])
   const StereotypeProvider = Context.Provider
   const setStereotype = (s) => {
+    s = Number(s)
     ster.includes(s) ?
       ster = [s, ...ster.filter(item => item !== s)] // move to front
       :
       ster = [s, ...ster].slice(0, -1);
     setSter(ster)
   }
+  console.log("STEEEEEEEEEEEEEER",ster)
   return (
     <div>
       <Head>
@@ -57,7 +59,6 @@ export default function Home() {
 
       <main>
         <StereotypeProvider value={{setKill: setKill, setStereotype: setStereotype, val: {stereotypes: ster, killer: kill}}}>
-         <StereotypeProvider value={{setKill:setKill,setSter:setSter, val : {stereotype: ster, killer : kill}}}>
           {/* insert visualizations here */}
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -66,9 +67,10 @@ export default function Home() {
               {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
             </div>
             <div className={styles.card}>
-              <SankeyDiagram data={data} ></SankeyDiagram>
+              <SankeyDiagram data={killersData} ></SankeyDiagram>
             </div>
           </div>
+
 
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -87,4 +89,5 @@ export default function Home() {
       </main>
     </div>
   )
- 
+
+}

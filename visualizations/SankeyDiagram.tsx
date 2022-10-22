@@ -641,14 +641,14 @@ export default function SankeyDiagram(props: Props) {
         //if (el &&(  size.width != 100 || size.height != 100) ) setSize({ width: size.width,height: size.height})
 
     }
-    const [data, setData] = useState(null);
     const graph = useRef(null);
     let context  = useContext(Context)
-    let setStereotype = context.setSter
+    let setStereotype = context.setStereotype
     let setKiller = context.setKill
     let currentKiller = context.currentKiller
 
-    let currentStereotype = context.val.stereotype
+
+    let currentStereotype = 3//context.val.stereotype == null ? null : context.val.stereotype[0]
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
@@ -683,11 +683,6 @@ export default function SankeyDiagram(props: Props) {
     )
 
 
-    useEffect(() => {
-        fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
-            .then(res => res.json())
-            .then(data => setData(data));
-    }, []);
 
 
     // find the most uniform attributes for the targets
@@ -785,11 +780,6 @@ export default function SankeyDiagram(props: Props) {
         nodes: _nodes,
         links: _links
     }
-    console.log("SUNK", sankeyData)
-
-
-    //sankeyData = data
-    console.log("sank", data)
 
 
     let _sankey = sankey(sankeyData)

@@ -11,9 +11,13 @@ path {
     pointer-events: visibleFill
 }
 
+.sankey div {
+    font-size: 10px;
+}
 
-text {
+.sankey text {
     display: none;
+
 }
 svg:hover text{
     display: block !important;
