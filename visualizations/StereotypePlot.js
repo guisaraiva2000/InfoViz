@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
 import * as d3 from "d3";
 
-function GetPlotterData(){
-  let [data,setData] = useState([])
-  useEffect(() => {d3.json("s-killers.json").then(setData)}, [])
+function GetPlotterData() {
+  let [data, setData] = useState([])
+  useEffect(() => {
+    d3.json("s-killers.json").then(setData)
+  }, [])
   return {
     "2d": {
       x: data.map(entry => entry["stereotype_pos2D"][0]),
@@ -20,15 +22,15 @@ function GetPlotterData(){
   }
 }
 
-export default function StereotypePlot(){
+export default function StereotypePlot() {
   useEffect(() => {
       import("react-plotly.js").then(p => sp(p))
     }
-    ,[])
+    , [])
 
   let [p, sp] = useState(null)
   let Plot = "div"
-  if(p) Plot = p.default
+  if (p) Plot = p.default
 
   let stereotypeData = GetPlotterData()
   console.log("Re renderd!")
