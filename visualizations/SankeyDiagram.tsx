@@ -647,6 +647,7 @@ export default function SankeyDiagram(props: Props) {
     let setStereotype = context.setSter
     let setKiller = context.setKill
     let currentKiller = context.currentKiller
+
     let currentStereotype = context.val.stereotype
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
