@@ -113,8 +113,8 @@ const UsaChart: FunctionComponent = (props: any) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    DrawUsaChart(svgRef, props.killersData, props.victimsData);
-  }, [props.killersData, props.victimsData])
+    DrawUsaChart(svgRef, props.mapData, props.victimsData);
+  }, [props.mapData, props.victimsData])
 
   return (
     <svg ref={svgRef} className={styles.chart}/>

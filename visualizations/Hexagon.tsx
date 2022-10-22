@@ -1,76 +1,81 @@
 import * as d3 from "d3";
-import {FunctionComponent, useEffect, useRef} from "react";
+import {FunctionComponent, useContext, useEffect, useRef} from "react";
 import styles from '../styles/Home.module.css'
 import Props from "../interfaces/killers";
 import {Killers} from "../interfaces/killers";
+import Context from "../visualizations/context"
 
-function DrawRadarChart(svgRef, data: [Killers]) {
-  let stereotypes = new Set([1, 2, 3])
 
-  const attributes = {
-    "Number of victims": "avg_number_of_victims",
-    "IQ": "avg_iq",
-    "Brutality": "avg_brutality",
-    "Childhood Trauma": "avg_childhood_trauma",
-    "Psychological Perversion": "avg_psychological_perversion",
-    "Killing Severity": "avg_killing_severity",
-  };
+const config = {
+  maxValue: 0.5, //What is the value that the biggest circle will represent
+  levels: 5, //How many levels or inner circles should there be drawn
+  roundStrokes: true, //If true the area and stroke will follow a round path (cardinal-closed
+  strokeWidth: 8, //The width of the stroke around each blob
+  opacityCircles: 0.1, //The opacity of the circles of each blob
+  labelFactor: 1.2, //How much farther than the radius of the outer circle should the labels be placed
+  wrapWidth: 60, //The number of pixels after which a label needs to be given a new line
+  opacityArea: 0.0, //The opacity of the area of the blob
+  dotRadius: 4, //The size of the colored circles of each blog
+  scale: 1.5
+}
 
+const attributes = {
+  "Number of victims": {avg_name: "avg_number_of_victims", scaleFactor: 1.3},
+  "IQ": {avg_name: "avg_iq", scaleFactor: 1.2},
+  "Brutality": {avg_name: "avg_brutality", scaleFactor: 1.3},
+  "Childhood Trauma": {avg_name: "avg_childhood_trauma", scaleFactor: 1.2},
+  "Psychological Perversion": {avg_name: "avg_psychological_perversion", scaleFactor: 1.4},
+  "Killing Severity": {avg_name: "avg_killing_severity", scaleFactor: 1.4}
+};
+
+function getAverage(arr: Array<number>) {
+  arr = arr.filter(x => x !== null)
+  return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
+}
+
+function DrawRadarChart(svgRef, data: [Killers], currentStereotypes: Array<number>, setStereotype) {
   const countsAndSums = new Map();
   data.forEach(d => {
     const stereotype = d.stereotype
-    if (!(stereotypes.has(stereotype)))
+    if (!(currentStereotypes.includes(stereotype)))
       return
     const entry = countsAndSums.get(stereotype);
     if (!entry) {
       countsAndSums.set(stereotype, {
         stereotype,
-        count: 1,
-        number_of_victims: d["Number of victims"] || 0,
-        iq: d.IQ || 0,
-        brutality: d.Brutality || 0,
-        childhood_trauma: d["Childhood Trauma"] || 0,
-        psychological_perversion: d["Psychological Perversion"] || 0,
-        killing_severity: d["Killing Severity"] || 0
+        number_of_victims: [d["Number of victims"]],
+        iq: [d.IQ],
+        brutality: [d.Brutality],
+        childhood_trauma: [d["Childhood Trauma"]],
+        psychological_perversion: [d["Psychological Perversion"]],
+        killing_severity: [d["Killing Severity"]]
       }
       );
     } else {
-      ++entry.count;
-      entry.number_of_victims += d["Number of victims"] || 0;
-      entry.iq += d.IQ || 0;
-      entry.brutality += d.Brutality || 0;
-      entry.childhood_trauma += d["Childhood Trauma"] || 0;
-      entry.psychological_perversion += d["Psychological Perversion"] || 0;
-      entry.killing_severity += d["Killing Severity"] || 0;
+      entry.number_of_victims = [...entry.number_of_victims, d["Number of victims"]];
+      entry.iq = [...entry.iq, d.IQ];
+      entry.brutality = [...entry.brutality, d.Brutality];
+      entry.childhood_trauma = [...entry.childhood_trauma, d["Childhood Trauma"]];
+      entry.psychological_perversion = [...entry.psychological_perversion, d["Psychological Perversion"]];
+      entry.killing_severity = [...entry.killing_severity, d["Killing Severity"]];
     }
   })
 
-  // @ts-ignore
-  const averages = [...countsAndSums.values()].map(
-    ({
-       stereotype,
-       count,
-       number_of_victims,
-       iq,
-       brutality,
-       childhood_trauma,
-       psychological_perversion,
-       killing_severity
-    }) => ({
-      stereotype: stereotype,
+  const averages = [...countsAndSums.values()].map((d) => ({
+      stereotype: d.stereotype,
       avg_index: {
-        avg_number_of_victims: (number_of_victims / count).toFixed(1),
-        avg_iq: (iq / count).toFixed(1),
-        avg_brutality: (brutality / count).toFixed(1),
-        avg_childhood_trauma: (childhood_trauma / count).toFixed(1),
-        avg_psychological_perversion: (psychological_perversion / count).toFixed(1),
-        avg_killing_severity: (killing_severity / count).toFixed(1)
+        avg_number_of_victims: getAverage(d.number_of_victims),
+        avg_iq: getAverage(d.iq),
+        avg_brutality: getAverage(d.brutality),
+        avg_childhood_trauma: getAverage(d.childhood_trauma),
+        avg_psychological_perversion: getAverage(d.psychological_perversion),
+        avg_killing_severity: getAverage(d.killing_severity)
       }
     }));
 
   let attrMaxValues = []
   Object.values(attributes).forEach(attribute => {
-    attrMaxValues = [...attrMaxValues, d3.max(averages, d => parseFloat(d.avg_index[attribute]))];
+    attrMaxValues = [...attrMaxValues, d3.max(averages, d => parseFloat(d.avg_index[attribute.avg_name]))];
   })
 
   let parsedData = [];
@@ -79,44 +84,33 @@ function DrawRadarChart(svgRef, data: [Killers]) {
     Object.keys(attributes).forEach(attribute => {
       pd = [...pd, {
         axis: attribute,
-        value: d.avg_index[attributes[attribute]],
-        stereotype: d.stereotype
+        value: d.avg_index[attributes[attribute].avg_name],
+        stereotype: d.stereotype,
+        scaleFactor: attributes[attribute].scaleFactor
       }]
     })
     parsedData = [...parsedData, pd];
   })
 
   //Call function to draw the Radar chart
-  return _DrawRadarChart(svgRef, parsedData, attrMaxValues);
+  return _DrawRadarChart(svgRef, parsedData, attrMaxValues, setStereotype);
 }
 
-function _DrawRadarChart(svgRef, data, attrMaxValues) {
+function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
   const svg = d3.select(svgRef.current)
 
   const everything = svg.selectAll("*");
   everything.remove();
 
   //Calculate width and height
-  const height = Number(svg.style("height").replace("px", "")) / 1.3;
-  const width = Number(svg.style("width").replace("px", "")) / 1.3;
-
-  const config = {
-    maxValue: 0.5, //What is the value that the biggest circle will represent
-    levels: 5, //How many levels or inner circles should there be drawn
-    roundStrokes: true, //If true the area and stroke will follow a round path (cardinal-closed
-    strokeWidth: 8, //The width of the stroke around each blob
-    opacityCircles: 0.1, //The opacity of the circles of each blob
-    labelFactor: 1.2, //How much farther than the radius of the outer circle should the labels be placed
-    wrapWidth: 60, //The number of pixels after which a label needs to be given a new line
-    opacityArea: 0.0, //The opacity of the area of the blob
-    dotRadius: 4 //The size of the colored circles of each blog
-  }
+  const height = Number(svg.style("height").replace("px", "")) / config.scale;
+  const width = Number(svg.style("width").replace("px", "")) / config.scale;
 
   const c = d3.scaleOrdinal()
     .range(['#EDC951', '#CC333F', '#00A0B0'])
 
   const maxValue = 100;
-  const allAxis = data[0].map((i) => i.axis), //Names of each axis
+  const allAxis = data[0].map((i) => i), //Names of each axis
     total = allAxis.length, // number of different axis
     radius = Math.min(width / 2, height / 2), // radius of the outermost circle
     angleSlice = (Math.PI * 2) / total // width in radians of each slice
@@ -125,7 +119,7 @@ function _DrawRadarChart(svgRef, data, attrMaxValues) {
     .range([0, radius])
 
   const g = svg.append('g')
-    .attr('transform', `translate(${width / 2 * 1.3}, ${height / 2 * 1.3})`)
+    .attr('transform', `translate(${width / 2 * config.scale}, ${height / 2 * config.scale})`)
 
   const axisGrid = g.append("g").attr("class", "axisWrapper");
 
@@ -159,11 +153,21 @@ function _DrawRadarChart(svgRef, data, attrMaxValues) {
     .attr('font-size', '11px')
     .attr('text-anchor', 'middle')
     .style('fill', "white")
-    .attr("white-space", "pre-line")
     .attr('dy', '0.35em')
-    .attr('x', (d, i) => r(maxValue * config.labelFactor) * Math.cos(angleSlice * i - Math.PI / 2))
-    .attr('y', (d, i) => r(maxValue * config.labelFactor) * Math.sin(angleSlice * i - Math.PI / 2))
-    .text((d: string) => d)
+    .attr('x', (d:any, i) => r(maxValue * d.scaleFactor) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y', (d:any, i) => r(maxValue * d.scaleFactor) * Math.sin(angleSlice * i - Math.PI / 2))
+    .text(function(d: any) {
+      const tokens = d.axis.split(" ")
+      return tokens.length === 1 ? tokens.toString() : tokens.slice(0, -1).toString().replace(",", " ")
+    })
+    .append('tspan')
+    .attr('dy', '0.35em')
+    .attr('x', (d:any, i) => r(maxValue * d.scaleFactor) * Math.cos(angleSlice * i - Math.PI / 2))
+    .attr('y', (d:any, i) => r(maxValue * d.scaleFactor) * Math.sin(angleSlice * i - Math.PI / 2) + 15)
+    .text(function (d:any) {
+      const tokens = d.axis.split(" ")
+      return tokens.length === 1 ? "" : tokens.slice(-1).toString();
+    })
 
   //// Draw radar chart blobs
   const radarLine = d3.lineRadial()
@@ -230,6 +234,7 @@ function _DrawRadarChart(svgRef, data, attrMaxValues) {
         .duration(200)
         .style('fill-opacity', config.opacityArea)
     })
+    .on('click', (e, d: any) => {setStereotype(d[0].stereotype)})
 
   //Create outlines
   blobWrapper.append('path')
@@ -299,9 +304,14 @@ function _DrawRadarChart(svgRef, data, attrMaxValues) {
 const RadarChart: FunctionComponent = (props: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
+  const context = useContext(Context);
+  let currentStereotypes = context.val.stereotypes
+  const setStereotype = context.setStereotype
+
   useEffect(() => {
-    DrawRadarChart(svgRef, props.data);
-  }, [svgRef.current, props.data])
+    console.log(currentStereotypes)
+    DrawRadarChart(svgRef, props.data, currentStereotypes, setStereotype);
+  }, [svgRef.current, props.data, currentStereotypes])
 
   return (
     <svg ref={svgRef} className={styles.chart}/>
