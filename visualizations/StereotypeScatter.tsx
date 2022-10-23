@@ -43,8 +43,16 @@ function handleClick(event, setKiller, setSelectedKiller) {
     let stereotype = line.dataset["stereotype"]
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
     let killer_id = preselected?.dataset["killerid"]
-    if (killer_id !== undefined) {
-        preselected.classList.add("selectedKiller")
+    let previousKiller = document.querySelector("#scatter-stero>g>circle#selectedKiller")
+
+    let clickingOnSelected = preselected == null
+    if (clickingOnSelected) { // un toggle killer
+        if(previousKiller) previousKiller.id = "" // if the mouse does not move for a moment there will be no prev selection
+        setSelectedKiller(null)
+    } else if (killer_id === undefined) return
+    else {
+        previousKiller?.setAttribute("id", "")
+        preselected.id = ("selectedKiller")
         setSelectedKiller(killer_id)
         setKiller(killer_id)
     }

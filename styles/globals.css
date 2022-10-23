@@ -58,13 +58,13 @@ transition:.3s;
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 #scatter-stero > g > circle.pre-selected{
-    transform: scale(2);
+    transform: scale(2.5);
     transform-origin: center center;
     transition:.3s;
     z-index: 10;
 }
 
-#scatter-stero > g > circle.selectedKiller{
+#scatter-stero > g > circle#selectedKiller{
     transform: scale(4) !important;
     animation: none!important;
     transform-origin: center center;
