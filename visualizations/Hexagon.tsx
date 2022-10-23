@@ -307,10 +307,7 @@ const RadarChart: FunctionComponent = (props: Props) => {
   let currentStereotypes = context.state.currentStereotypes
   const setStereotype = context.setStereotype
 
-  useEffect(() => {
-    DrawRadarChart(svgRef, props.data, currentStereotypes, stereotypes, setStereotype);
-  }, [svgRef.current, props.data, currentStereotypes])
-
+  if(svgRef.current != null) DrawRadarChart(svgRef, props.data, currentStereotypes, stereotypes, setStereotype);
   return (
     <svg ref={svgRef} className={styles.chart}/>
   );
