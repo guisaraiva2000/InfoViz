@@ -29,6 +29,13 @@ function DrawPlot(width, height, data, div) {
     })
 }
 
+function handleClick(event, context) {
+    let line: SVGPathElement = event.target as SVGPathElement
+    let killer_id = line.dataset["killerid"]
+    let stereotype = line.dataset["stereotype"]
+    console.log(stereotype, killer_id)
+    if(killer_id !== undefined) context.setKiller(killer_id)
+}
 
 export default function (props: { data: [Killers] }) {
     let context = useContext(Context)
@@ -38,10 +45,9 @@ export default function (props: { data: [Killers] }) {
     if (data != props.data) setData(props.data)
 
     useEffect(() => {
-        if(plotRef.current == null)  return
-        d3.select(plotRef.current).append("g").call(d3.axisLeft(y))
-        d3.select(plotRef.current).append("g").call(d3.axisBottom(x))
-    }, [plotRef.current])
+            d3.select("#scatter-stero").on("click", (e) => handleClick(e, context))
+        }
+        , [plotRef.current])
 
     let element = plotRef.current
     if ((element !== null) && data !== null) {
@@ -59,8 +65,8 @@ export default function (props: { data: [Killers] }) {
     y_max += Math.round(x_max * 0.10)
     let x_min = Number(d3.min(x_coordinates))
     let y_min = Number(d3.min(y_coordinates))
-    x_min -= x_min*0.1
-    y_min -= y_min*0.1
+    x_min -= x_min * 0.1
+    y_min -= y_min * 0.1
 
     if (isNaN(y_max)) return
     y_max += Math.round(y_max * 0.10)
@@ -74,13 +80,17 @@ export default function (props: { data: [Killers] }) {
         .domain([y_min, y_max])
         .range([size.height, 0]);
 
-    let points = data.map((k,i) => {
+    let points = data.map((k, i) => {
         return <circle key={i}
+                       data-killerid={i}
+                       data-stereotype={k.stereotype}
                        cx={y(k.stereotype_pos[0])}
                        cy={x(k.stereotype_pos[1])}
-                       r={3} fill={"white"}>
+                       r={3} fill={context.state.stereotypes[k.stereotype].color}
+                       stroke={context.state.currentKiller == i ? "white" : "none"}
+        />
 
-                </circle>
+
     })
     return <svg ref={plotRef} id={"scatter-stero"} width={size.width} height={size.height}>
         <g>{points}</g>

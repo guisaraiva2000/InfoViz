@@ -41,6 +41,13 @@ svg:hover text{
     color:white
 }
 
+circle {
+}
+circle:hover {
+    transform: scale(3);
+    transform-origin: 50% 50%;
+
+}
 a {
     color: inherit;
     text-decoration: none;

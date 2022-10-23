@@ -52,10 +52,40 @@ export default function Home() {
 
       <main>
         <ContextProvider>
+          {/* insert visualizations here */}
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <h2>U.S. Map</h2>
+              {loading2 && loading3 && <div>loading</div>}
+              {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
+            </div>
+            <div className={styles.labels}>
+              <h2>Stereotypes</h2>
+              <div id="stereotypes">
+                {loading1 && <div>loading</div>}
+                {!loading1 && <StereotypesFilter className={styles.chart} data={killersData}/>}
+              </div>
+            </div>
+            <div className={styles.card}>
+              <SankeyDiagram data={killersData} ></SankeyDiagram>
+            </div>
+          </div>
+
+
+          <div className={styles.grid}>
             <div className={styles.card}>
               <h2>Stereotypes</h2>
               <StereotypeScatter data={killersData}></StereotypeScatter>
             </div>
+            <div className={styles.card}>
+              <h2>Hexagon</h2>
+              {loading1 && <div>loading</div>}
+              {!loading1 && <RadarChart className={styles.chart} data={killersData}/>}
+            </div>
+            <div className={styles.card}>
+              <h2>Index Scatter</h2>
+            </div>
+          </div>
         </ContextProvider>
       </main>
     </div>
