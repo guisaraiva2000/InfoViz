@@ -15,7 +15,10 @@ function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereoty
     .join("div")
     .attr("class", `w3-container ${styles["labels-container"]}`)
     .style("border", (d) => `1px solid ${stereotypes[d].color}`)
-      .style("background", d => `${currentStereotypes.includes(Number(d)) ?  stereotypes[d].color : ' '}` )
+    /*.style("background", d => `${currentStereotypes.includes(Number(d)) ?  stereotypes[d].color : ' '}` )*/
+    .style("-webkit-box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
+    .style("-moz-box-shadow", d => `${currentStereotypes.includes(Number(d)) ? "inset 0 0 30px " + stereotypes[d].color : ' '}` )
+    .style("box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("color", (d) => "white") //stereotypes[d].color)
     .html((d: string) => d)
     .on('click', (e, d: any) => {
