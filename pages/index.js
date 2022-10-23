@@ -1,14 +1,23 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+ 
 import RadarChart from "../visualizations/Hexagon.tsx";
 import UsaChart from "../visualizations/USA.tsx";
+
 import {ContextProvider} from "../visualizations/Context"
+
 import {useEffect, useState} from "react";
+ 
+import StereotypePlot from "../visualizations/StereotypePlot";
+import SankeyDiagram from "../visualizations/SankeyDiagram";
+ 
+
 import * as d3 from "d3";
 import StereotypesFilter from "../visualizations/Stereotypes";
 
 
 export default function Home() {
+
   let [killersData, setKillersData] = useState([]);
   let [mapData, setMapData] = useState([]);
   let [victimsData, setVictimsData] = useState([]);
@@ -57,9 +66,10 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.card}>
-              <h2>Sankey Diagram</h2>
+              <SankeyDiagram data={killersData} ></SankeyDiagram>
             </div>
           </div>
+
 
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -78,4 +88,5 @@ export default function Home() {
       </main>
     </div>
   )
+
 }

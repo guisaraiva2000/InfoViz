@@ -1,28 +1,52 @@
 html,
 body {
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   cursor: default;
 }
 
+path {
+    pointer-events: visibleFill
+}
+
+.sankey div {
+    font-size: 10px;
+}
+
+.sankey text {
+    display: none;
+
+}
+svg:hover text{
+    display: block !important;
+   /* filter: url(#red-glow);
+    fill: white;
+    font-family: Helvetica, Arial, sansserif;
+
+    */
+
+}
+
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
+
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        color: white;
+        background: black;
+    }
 }
