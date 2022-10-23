@@ -55,16 +55,13 @@ function getSterotypeColor(sterotype: number) {
 
 }
 
-const Link = ({data, width, length, colors}) => {
+const Link = ({data, width, length, colors }) => {
     const link = sankeyLinkHorizontal();
     let context  = useContext(Context)
-    let currentKiller = context.currentKiller
     let selectedStereotypes = context.state.currentStereotypes
-    console.log(currentKiller)
-
+    let currentKiller = context.state.currentKiller
 
     if(currentKiller === data.killerid) console.log("MMMMMMMMMMMMMMATCH")
-    else console.log(currentKiller, data.killerid)
     return (
         <>
             <defs>
@@ -89,13 +86,11 @@ const Link = ({data, width, length, colors}) => {
                     (
                         selectedStereotypes.includes(data.stereotype) ?  context.state.stereotypes[data.stereotype]["color"] : `url(#gradient-${data.index})`
                     )
-            }
-                //stroke={getSterotypeColor(data.stereotype)}
-                strokeOpacity={
-                    selectedStereotypes.includes(data.stereotype) ? 0.5 : (
-                    data.killerid == currentKiller ? 1 : 0.1 //1/currentStereotype.killers.length}
-                    )
                 }
+                //stroke={getSterotypeColor(data.stereotype)}
+                strokeOpacity={data.killerid == currentKiller ? 1 :
+                    selectedStereotypes.includes(data.stereotype) ? 0.25 :
+                        0.1}
                 strokeWidth={data.killerid == currentKiller ? 4 : width}
             />
         </>
@@ -697,22 +692,10 @@ export default function SankeyDiagram(props: Props) {
             })
         }
     }
-    //_links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
-    //_links = _links.sort((e, b) => e.killerid == currentKiller ? 1:  -1)
-    //for (let i = 1; i < ordered_frequencies.length; i++) {
-    //   let l = {
-    //       source: keysOfInterst.indexOf(ordered_frequencies[i - 1][0]),
-    //       target: keysOfInterst.indexOf(ordered_frequencies[i][0]),
-    //       value: 10,
-    //       color: "#ddddd"
-    //   }
-    //   _links.push(l)
-    // }
     let sankeyData = {
         nodes: _nodes,
         links: _links
     }
-
 
     let _sankey = sankey(sankeyData)
         .nodeAlign(sankeyJustify)

@@ -5,10 +5,20 @@ import {Killers} from "../interfaces/killers";
 import {ScaleLinear} from "d3";
 import sync from 'css-animation-sync';
 
-function handleOnMouseOut(event){
+//remove preselection
+function handleOnMouseOut(event, setKiller){
     console.log("outt")
-    document.querySelector("#scatter-stero>g>circle.pre-selected")?.classList.remove("pre-selected")
+    let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
+        if(preselected !== null) {
+            preselected.classList.remove("pre-selected")
+//            if(!preselected.classList.contains("selectedKiller")){
+ //               setKiller(null)
+  //          }
+        }
 }
+
+
+// pre select closes point
 function handleMouseMove(event, currentKiller,setKiller, y_scale: ScaleLinear<any, any>) {
     let chart = event.target.closest("svg").getBoundingClientRect()
     let mouse = [event.pageX - chart.left, event.pageY - chart.top]
@@ -27,11 +37,13 @@ function handleMouseMove(event, currentKiller,setKiller, y_scale: ScaleLinear<an
 }
 
 
-function handleClick(event, context) {
+// select closest point
+function handleClick(event, setKiller) {
     let line: SVGPathElement = event.target as SVGPathElement
-    let killer_id = line.dataset["killerid"]
     let stereotype = line.dataset["stereotype"]
-    if (killer_id !== undefined) context.setKiller(Number(killer_id))
+    let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
+    let killer_id = preselected?.dataset["killerid"]
+    if (killer_id !== undefined) setKiller(killer_id)
 }
 
 export default function (props: { data: [Killers] }) {
@@ -43,7 +55,6 @@ export default function (props: { data: [Killers] }) {
     if (data != props.data) setData(props.data)
 
     useEffect(() => {
-            d3.select("#scatter-stero").on("click", (e) => handleClick(e, context))
             sync("selectedSterAnim")
         }
         , [plotRef.current])
@@ -94,7 +105,7 @@ export default function (props: { data: [Killers] }) {
 
     })
     return <div ref={plotRef} style={{overflow: "display", width: "95%", height: "95%"}}>
-        <svg onMouseLeave={handleOnMouseOut} onMouseMove={e => handleMouseMove(e, context.state.currentKiller,setKiller)} style={{zIndex: 20, overflow: "visible"}} id={"scatter-stero"}
+        <svg onClick={e => handleClick(e, setKiller)} onMouseLeave={e => handleOnMouseOut(e, setKiller)} onMouseMove={e => handleMouseMove(e, context.state.currentKiller,setKiller)} style={{zIndex: 20, overflow: "visible"}} id={"scatter-stero"}
              width={size.width} height={size.height}>
             <g>{points}</g>
         </svg>
