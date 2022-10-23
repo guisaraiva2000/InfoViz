@@ -20,7 +20,7 @@ const initialState = {
 export function ContextProvider(props) {
   let [state, setState] = useState(initialState)
 
-  const _setStereotype = (s) => {
+  const _setStereotype = (s, remove) => {
     s = Number(s)
     let currentStereotypes = state.currentStereotypes
     if (remove === true) { // remove

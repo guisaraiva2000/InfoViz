@@ -44,8 +44,19 @@ transform: scale(1);
 transform-origin: center center;
 transition:.3s;
     transform-box:fill-box;
+    stroke: black;
+    stroke-width: 0.3px;
 }
 
+.tooltip {
+    /* From https://css.glass */
+    border-radius: 16px;
+    color: green;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(13.1px);
+    -webkit-backdrop-filter: blur(13.1px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 #scatter-stero > g > circle.pre-selected{
     transform: scale(2);
     transform-origin: center center;
@@ -54,9 +65,12 @@ transition:.3s;
 }
 
 #scatter-stero > g > circle.selectedKiller{
-    transform: scale(2);
+    transform: scale(4) !important;
+    animation: none!important;
     transform-origin: center center;
-    transition:.3s;
+    /*transition:.3s;
+
+     */
     z-index: 10;
 }
 

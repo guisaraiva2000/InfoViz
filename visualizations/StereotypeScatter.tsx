@@ -6,30 +6,30 @@ import {ScaleLinear} from "d3";
 import sync from 'css-animation-sync';
 
 //remove preselection
-function handleOnMouseOut(event, setKiller){
+function handleOnMouseOut(event, setKiller) {
     console.log("outt")
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
-        if(preselected !== null) {
-            preselected.classList.remove("pre-selected")
+    if (preselected !== null) {
+        preselected.classList.remove("pre-selected")
 //            if(!preselected.classList.contains("selectedKiller")){
- //               setKiller(null)
-  //          }
-        }
+        //               setKiller(null)
+        //          }
+    }
 }
 
 
 // pre select closes point
-function handleMouseMove(event, currentKiller,setKiller, y_scale: ScaleLinear<any, any>) {
+function handleMouseMove(event, currentKiller, setKiller,) {
     let chart = event.target.closest("svg").getBoundingClientRect()
     let mouse = [event.pageX - chart.left, event.pageY - chart.top]
     let circles = Array(...document.querySelectorAll("#scatter-stero>g>circle"))
     circles.map(e => e.classList.remove("pre-selected"))
     let closest_circle: Element = circles.sort((a: SVGCircleElement, b: SVGCircleElement) => {
-            let [ax, ay] = [Number(a.getAttribute("cx")),Number( a.getAttribute("cy"))]
-            let [bx, by] = [Number(b.getAttribute("cx")),Number( b.getAttribute("cy"))]
+            let [ax, ay] = [Number(a.getAttribute("cx")), Number(a.getAttribute("cy"))]
+            let [bx, by] = [Number(b.getAttribute("cx")), Number(b.getAttribute("cy"))]
             let aDist = Math.sqrt((ax - mouse[0]) ** 2 + (ay - mouse[1]) ** 2) // Norm distance
             let bDist = Math.sqrt((bx - mouse[0]) ** 2 + (by - mouse[1]) ** 2) // Norm distance
-                return aDist - bDist
+            return aDist - bDist
         }
     )[0]
     closest_circle.classList.add("pre-selected")
@@ -38,27 +38,54 @@ function handleMouseMove(event, currentKiller,setKiller, y_scale: ScaleLinear<an
 
 
 // select closest point
-function handleClick(event, setKiller) {
+function handleClick(event, setKiller, setSelectedKiller) {
     let line: SVGPathElement = event.target as SVGPathElement
     let stereotype = line.dataset["stereotype"]
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
     let killer_id = preselected?.dataset["killerid"]
     if (killer_id !== undefined) {
         preselected.classList.add("selectedKiller")
+        setSelectedKiller(killer_id)
         setKiller(killer_id)
     }
 }
 
-export default function (props: { data: [Killers] }) {
+export default function StereotypeScatter(props: { data: [Killers] }) {
     let context = useContext(Context)
     let setKiller = context.setKiller
     let plotRef = useRef(null)
     let [data, setData] = useState(null)
     let [size, setSize] = useState({width: 400, height: 300})
+    let [selectedKiller, setSelectedKiller] = useState("selectedKiller")
     if (data != props.data) setData(props.data)
 
     useEffect(() => {
             sync("selectedSterAnim")
+            let Tooltip = d3.select("#scatter-stero-container   typo to disablethis")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "rgba(200, 200, 200, 0.71)")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
+                .style("z-index", "10000")
+                .style("position", "absolute")
+                .html("HH")
+        console.log(Tooltip)
+
+            d3.selectAll("#scatter-stero")
+                .on("mouseover", d => Tooltip.style("opacity", 1))
+                .on("mousemove", d => {
+
+                    Tooltip.html("Name: SOMETHING IDK")
+                        .style("left", (d.offsetX+30) + "px")
+                        .style("top", d.offsetY + "px")
+                    }
+                )
+                .on("mouseleave", d => Tooltip.style("opacity", 0))
+
         }
         , [plotRef.current])
 
@@ -94,22 +121,30 @@ export default function (props: { data: [Killers] }) {
     let points = data.map((k, i) => {
         let isSelectedStereo = context.state.currentStereotypes.includes(k.stereotype)
         let isCurrentKiller = context.state.currentKiller == i
+        let isSelectedKiller = selectedKiller == i
         return <circle key={i}
+
                        data-killerid={i}
                        data-stereotype={k.stereotype}
                        cx={x(k.stereotype_pos[0])}
                        cy={y(k.stereotype_pos[1])}
-                       r={3} fill={context.state.stereotypes[k.stereotype].color}
-                       className={ (isSelectedStereo ? "selectedS" : "") + (isCurrentKiller ?  "currentKiller" : "")}
+                       r={4} fill={context.state.stereotypes[k.stereotype].color}
+                       className={(isSelectedKiller ? "selectedKiller" : "") + (isSelectedStereo ? "selectedS" : "") + (isCurrentKiller ? "currentKiller" : "")}
                        stroke={isCurrentKiller ? "white" : "none"}
-                       strokeWidth={isCurrentKiller ? "3px": "none"}
+                       strokeWidth={isCurrentKiller ? "3px" : "none"}
         />
 
 
     })
-    return <div ref={plotRef} style={{overflow: "display", width: "95%", height: "95%" , transform : "translate(45px, -20px)"}}>
-        <svg onClick={e => handleClick(e, setKiller)} onMouseLeave={e => handleOnMouseOut(e, setKiller)} onMouseMove={e => handleMouseMove(e, context.state.currentKiller,setKiller)} style={{zIndex: 20, overflow: "visible"}} id={"scatter-stero"}
-             height={"100%"} width={"100%"}>
+    return <div ref={plotRef} id={"scatter-stero-container"}
+                style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
+        <svg id={"scatter-stero"}
+
+            style={{zIndex: 20, overflow: "visible"}}
+            height={"100%"} width={"100%"}
+            onClick={e => handleClick(e, setKiller, setSelectedKiller)}
+            onMouseLeave={e => handleOnMouseOut(e, setKiller)}
+            onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
             <g>{points}</g>
         </svg>
     </div>
