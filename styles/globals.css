@@ -19,7 +19,7 @@ body {
 }
 
 :root {
-    --theme-color: darkred
+    --theme-color: #ff1e1e
 }
 #sankey:hover text{
     display: block !important;
@@ -68,6 +68,10 @@ transition:.3s;
     transform: scale(4) !important;
     animation: none!important;
     transform-origin: center center;
+    stroke: white !important;
+    stroke-width: 1px !important;
+
+
     /*transition:.3s;
 
      */
@@ -88,9 +92,9 @@ transition:.3s;
         stroke-width: 0.2px;
     }
     to {
-        transform: scale(1.25);
+        transform: scale(1.5);
         stroke: white;
-        stroke-width: 0.6px;
+        stroke-width: 0.2px;
     }
 
 }

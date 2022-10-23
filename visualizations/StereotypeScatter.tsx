@@ -73,15 +73,15 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                 .style("z-index", "10000")
                 .style("position", "absolute")
                 .html("HH")
-        console.log(Tooltip)
+            console.log(Tooltip)
 
             d3.selectAll("#scatter-stero")
                 .on("mouseover", d => Tooltip.style("opacity", 1))
                 .on("mousemove", d => {
 
-                    Tooltip.html("Name: SOMETHING IDK")
-                        .style("left", (d.offsetX+30) + "px")
-                        .style("top", d.offsetY + "px")
+                        Tooltip.html("Name: SOMETHING IDK")
+                            .style("left", (d.offsetX+30) + "px")
+                            .style("top", d.offsetY + "px")
                     }
                 )
                 .on("mouseleave", d => Tooltip.style("opacity", 0))
@@ -140,11 +140,11 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                 style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
         <svg id={"scatter-stero"}
 
-            style={{zIndex: 20, overflow: "visible"}}
-            height={"100%"} width={"100%"}
-            onClick={e => handleClick(e, setKiller, setSelectedKiller)}
-            onMouseLeave={e => handleOnMouseOut(e, setKiller)}
-            onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
+             style={{zIndex: 20, overflow: "visible"}}
+             height={"100%"} width={"100%"}
+             onClick={e => handleClick(e, setKiller, setSelectedKiller)}
+             onMouseLeave={e => handleOnMouseOut(e, setKiller)}
+             onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
             <g>{points}</g>
         </svg>
     </div>

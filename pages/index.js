@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
  
-import RadarChart from "../visualizations/Hexagon.tsx";
+import RadarChart from "../visualizations/RadarChart.tsx";
 import UsaChart from "../visualizations/USA.tsx";
 
 import {ContextProvider} from "../visualizations/Context"
