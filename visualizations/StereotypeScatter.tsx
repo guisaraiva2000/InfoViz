@@ -9,12 +9,10 @@ import sync from 'css-animation-sync';
 function handleOnMouseOut(event, setKiller) {
     console.log("outt")
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
-    if (preselected !== null) {
-        preselected.classList.remove("pre-selected")
-//            if(!preselected.classList.contains("selectedKiller")){
-        //               setKiller(null)
-        //          }
-    }
+    let selected = document.querySelector("#scatter-stero>g>circle#selectedKiller")
+
+    if (preselected !== null) preselected.classList.remove("pre-selected")
+    selected != null ? setKiller(selected.dataset["killerid"]) : setKiller(null)
 }
 
 
