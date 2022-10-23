@@ -1,14 +1,12 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
  
-import RadarChart from "../visualizations/Hexagon.tsx";
+import RadarChart from "../visualizations/RadarChart.tsx";
 import UsaChart from "../visualizations/USA.tsx";
 
 import {ContextProvider} from "../visualizations/Context"
 
 import {useEffect, useState} from "react";
- 
-import StereotypePlot from "../visualizations/StereotypePlot";
 import SankeyDiagram from "../visualizations/SankeyDiagram";
  
 
@@ -54,7 +52,7 @@ export default function Home() {
           {/* insert visualizations here */}
           <div className={styles.grid}>
             <div className={styles.card}>
-              <h2>U.S. Map</h2>
+              <h2>Serial Killer Distribution & Victims per State</h2>
               {loading2 && loading3 && <div>loading</div>}
               {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
             </div>
@@ -66,17 +64,16 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.card}>
-              <SankeyDiagram data={killersData} ></SankeyDiagram>
+              <SankeyDiagram data={killersData} />
             </div>
           </div>
-
 
           <div className={styles.grid}>
             <div className={styles.card}>
               <h2>Stereotypes</h2>
             </div>
             <div className={styles.card}>
-              <h2>Hexagon</h2>
+              <h2>Stereotype Attributes</h2>
               {loading1 && <div>loading</div>}
               {!loading1 && <RadarChart className={styles.chart} data={killersData}/>}
             </div>
