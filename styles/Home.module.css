@@ -4,8 +4,6 @@
 .grid {
   display: flex;
   flex-wrap: wrap;
-  width: 100vw;
-  max-width: 100%;
   height: 50vh;
   max-height: 100%;
 }
@@ -15,9 +13,7 @@
   flex-direction: column;
   flex: 1;
   height: 46vh;
-  max-height: 100%;
   width: 100vw;
-  max-width: 100%;
   margin: 2vh;
   padding: 2vh;
   text-align: center;
@@ -30,14 +26,46 @@
   justify-content: center;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+.labels {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 46vh;
+  width: 10vw;
+  margin: 2vh;
+  padding: 2vh;
+  border: 1px solid white;
+  border-radius: 10px;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.card h2 {
+.labels div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.labels-container {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 7vw;
+  height: 10vh;
+  margin-top: 1vw ;
+  border-radius: 5px;
+}
+
+.card:hover, .labels:hover,
+.card:focus, .labels:focus,
+.card:active, .labels:active {
+  color: darkred;
+  border-color: darkred;
+}
+
+.card h2, .labels h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1rem;
 }
@@ -55,11 +83,6 @@
   align-items: center;
   height:100%;
   width:100%;
-}
-
-.chartg {
-  height: 100%;
-  width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {

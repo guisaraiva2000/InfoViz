@@ -3,7 +3,7 @@ import {FunctionComponent, useContext, useEffect, useRef} from "react";
 import styles from '../styles/Home.module.css'
 import Props from "../interfaces/killers";
 import {Killers} from "../interfaces/killers";
-import Context from "../visualizations/context"
+import {Context} from "./Context";
 
 
 const config = {
@@ -33,7 +33,7 @@ function getAverage(arr: Array<number>) {
   return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
 }
 
-function DrawRadarChart(svgRef, data: [Killers], currentStereotypes: Array<number>, setStereotype) {
+function DrawRadarChart(svgRef, data: [Killers], currentStereotypes, stereotypes, setStereotype) {
   const countsAndSums = new Map();
   data.forEach(d => {
     const stereotype = d.stereotype
@@ -61,6 +61,7 @@ function DrawRadarChart(svgRef, data: [Killers], currentStereotypes: Array<numbe
     }
   })
 
+  // @ts-ignore
   const averages = [...countsAndSums.values()].map((d) => ({
       stereotype: d.stereotype,
       avg_index: {
@@ -93,10 +94,10 @@ function DrawRadarChart(svgRef, data: [Killers], currentStereotypes: Array<numbe
   })
 
   //Call function to draw the Radar chart
-  return _DrawRadarChart(svgRef, parsedData, attrMaxValues, setStereotype);
+  return _DrawRadarChart(svgRef, parsedData, attrMaxValues, stereotypes, setStereotype);
 }
 
-function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
+function _DrawRadarChart(svgRef, data, attrMaxValues, stereotypes, setStereotype) {
   const svg = d3.select(svgRef.current)
 
   const everything = svg.selectAll("*");
@@ -105,9 +106,6 @@ function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
   //Calculate width and height
   const height = Number(svg.style("height").replace("px", "")) / config.scale;
   const width = Number(svg.style("width").replace("px", "")) / config.scale;
-
-  const c = d3.scaleOrdinal()
-    .range(['#EDC951', '#CC333F', '#00A0B0'])
 
   const maxValue = 100;
   const allAxis = data[0].map((i) => i), //Names of each axis
@@ -213,7 +211,7 @@ function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
   blobWrapper.append('path')
     .attr('class', 'radarArea2')
     .attr('d', (d: any) => radarLine(d))
-    .attr('fill', (d, i: any): any => c(i))
+    .attr('fill', (d: any) => stereotypes[d[0].stereotype].color)
     .style('fill-opacity', config.opacityArea)
     .on('mouseover', function () {
       //Dim all blobs
@@ -241,7 +239,7 @@ function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
     .attr('class', 'radarStroke')
     .attr('d', (d: any) => radarLine(d))
     .style('stroke-width', config.strokeWidth + 'px')
-    .style('stroke', (d, i: any): any => c(i))
+    .style('stroke', (d: any) => stereotypes[d[0].stereotype].color)
     .style('fill', 'none')
     .attr("filter", 'url(#blur2)')
     .attr("clip-path", (d, i) => 'url(#clipPath-' + i + ')')
@@ -254,7 +252,7 @@ function _DrawRadarChart(svgRef, data, attrMaxValues, setStereotype) {
     .attr('r', config.dotRadius)
     .attr('cx', (d: any, i) => r(d.value / attrMaxValues[i] * 100) * Math.cos(angleSlice * i - Math.PI / 2))
     .attr('cy', (d: any, i) => r(d.value / attrMaxValues[i] * 100) * Math.sin(angleSlice * i - Math.PI / 2))
-    .style('fill', (d, i, j: any): any => c(j))
+    .style('fill', (d: any) => stereotypes[d.stereotype].color)
     .style('fill-opacity', 0.8)
 
   //// Append invisible circles for tooltip
@@ -305,12 +303,12 @@ const RadarChart: FunctionComponent = (props: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   const context = useContext(Context);
-  let currentStereotypes = context.val.stereotypes
+  const stereotypes = context.state.stereotypes
+  let currentStereotypes = context.state.currentStereotypes
   const setStereotype = context.setStereotype
 
   useEffect(() => {
-    console.log(currentStereotypes)
-    DrawRadarChart(svgRef, props.data, currentStereotypes, setStereotype);
+    DrawRadarChart(svgRef, props.data, currentStereotypes, stereotypes, setStereotype);
   }, [svgRef.current, props.data, currentStereotypes])
 
   return (

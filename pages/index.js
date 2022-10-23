@@ -3,7 +3,9 @@ import styles from '../styles/Home.module.css'
  
 import RadarChart from "../visualizations/Hexagon.tsx";
 import UsaChart from "../visualizations/USA.tsx";
-import {ContextProvider} from "../visualizations/context"
+
+import {ContextProvider} from "../visualizations/Context"
+
 import {useEffect, useState} from "react";
  
 import StereotypePlot from "../visualizations/StereotypePlot";
@@ -11,6 +13,7 @@ import SankeyDiagram from "../visualizations/SankeyDiagram";
  
 
 import * as d3 from "d3";
+import StereotypesFilter from "../visualizations/Stereotypes";
 
 
 export default function Home() {
@@ -37,6 +40,7 @@ export default function Home() {
     });
     return () => undefined;
   }, []);
+
   return (
     <div>
       <Head>
@@ -53,6 +57,13 @@ export default function Home() {
               <h2>U.S. Map</h2>
               {loading2 && loading3 && <div>loading</div>}
               {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
+            </div>
+            <div className={styles.labels}>
+              <h2>Stereotypes</h2>
+              <div id="stereotypes">
+                {loading1 && <div>loading</div>}
+                {!loading1 && <StereotypesFilter className={styles.chart} data={killersData}/>}
+              </div>
             </div>
             <div className={styles.card}>
               <SankeyDiagram data={killersData} ></SankeyDiagram>
