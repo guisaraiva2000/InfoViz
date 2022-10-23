@@ -82,7 +82,7 @@ transition:.3s;
     transition:1s;
     stroke: none;
     stroke-width: 0px;
-    animation: selectedSterAnim 1s infinite alternate ease-in;
+    animation: selectedSterAnim 0.5s infinite alternate ease-in;
 }
 
 @keyframes selectedSterAnim {
@@ -92,7 +92,7 @@ transition:.3s;
         stroke-width: 0.2px;
     }
     to {
-        transform: scale(1.5);
+        transform: scale(2);
         stroke: white;
         stroke-width: 0.2px;
     }
