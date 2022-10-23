@@ -11,40 +11,32 @@ const size = {
 };
 import {Context} from "./Context"
 
-const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStereotype}) => {
-    let final_name =  name.split(" ")
-    final_name = currentStereotype == null ? final_name.slice(final_name.length-3, final_name.length-1) : // -2 to take the stereotype
-        final_name.slice(final_name.length-2, final_name.length).join(" ")
-    if(final_name.indexOf("4") != -1){
-        final_name = final_name.split(" ")[0] + ""
-    } else if(final_name.indexOf("0") != -1 || final_name.indexOf("7") != -1) {
-        final_name = "----------"
-    } else final_name = ""
+const Rect = ({index, x0, x1, y0, y1, name, value, length, colors, currentStereotype}) => {
     return (
         <>
             <g>
-            <rect
-                x={x0}
-                y={y0 -2.5}
-                width={x1 - x0}
-                height={5 +y1 - y0}
-                fill={"#dddddd"} //colors(index / length)}
-                data-index={index}
-            />
-            <text
-                xmlSpace={"preserve"}
-                x={x0 < size.width / 2 ? x1 + 6 : x0 - 6}
-                y={(y1 + y0) / 2}
-                style={{
-                    fill: "#dddddd",//d3.rgb(colors(index / length)).darker(),
-                    alignmentBaseline: "middle",
-                    fontSize: 9,
-                    textAnchor: x0 < size.width / 2 ? "start" : "end",
-                    zIndex: 1330,
-                }}
-            >
-                {final_name}
-            </text>
+                <rect
+                    x={x0}
+                    y={y0 - 2.5}
+                    width={x1 - x0}
+                    height={5 + y1 - y0}
+                    fill={"#dddddd"} //colors(index / length)}
+                    data-index={index}
+                />
+                <text
+                    xmlSpace={"preserve"}
+                    x={x0 < size.width / 2 ? x1 + 6 : x0 - 6}
+                    y={(y1 + y0) / 2}
+                    style={{
+                        fill: "#dddddd",//d3.rgb(colors(index / length)).darker(),
+                        alignmentBaseline: "middle",
+                        fontSize: 9,
+                        textAnchor: x0 < size.width / 2 ? "start" : "end",
+                        zIndex: 1330,
+                    }}
+                >
+                    {name}
+                </text>
             </g>
         </>
     );
@@ -55,13 +47,13 @@ function getSterotypeColor(sterotype: number) {
 
 }
 
-const Link = ({data, width, length, colors }) => {
+const Link = ({data, width, length, colors}) => {
     const link = sankeyLinkHorizontal();
-    let context  = useContext(Context)
+    let context = useContext(Context)
     let selectedStereotypes = context.state.currentStereotypes
     let currentKiller = context.state.currentKiller
 
-    if(currentKiller === data.killerid) console.log("MMMMMMMMMMMMMMATCH")
+    if (currentKiller === data.killerid) console.log("MMMMMMMMMMMMMMATCH")
     return (
         <>
             <defs>
@@ -82,13 +74,15 @@ const Link = ({data, width, length, colors }) => {
 
                 d={link(data)}
                 fill={"none"}
-                stroke={ data.killerid == currentKiller ? "white" :
+                stroke={data.killerid == currentKiller ? "white" :
                     (
-                        selectedStereotypes.includes(data.stereotype) ?  context.state.stereotypes[data.stereotype]["color"] : `url(#gradient-${data.index})`
+                        selectedStereotypes.includes(data.stereotype) ? context.state.stereotypes[data.stereotype]["color"] : `url(#gradient-${data.index})`
                     )
                 }
                 //stroke={getSterotypeColor(data.stereotype)}
-                strokeOpacity={data.killerid == currentKiller ? 1 :
+                strokeOpacity={
+                    selectedStereotypes.length == 0 ? 0.4:
+                    data.killerid == currentKiller ? 1 :
                     selectedStereotypes.includes(data.stereotype) ? 0.25 :
                         0.1}
                 strokeWidth={data.killerid == currentKiller ? 4 : width}
@@ -523,7 +517,7 @@ function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretyp
 
     console.log(stereotype)
     document.querySelectorAll(`path[data-stereotype="${stereotype}"]`).forEach((e, p) => {
-        if(e.getAttribute( "stroke") == "white") return
+        if (e.getAttribute("stroke") == "white") return
         e.setAttributeNS(null, "stroke", getSterotypeColor(Number(stereotype)))
     })
     return
@@ -572,25 +566,25 @@ let keysOfInterst = [
 ]
 
 let simpleKeys = {
-    "Served in the military?" : "Military",
-    "Marital status" : "Marriage",
-    "Spend time in jail?" : "Jail",
-    "Sexual preference" : "Orientation",
-    "Gender of victims":  "Victim's Gender",
-    "Gender" : "Gender"
+    "Served in the military?": "Military",
+    "Marital status": "Marriage",
+    "Spend time in jail?": "Jail",
+    "Sexual preference": "Orientation",
+    "Gender of victims": "Victim's Gender",
+    "Gender": "Gender"
 }
 
 
 let III = 0
 export default function SankeyDiagram(props: Props) {
     const [size, setSize] = useState({width: 400, height: 300})
-    if(typeof document != "undefined"){
+    if (typeof document != "undefined") {
         let el = document?.getElementById("sankeyContainer")?.getBoundingClientRect()
         //if (el &&(  size.width != 100 || size.height != 100) ) setSize({ width: size.width,height: size.height})
 
     }
     const graph = useRef(null);
-    let context  = useContext(Context)
+    let context = useContext(Context)
     let setStereotype = context.setStereotype
     let setKiller = context.setKill
     let currentKiller = context.currentKiller
@@ -611,28 +605,26 @@ export default function SankeyDiagram(props: Props) {
     )
 
 
-
-
     // find the most uniform attributes for the targets
     let killers: [Killers] = props.data
     let frequencies = {}
     for (let k of keysOfInterst) frequencies[k] = {}
     let killers_for_order = currentStereotype ? killers.filter(k => k.stereotype == currentStereotype) : killers
-        // get frequencies of values
-        for (let i = 0; i < killers.length; i++) {
-            let person = killers[i]
-            for (let k of keysOfInterst) {
-                let f = frequencies[k]
-                let value = person[k]
-                if(killers_for_order.indexOf(person) == -1){
-                    f[value] = f[value] === undefined ? 1 : f[value]
-                } else f[value] = f[value] === undefined ? 1 : f[value] + 1
-            }
+    // get frequencies of values
+    for (let i = 0; i < killers.length; i++) {
+        let person = killers[i]
+        for (let k of keysOfInterst) {
+            let f = frequencies[k]
+            let value = person[k]
+            if (killers_for_order.indexOf(person) == -1) {
+                f[value] = f[value] === undefined ? 1 : f[value]
+            } else f[value] = f[value] === undefined ? 1 : f[value] + 1
         }
+    }
     // data keys// values of the data // their frequencies
 
 
-    let ordered_frequencies : [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
+    let ordered_frequencies: [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
 
     ordered_frequencies = ordered_frequencies.sort((key1, key2) =>
         standard_deviation(
@@ -642,33 +634,32 @@ export default function SankeyDiagram(props: Props) {
         ) ? -1 : 1
     )
 
-    let [attributeOrder, setAttributeOrder] =  useState(ordered_frequencies.map(v => v[0]))
-    ordered_frequencies = ordered_frequencies.sort((a,b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
+    let [attributeOrder, setAttributeOrder] = useState(ordered_frequencies.map(v => v[0]))
+    ordered_frequencies = ordered_frequencies.sort((a, b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
 
     if (killers.length == 0) return <div>Loading :)</div>
 
 
-    const sterotypes_types = currentStereotype != null ? [0,1,2,3,4,5,6,7] :   [" "]
+    const sterotypes_types = currentStereotype != null ? [0, 1, 2, 3, 4, 5, 6, 7] : [" "]
 
-        let _nodes = []
-        for (let attribute in frequencies) {
-            for (let category in frequencies[attribute]) {
-                _nodes.push(
-                    {
-                        name: attribute + " " + category
-                    }
-                )
-            }
+    let _nodes = []
+    for (let attribute in frequencies) {
+        for (let category in frequencies[attribute]) {
+            _nodes.push(
+                {
+                    name: attribute + " " + category
+                }
+            )
         }
-        let _s_nodes = []
-        for (let n of _nodes) {
-            for (let s of sterotypes_types) {
-                _s_nodes.push({...n, name: n.name + " " + s})
-            }
+    }
+    let _s_nodes = []
+    for (let n of _nodes) {
+        for (let s of sterotypes_types) {
+            _s_nodes.push({...n, name: n.name + " " + s})
         }
-        _nodes = _s_nodes
-        _nodes =  _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
-
+    }
+    _nodes = _s_nodes
+    _nodes = _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
 
 
     console.log("Frequencies", frequencies)
@@ -712,106 +703,125 @@ export default function SankeyDiagram(props: Props) {
     console.log(nodes, links)
 
     //if (size.width != s.clientWidth || size.height != s.clientHeight) setSize({width: s.getBBox().width, height : s.getBBox().height})
-    let r : Element = sankeyContainerRef.current
-    if( r != null && r.getBoundingClientRect().height != size.height&& r.getBoundingClientRect().width != size.width ) {
-        setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})}
+    let r: Element = sankeyContainerRef.current
+    if (r != null && r.getBoundingClientRect().height != size.height && r.getBoundingClientRect().width != size.width) {
+        setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})
+    }
 
 
     return (
         <>
-        <h2  onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
-            standard_deviation(
-                Object.values(key1[1]), killers_for_order.length
-            ) > standard_deviation(
-                Object.values(key2[1]), killers_for_order.length
-            ) ? -1 : 1
-        ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
-        <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"show",zIndex: "1000", width: "100%", height: "80%"}}>
+            <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+                standard_deviation(
+                    Object.values(key1[1]), killers_for_order.length
+                ) > standard_deviation(
+                    Object.values(key2[1]), killers_for_order.length
+                ) ? -1 : 1
+            ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
+            <div ref={sankeyContainerRef} id={"sankeyContainer"}
+                 style={{overflow: "show", zIndex: "1000", width: "100%", height: "80%"}}>
 
-            <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {
-                sankeyRef["current"] = s
-                if (s === null) return
-                document.querySelectorAll("path").forEach((p) => {
-                    p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
+                <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {
+                    sankeyRef["current"] = s
+                    if (s === null) return
+                    document.querySelectorAll("path").forEach((p) => {
+                        p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
 
-                    //    p.onmouseenter = (e)=>handleClick(e,graph.current)
-                    //   p.onmouseleave = (e)=>handleClick(e,graph.current,"leave")
-                })
-                /* D3 SUCKS!
-                d3.selectAll("path").on({
-                    "click" : console.log,
-                    "mouseover" : console.log,
-                    "mouseout" : console.log,
-                })
-                 */
+                        //    p.onmouseenter = (e)=>handleClick(e,graph.current)
+                        //   p.onmouseleave = (e)=>handleClick(e,graph.current,"leave")
+                    })
+                    /* D3 SUCKS!
+                    d3.selectAll("path").on({
+                        "click" : console.log,
+                        "mouseover" : console.log,
+                        "mouseout" : console.log,
+                    })
+                     */
 
-                //.forEach(t=> t.innerHTML  = "")
-                //s.querySelector()
+                    //.forEach(t=> t.innerHTML  = "")
+                    //s.querySelector()
 
 
-            }
-            } width={size.width} height={size.height}>
-                <g>
-                    <defs>
-                        <filter id="red-glow" filterUnits="userSpaceOnUse"
-                                x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5"/>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur10"/>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur20"/>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30"/>
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blur50"/>
-                            <feMerge result="blur-merged">
-                                <feMergeNode in="blur10"/>
-                                <feMergeNode in="blur20"/>
-                                <feMergeNode in="blur30"/>
-                                <feMergeNode in="blur50"/>
-                            </feMerge>
-                            <feColorMatrix result="red-blur" in="blur-merged" type="matrix"
-                                           values="1 0 0 0 0
+                }
+                } width={size.width} height={size.height}>
+                    <g>
+                        <defs>
+                            <filter id="red-glow" filterUnits="userSpaceOnUse"
+                                    x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur10"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur20"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blur50"/>
+                                <feMerge result="blur-merged">
+                                    <feMergeNode in="blur10"/>
+                                    <feMergeNode in="blur20"/>
+                                    <feMergeNode in="blur30"/>
+                                    <feMergeNode in="blur50"/>
+                                </feMerge>
+                                <feColorMatrix result="red-blur" in="blur-merged" type="matrix"
+                                               values="1 0 0 0 0
                              0 0.06 0 0 0
                              0 0 0.44 0 0
-                             0 0 0 1 0" />
-                            <feMerge>
-                                <feMergeNode in="red-blur"/>
-                                <feMergeNode in="blur5"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
+                             0 0 0 1 0"/>
+                                <feMerge>
+                                    <feMergeNode in="red-blur"/>
+                                    <feMergeNode in="blur5"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
 
-                    {links.map((d, i) => (
-                        <Link
-                            data={d}
-                            width={ currentStereotype == null ? d.width : 6}
-                            length={nodes.length}
-                            colors={"#dddddd"}
-                            key={i}
-                        />
-                    ))}
-                </g>
-                <g>
-                    {nodes.map((d, i) => (
-                        <Rect
-                            key = {i}
-                            currentStereotype={currentStereotype}
-                            index={d.index}
-                            x0={d.x0}
-                            x1={d.x1}
-                            y0={d.y0}
-                            y1={d.y1}
-                            name={d.name}
-                            value={d.value}
-                            length={nodes.length}
-                            colors={"#dddddd"}
-                        />
-                    ))}
-                </g>
-            </svg>
-            {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
-                    Object.keys(simpleKeys).find(key=> simpleKeys[key] == v)   // convert to "complex" key name
+                        {links.map((d, i) => (
+                            <Link
+                                data={d}
+                                width={6}
+                                length={nodes.length}
+                                colors={"#dddddd"}
+                                key={i}
+                            />
+                        ))}
+                    </g>
+                    <g>
+                        {nodes.map((d, i) => {
+                                let final_name = d.name.split(" ").filter(v => v != "")
+
+
+                                if (currentStereotype === null) {
+                                    final_name = final_name[final_name.length-1]
+                                    debugger
+                                } else {
+                                    final_name = currentStereotype == null ? final_name.slice(final_name.length - 2, final_name.length - 1) : // -2 to take the stereotype
+                                        final_name.slice(final_name.length - 2, final_name.length).join(" ")
+                                    if (final_name.indexOf("4") != -1) final_name = final_name.split(" ")[0] + ""
+                                    else if (final_name.indexOf("0") != -1 || final_name.indexOf("7") != -1) {
+                                        final_name = "----------"
+                                    } else final_name = ""
+                                }
+
+                                return <Rect
+                                    key={i}
+                                    currentStereotype={currentStereotype}
+                                    index={d.index}
+                                    x0={d.x0}
+                                    x1={d.x1}
+                                    y0={d.y0}
+                                    y1={d.y1}
+                                    name={final_name}
+                                    value={d.value}
+                                    length={nodes.length}
+                                    colors={"#dddddd"}
+                                />
+                            }
+                        )
+                        }
+                    </g>
+                </svg>
+                {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
+                    Object.keys(simpleKeys).find(key => simpleKeys[key] == v)   // convert to "complex" key name
                 ))
                 } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>}
-        </div>
+            </div>
         </>
     );
 
