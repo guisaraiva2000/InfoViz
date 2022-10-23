@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 import {feature, mesh} from "topojson-client";
-import {FunctionComponent, useEffect, useRef} from "react";
+import {FunctionComponent, useContext, useEffect, useRef} from "react";
 import styles from '../styles/Home.module.css'
+import {Context} from "./Context";
 
 function centroid()
 {
@@ -112,9 +113,13 @@ function _chart(svgRef, us, victimsData) {
 const UsaChart: FunctionComponent = (props: any) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
+  const context = useContext(Context);
+  let currentStereotypes = context.state.currentStereotypes
+  const setStereotype = context.setStereotype
+
   useEffect(() => {
     DrawUsaChart(svgRef, props.mapData, props.victimsData);
-  }, [props.mapData, props.victimsData])
+  }, [props.mapData, props.victimsData, currentStereotypes])
 
   return (
     <svg ref={svgRef} className={styles.chart}/>
