@@ -20,7 +20,6 @@ const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStere
     } else if(final_name.indexOf("0") != -1 || final_name.indexOf("7") != -1) {
         final_name = "----------"
     } else final_name = ""
-    console.log(final_name)
     return (
         <>
             <g>
@@ -61,8 +60,11 @@ const Link = ({data, width, length, colors}) => {
     let context  = useContext(Context)
     let currentKiller = context.currentKiller
     let selectedStereotypes = context.state.currentStereotypes
+    console.log(currentKiller)
 
 
+    if(currentKiller === data.killerid) console.log("MMMMMMMMMMMMMMATCH")
+    else console.log(currentKiller, data.killerid)
     return (
         <>
             <defs>
@@ -521,7 +523,7 @@ function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretyp
     console.log(line)
     let killer_id = line.dataset["killerid"]
     let stereotype = line.dataset["stereotype"]
-    setSteoretype(stereotype)
+    setSteoretype(Number(stereotype))
     return
 
     console.log(stereotype)
@@ -599,8 +601,7 @@ export default function SankeyDiagram(props: Props) {
     let currentKiller = context.currentKiller
 
 
-    let currentStereotype = 3// the stereotype which the graph will be ordered by  context.val.stereotype == null ? null : context.val.stereotype[0]
-    let selectedStereotypes = context.state.stereotypes
+    let currentStereotype = context.state.currentStereotypes.length == 0 ? null : context.state.currentStereotypes[0] // the stereotype which the graph will be ordered by
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
@@ -698,7 +699,6 @@ export default function SankeyDiagram(props: Props) {
     }
     //_links = _links.sort((e, b) => e.stereotype == b.stereotype ? 1 : -1)
     //_links = _links.sort((e, b) => e.killerid == currentKiller ? 1:  -1)
-    console.log("links ftw", _links)
     //for (let i = 1; i < ordered_frequencies.length; i++) {
     //   let l = {
     //       source: keysOfInterst.indexOf(ordered_frequencies[i - 1][0]),
@@ -725,15 +725,12 @@ export default function SankeyDiagram(props: Props) {
     graph.current = _sankey(sankeyData)
     //graph.current.linkSort(null);
     const {links, nodes} = graph.current;
-    console.log(graph.current)
     if (links == null || nodes == null) return <div>Loading</div>
-    console.log(nodes)
-    console.log(links)
+    console.log(nodes, links)
 
     //if (size.width != s.clientWidth || size.height != s.clientHeight) setSize({width: s.getBBox().width, height : s.getBBox().height})
     let r : Element = sankeyContainerRef.current
     if( r != null && r.getBoundingClientRect().height != size.height&& r.getBoundingClientRect().width != size.width ) {
-        console.log(r)
         setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})}
 
 
@@ -805,12 +802,14 @@ export default function SankeyDiagram(props: Props) {
                             width={ currentStereotype == null ? d.width : 6}
                             length={nodes.length}
                             colors={"#dddddd"}
+                            key={i}
                         />
                     ))}
                 </g>
                 <g>
                     {nodes.map((d, i) => (
                         <Rect
+                            key = {i}
                             currentStereotype={currentStereotype}
                             index={d.index}
                             x0={d.x0}

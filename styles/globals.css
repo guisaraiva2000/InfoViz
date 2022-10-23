@@ -8,9 +8,6 @@ body {
   cursor: default;
 }
 
-path {
-    pointer-events: visibleFill
-}
 
 .sankey div {
     font-size: 10px;
@@ -24,7 +21,7 @@ path {
 :root {
     --theme-color: darkred
 }
-svg:hover text{
+#sankey:hover text{
     display: block !important;
    /* filter: url(#red-glow);
     fill: white;
@@ -41,14 +38,50 @@ svg:hover text{
     color:white
 }
 
-circle {
+
+#scatter-stero > g > circle{
+transform: scale(1);
+transform-origin: center center;
+transition:.3s;
+    transform-box:fill-box;
 }
-circle:hover {
-    transform: scale(3);
-    transform-origin: 50% 50%;
+#scatter-steroDELETE > g > circle:hover{
+    transform: scale(2);
+    transform-origin: center center;
+    transition:.3s;
+    z-index: 10;
+}
+
+#scatter-stero > g > circle.pre-selected{
+    transform: scale(2);
+    transform-origin: center center;
+    transition:.3s;
+    z-index: 10;
+}
+
+#scatter-stero > g > circle.selectedS{
+    transition:1s;
+    stroke: none;
+    stroke-width: 0px;
+    animation: selectedSterAnim 1s infinite alternate ease-in;
+}
+
+@keyframes selectedSterAnim {
+    from  {
+        transform: scale(1);
+        stroke: white;
+        stroke-width: 0px;
+    }
+    to {
+        transform: scale(1.25);
+        stroke: white;
+        stroke-width: 0.5px;
+    }
 
 }
+
 a {
+
     color: inherit;
     text-decoration: none;
 }
