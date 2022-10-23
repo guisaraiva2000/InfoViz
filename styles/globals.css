@@ -20,6 +20,10 @@ path {
     display: none;
 
 }
+
+:root {
+    --theme-color: darkred
+}
 svg:hover text{
     display: block !important;
    /* filter: url(#red-glow);
@@ -28,6 +32,13 @@ svg:hover text{
 
     */
 
+}
+
+.inter:hover {
+    color: var(--theme-color)
+}
+.inter {
+    color:white
 }
 
 a {

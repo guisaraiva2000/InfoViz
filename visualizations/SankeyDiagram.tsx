@@ -739,13 +739,13 @@ export default function SankeyDiagram(props: Props) {
 
     return (
         <>
-        <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+        <h2  onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
             standard_deviation(
                 Object.values(key1[1]), killers_for_order.length
             ) > standard_deviation(
                 Object.values(key2[1]), killers_for_order.length
             ) ? -1 : 1
-        ).map(v => v[0]))}>Sankey Diagram</h2>
+        ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
         <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"show",zIndex: "1000", width: "100%", height: "80%"}}>
 
             <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {

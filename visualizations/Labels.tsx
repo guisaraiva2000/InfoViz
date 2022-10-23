@@ -27,7 +27,7 @@ export function SortableItem(props) {
     };
 
     return (
-        <div ref={setNodeRef} style={{...style, ...props.style}} {...attributes} {...listeners}>
+        <div className={"inter"} ref={setNodeRef} style={{...style, ...props.style}} {...attributes} {...listeners}>
             {props.children}
         </div>
     );
@@ -66,7 +66,7 @@ export  default function Labels(props : LabelsProps) {
             });
         }
     }
-    return <div id={"sankeylabels"} style={{ display: "flex",width:
+    return <div className={"sankeylabels"} style={{ display: "flex",width:
         document.getElementById("sankey")?.offsetWidth
         , fontSize: "10px", justifyContent: "space-between"}}>
         <DndContext

@@ -58,12 +58,13 @@
   border-radius: 5px;
 }
 
-.card:hover, .labels:hover,
-.card:focus, .labels:focus,
-.card:active, .labels:active {
-  color: darkred;
-  border-color: darkred;
+.card:hover , .labels:hover,
+.card:focus  , .labels:focus,
+.card:active  , .labels:active {
+  color: var(--theme-color);
+  border-color: var(--theme-color);
 }
+
 
 .card h2, .labels h2 {
   margin: 0 0 0.5rem 0;
