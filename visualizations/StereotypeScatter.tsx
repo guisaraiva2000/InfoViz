@@ -94,8 +94,8 @@ export default function (props: { data: [Killers] }) {
         return <circle key={i}
                        data-killerid={i}
                        data-stereotype={k.stereotype}
-                       cx={y(k.stereotype_pos[0])}
-                       cy={x(k.stereotype_pos[1])}
+                       cx={x(k.stereotype_pos[0])}
+                       cy={y(k.stereotype_pos[1])}
                        r={3} fill={context.state.stereotypes[k.stereotype].color}
                        className={ (isSelectedStereo ? "selectedS" : "") + (isCurrentKiller ?  "currentKiller" : "")}
                        stroke={isCurrentKiller ? "white" : "none"}
@@ -104,9 +104,9 @@ export default function (props: { data: [Killers] }) {
 
 
     })
-    return <div ref={plotRef} style={{overflow: "display", width: "95%", height: "95%"}}>
+    return <div ref={plotRef} style={{overflow: "display", width: "95%", height: "95%" , transform : "translate(45px, -20px)"}}>
         <svg onClick={e => handleClick(e, setKiller)} onMouseLeave={e => handleOnMouseOut(e, setKiller)} onMouseMove={e => handleMouseMove(e, context.state.currentKiller,setKiller)} style={{zIndex: 20, overflow: "visible"}} id={"scatter-stero"}
-             width={size.width} height={size.height}>
+             height={"100%"} width={"100%"}>
             <g>{points}</g>
         </svg>
     </div>

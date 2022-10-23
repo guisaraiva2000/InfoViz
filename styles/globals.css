@@ -71,12 +71,12 @@ transition:.3s;
     from  {
         transform: scale(1);
         stroke: white;
-        stroke-width: 0px;
+        stroke-width: 0.2px;
     }
     to {
         transform: scale(1.25);
         stroke: white;
-        stroke-width: 0.5px;
+        stroke-width: 0.6px;
     }
 
 }
