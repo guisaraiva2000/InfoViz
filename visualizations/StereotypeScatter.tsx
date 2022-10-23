@@ -43,7 +43,7 @@ function handleClick(event, setKiller, setSelectedKiller) {
     let killer_id = preselected?.dataset["killerid"]
     let previousKiller = document.querySelector("#scatter-stero>g>circle#selectedKiller")
 
-    let clickingOnSelected = preselected == null
+    let clickingOnSelected = preselected == null || preselected == previousKiller
     if (clickingOnSelected) { // un toggle killer
         if(previousKiller) previousKiller.id = "" // if the mouse does not move for a moment there will be no prev selection
         setSelectedKiller(null)
