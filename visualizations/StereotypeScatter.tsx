@@ -43,7 +43,10 @@ function handleClick(event, setKiller) {
     let stereotype = line.dataset["stereotype"]
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
     let killer_id = preselected?.dataset["killerid"]
-    if (killer_id !== undefined) setKiller(killer_id)
+    if (killer_id !== undefined) {
+        preselected.classList.add("selectedKiller")
+        setKiller(killer_id)
+    }
 }
 
 export default function (props: { data: [Killers] }) {
