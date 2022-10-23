@@ -9,82 +9,24 @@ const size = {
     width: 1000,
     height: 600
 };
-import Context from "../visualizations/context"
-
-function findLabels(){
-    let labels = Array(...document.querySelectorAll("text"))
-    labels = labels.reduce(
-        (group, label) => {
-            let x_axis = label.getAttribute("x")
-            if (group[x_axis] == "undefined") group[x_axis] = []
-            group[x_axis].push(label)
-            return group
-        }, {})
-    return labels
-}
-/*
-let [labels, setLabels] = useState(null)
-useLayoutEffect(() => {
-    setTimeout( () => { () => setLabels(findLabels())}, 1000)
-    return
-
-}, [])
-
- */
-var observeDOM = (function () {
-    if (typeof window === 'undefined') return
-    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-
-    return function (obj, callback) {
-        if (!obj || obj.nodeType !== 1) return;
-
-        if (MutationObserver) {
-            // define a new observer
-            var mutationObserver = new MutationObserver(callback)
-
-            // have the observer observe foo for changes in children
-            mutationObserver.observe(obj, {childList: true, subtree: true})
-            return mutationObserver
-        }
-
-        // browser support fallback
-        else if (window.addEventListener) {
-            obj.addEventListener('DOMNodeInserted', callback, false)
-            obj.addEventListener('DOMNodeRemoved', callback, false)
-        }
-    }
-})()
-const getMousePosition = event => {
-    const CTM = event.target.getScreenCTM();
-
-    return {
-        x: (event.clientX - CTM.e) / CTM.a,
-        y: (event.clientY - CTM.f) / CTM.d
-    };
-};
-
+import {Context} from "./Context"
 
 const Rect = ({index, x0, x1, y0, y1, name , value, length, colors, currentStereotype}) => {
     let final_name =  name.split(" ")
-    console.log(final_name)
     final_name = currentStereotype == null ? final_name.slice(final_name.length-3, final_name.length-1) : // -2 to take the stereotype
         final_name.slice(final_name.length-2, final_name.length).join(" ")
     if(final_name.indexOf("4") != -1){
-        final_name = final_name.split(" ")[0] + " "
-    } else if(final_name.indexOf("0") != -1) {
-
+        final_name = final_name.split(" ")[0] + ""
+    } else if(final_name.indexOf("0") != -1 || final_name.indexOf("7") != -1) {
         final_name = "----------"
-    }
-    else if(final_name.indexOf("7") != -1) {
-        final_name = "----------"
-    } else final_name = " "
+    } else final_name = ""
     console.log(final_name)
     return (
         <>
             <g>
             <rect
                 x={x0}
-                y={y0-5}
+                y={y0 -2.5}
                 width={x1 - x0}
                 height={5 +y1 - y0}
                 fill={"#dddddd"} //colors(index / length)}
@@ -114,8 +56,11 @@ function getSterotypeColor(sterotype: number) {
 
 }
 
-const Link = ({data, width, length, colors, currentKiller, currentStereotype}) => {
+const Link = ({data, width, length, colors}) => {
     const link = sankeyLinkHorizontal();
+    let context  = useContext(Context)
+    let currentKiller = context.currentKiller
+    let selectedStereotypes = context.state.currentStereotypes
 
 
     return (
@@ -138,10 +83,14 @@ const Link = ({data, width, length, colors, currentKiller, currentStereotype}) =
 
                 d={link(data)}
                 fill={"none"}
-                stroke={data.killerid == currentKiller ? "white" :   `url(#gradient-${data.index})`}
+                stroke={ data.killerid == currentKiller ? "white" :
+                    (
+                        selectedStereotypes.includes(data.stereotype) ?  context.state.stereotypes[data.stereotype]["color"] : `url(#gradient-${data.index})`
+                    )
+            }
                 //stroke={getSterotypeColor(data.stereotype)}
                 strokeOpacity={
-                    currentStereotype == null ? 0.5 : (
+                    selectedStereotypes.includes(data.stereotype) ? 0.5 : (
                     data.killerid == currentKiller ? 1 : 0.1 //1/currentStereotype.killers.length}
                     )
                 }
@@ -573,6 +522,8 @@ function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretyp
     let killer_id = line.dataset["killerid"]
     let stereotype = line.dataset["stereotype"]
     setSteoretype(stereotype)
+    return
+
     console.log(stereotype)
     document.querySelectorAll(`path[data-stereotype="${stereotype}"]`).forEach((e, p) => {
         if(e.getAttribute( "stroke") == "white") return
@@ -641,39 +592,20 @@ export default function SankeyDiagram(props: Props) {
         //if (el &&(  size.width != 100 || size.height != 100) ) setSize({ width: size.width,height: size.height})
 
     }
-    const [data, setData] = useState(null);
     const graph = useRef(null);
     let context  = useContext(Context)
-    let setStereotype = context.setSter
+    let setStereotype = context.setStereotype
     let setKiller = context.setKill
     let currentKiller = context.currentKiller
 
-    let currentStereotype = context.val.stereotype
+
+    let currentStereotype = 3// the stereotype which the graph will be ordered by  context.val.stereotype == null ? null : context.val.stereotype[0]
+    let selectedStereotypes = context.state.stereotypes
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
-    let labelsRef = useRef(null)
-    useEffect(
-        () => {
-            observeDOM([document], () => {
-                let labels = Array(...document.querySelectorAll("text"))
-                console.log("Labels", labels.reduce(
-                    (group, label) => {
-                        console.log("l", label)
-                        let x_axis = label.getAttribute("x")
-                        group[x_axis] = label
-                        return group
-                    }, {}
-                ))
-                //labels.forEach(e => e.innerHTML = "")
-                //document.getElementById("sankeylabels").innerHTML = <div>GOOD BYE</div>
-            })
-
-        }
-        , [])
 
     useEffect(
-
         () => {
             let r = sankeyContainerRef.current
             if (r == null) return
@@ -683,11 +615,6 @@ export default function SankeyDiagram(props: Props) {
     )
 
 
-    useEffect(() => {
-        fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
-            .then(res => res.json())
-            .then(data => setData(data));
-    }, []);
 
 
     // find the most uniform attributes for the targets
@@ -785,11 +712,6 @@ export default function SankeyDiagram(props: Props) {
         nodes: _nodes,
         links: _links
     }
-    console.log("SUNK", sankeyData)
-
-
-    //sankeyData = data
-    console.log("sank", data)
 
 
     let _sankey = sankey(sankeyData)
@@ -817,13 +739,13 @@ export default function SankeyDiagram(props: Props) {
 
     return (
         <>
-        <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+        <h2  onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
             standard_deviation(
                 Object.values(key1[1]), killers_for_order.length
             ) > standard_deviation(
                 Object.values(key2[1]), killers_for_order.length
             ) ? -1 : 1
-        ).map(v => v[0]))}>Sankey Diagram</h2>
+        ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
         <div ref={sankeyContainerRef} id={"sankeyContainer"} style={{overflow:"show",zIndex: "1000", width: "100%", height: "80%"}}>
 
             <svg id="sankey" className="sankey" style={{"transform": "rotate(90dieg)"}} ref={(s) => {
@@ -883,8 +805,6 @@ export default function SankeyDiagram(props: Props) {
                             width={ currentStereotype == null ? d.width : 6}
                             length={nodes.length}
                             colors={"#dddddd"}
-                            currentKiller={currentKiller}
-                            currentStereotype={currentStereotype}
                         />
                     ))}
                 </g>

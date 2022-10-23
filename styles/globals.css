@@ -5,15 +5,24 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  cursor: default;
 }
 
 path {
     pointer-events: visibleFill
 }
 
+.sankey div {
+    font-size: 10px;
+}
 
-text {
+.sankey text {
     display: none;
+
+}
+
+:root {
+    --theme-color: darkred
 }
 svg:hover text{
     display: block !important;
@@ -23,6 +32,13 @@ svg:hover text{
 
     */
 
+}
+
+.inter:hover {
+    color: var(--theme-color)
+}
+.inter {
+    color:white
 }
 
 a {

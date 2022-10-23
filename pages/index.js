@@ -3,7 +3,9 @@ import styles from '../styles/Home.module.css'
  
 import RadarChart from "../visualizations/Hexagon.tsx";
 import UsaChart from "../visualizations/USA.tsx";
-import Context from "../visualizations/context"
+
+import {ContextProvider} from "../visualizations/Context"
+
 import {useEffect, useState} from "react";
  
 import StereotypePlot from "../visualizations/StereotypePlot";
@@ -11,6 +13,7 @@ import SankeyDiagram from "../visualizations/SankeyDiagram";
  
 
 import * as d3 from "d3";
+import StereotypesFilter from "../visualizations/Stereotypes";
 
 
 export default function Home() {
@@ -37,16 +40,7 @@ export default function Home() {
     });
     return () => undefined;
   }, []);
-  let [kill, setKill] = useState(null)
-  let [ster, setSter] = useState([0, 1, 2])
-  const StereotypeProvider = Context.Provider
-  const setStereotype = (s) => {
-    ster.includes(s) ?
-      ster = [s, ...ster.filter(item => item !== s)] // move to front
-      :
-      ster = [s, ...ster].slice(0, -1);
-    setSter(ster)
-  }
+
   return (
     <div>
       <Head>
@@ -56,8 +50,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <StereotypeProvider value={{setKill: setKill, setStereotype: setStereotype, val: {stereotypes: ster, killer: kill}}}>
-         <StereotypeProvider value={{setKill:setKill,setSter:setSter, val : {stereotype: ster, killer : kill}}}>
+        <ContextProvider>
           {/* insert visualizations here */}
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -65,10 +58,18 @@ export default function Home() {
               {loading2 && loading3 && <div>loading</div>}
               {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
             </div>
+            <div className={styles.labels}>
+              <h2>Stereotypes</h2>
+              <div id="stereotypes">
+                {loading1 && <div>loading</div>}
+                {!loading1 && <StereotypesFilter className={styles.chart} data={killersData}/>}
+              </div>
+            </div>
             <div className={styles.card}>
-              <SankeyDiagram data={data} ></SankeyDiagram>
+              <SankeyDiagram data={killersData} ></SankeyDiagram>
             </div>
           </div>
+
 
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -83,8 +84,9 @@ export default function Home() {
               <h2>Index Scatter</h2>
             </div>
           </div>
-        </StereotypeProvider>
+        </ContextProvider>
       </main>
     </div>
   )
- 
+
+}
