@@ -81,7 +81,7 @@ const Link = ({data, width, length, colors}) => {
                 }
                 //stroke={getSterotypeColor(data.stereotype)}
                 strokeOpacity={
-                    selectedStereotypes.length == 0 ? 0.4:
+                    selectedStereotypes.length == 7 ? 0.4:
                     data.killerid == currentKiller ? 1 :
                     selectedStereotypes.includes(data.stereotype) ? 0.25 :
                         0.1}
@@ -590,7 +590,7 @@ export default function SankeyDiagram(props: Props) {
     let currentKiller = context.currentKiller
 
 
-    let currentStereotype = context.state.currentStereotypes.length == 0 ? null : context.state.currentStereotypes[0] // the stereotype which the graph will be ordered by
+    let currentStereotype = context.state.currentStereotypes.length == 0 ? [0,1,2,3,4,5,6,7] : context.state.currentStereotypes[0] // the stereotype which the graph will be ordered by
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
@@ -609,7 +609,7 @@ export default function SankeyDiagram(props: Props) {
     let killers: [Killers] = props.data
     let frequencies = {}
     for (let k of keysOfInterst) frequencies[k] = {}
-    let killers_for_order = currentStereotype ? killers.filter(k => k.stereotype == currentStereotype) : killers
+    let killers_for_order = currentStereotype == null ? killers.filter(k => k.stereotype == currentStereotype) : killers
     // get frequencies of values
     for (let i = 0; i < killers.length; i++) {
         let person = killers[i]

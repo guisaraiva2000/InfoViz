@@ -74,7 +74,6 @@ export default function Home() {
 
           <div className={styles.grid}>
             <div className={styles.card}>
-              <h2>Stereotypes</h2>
               <StereotypeScatter data={killersData}></StereotypeScatter>
             </div>
             <div className={styles.card}>

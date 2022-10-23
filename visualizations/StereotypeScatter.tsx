@@ -45,7 +45,7 @@ function handleClick(event, setKiller, setSelectedKiller) {
 
     let clickingOnSelected = preselected == null || preselected == previousKiller
     if (clickingOnSelected) { // un toggle killer
-        if(previousKiller) previousKiller.id = "" // if the mouse does not move for a moment there will be no prev selection
+        if (previousKiller) previousKiller.id = "" // if the mouse does not move for a moment there will be no prev selection
         setSelectedKiller(null)
     } else if (killer_id === undefined) return
     else {
@@ -86,7 +86,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                 .on("mousemove", d => {
 
                         Tooltip.html("Name: SOMETHING IDK")
-                            .style("left", (d.offsetX+30) + "px")
+                            .style("left", (d.offsetX + 30) + "px")
                             .style("top", d.offsetY + "px")
                     }
                 )
@@ -142,16 +142,19 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
 
     })
-    return <div ref={plotRef} id={"scatter-stero-container"}
-                style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
-        <svg id={"scatter-stero"}
+    return <>
+        <h2 className={"inter"} ><span onClick={() => {setKiller(null);setSelectedKiller(null)}} >Stereotypes</span></h2>
+        <div ref={plotRef} id={"scatter-stero-container"}
+             style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
+            <svg id={"scatter-stero"}
 
-             style={{zIndex: 20, overflow: "visible"}}
-             height={"100%"} width={"100%"}
-             onClick={e => handleClick(e, setKiller, setSelectedKiller)}
-             onMouseLeave={e => handleOnMouseOut(e, setKiller)}
-             onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
-            <g>{points}</g>
-        </svg>
-    </div>
+                 style={{zIndex: 20, overflow: "visible"}}
+                 height={"100%"} width={"100%"}
+                 onClick={e => handleClick(e, setKiller, setSelectedKiller)}
+                 onMouseLeave={e => handleOnMouseOut(e, setKiller)}
+                 onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
+                <g>{points}</g>
+            </svg>
+        </div>
+    </>
 }
