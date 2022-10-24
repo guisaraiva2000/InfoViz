@@ -21,7 +21,7 @@ function standard_deviation(values_by_category, data_length) {
     let values = values_by_category
     const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
     let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
-    console.log("mean", mean, "res", res)
+    //console.log("mean", mean, "res", res)
     return res
 }
 
@@ -77,19 +77,18 @@ function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], sele
         let Battr = b.name.slice(0, -2)
         let Astero = a.name[a.name.length - 1]
         let Bstero = b.name[b.name.length - 1]
-        console.log(Astero, Bstero, Aattr, Battr)
+        //console.log(Astero, Bstero, Aattr, Battr)
         // first sort acording to attributes
         if (Aattr != Battr) return Aattr < Battr ? -1 : 1
         let Aselected = selectedSterotypes.includes(Number(Astero))
         let Bselected = selectedSterotypes.includes(Number(Bstero))
-        debugger;
         // if they are of the same "group" normal string ordering
         if (Aselected && Bselected || !Aselected && !Bselected) return Astero < Bstero ? -1 : 1
         return Aselected ? 1 : -1 // else give priority to the node selected
 
     })
-    console.log(_nodes)
-    console.log(_nodes.map(n => n.name))
+    //console.log(_nodes)
+    //console.log(_nodes.map(n => n.name))
     return _nodes
 }
 
@@ -146,7 +145,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     let _nodes = buildNodes(frequencies, sterotypes_types, selectedStereotypes);
 
 
-    console.log("Frequencies", frequencies)
+    //console.log("Frequencies", frequencies)
     let _links = []
     for (let kil of killers) {
         for (let i = 1; i < ordered_frequencies.length; i++) {
@@ -244,9 +243,9 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
                         {links.map((d, i) => {
                             let isCurrentKiller = d.killerid == currentKiller
-                            console.log(isCurrentKiller, d.killerid, currentKiller)
+                            //console.log(isCurrentKiller, d.killerid, currentKiller)
                             let allSteortpesSelected = selectedStereotypes.length == 8
-                            console.log(selectedStereotypes, "JJJJJJJJJJJJJJJJJJJJJJ")
+                            //console.log(selectedStereotypes, "JJJJJJJJJJJJJJJJJJJJJJ")
                             let isFromSelectedStereotye = selectedStereotypes.includes(d.stereotype)
 
                             // Select stroke color

@@ -36,6 +36,15 @@ export default function Home() {
         k["Spent time incarcerated?"] = k["Spent time incarcerated?"] == null ? false : k["Spent time incarcerated?"]
         k["Marital status"] = k["Marital status"] == null ? "Single" : k["Marital status"]
         k["Gender of victims"] = k["Gender of victims"] == null ? "Male" : k["Gender of victims"]
+        k["Sexual preference"] = k["Sexual preference"] == null ? "Heterosexual" : k["Sexual preference"]
+        k["Sexual preference"] = k["Sexual preference"].length > 20 ? "Heterosexual" : k["Sexual preference"]
+        if(!  ["Male", "Female"].includes(k["Gender of killer"] ))
+          console.log(k["Gender of killer"])
+
+        if(!  ["Bixesual", "Heterosexual", "Gay"].includes(k["Sexual preference"] ))
+          console.log()//k["Sexual preference"])
+
+
 
       } )
       setKillersData(d);
