@@ -79,7 +79,7 @@ export  default function Labels(props : LabelsProps) {
                 strategy={horizontalListSortingStrategy}
             >
                 {items.map(
-                    attr => <SortableItem key={attr} id={attr} style={{fontSize: "15px", display: "flex", width: "50px"}}>{attr}</SortableItem>
+                    attr => <SortableItem key={attr} id={attr} style={{fontSize: "12px", display: "flex", width: "50px"}}>{attr}</SortableItem>
                 )}
             </SortableContext>
         </DndContext>

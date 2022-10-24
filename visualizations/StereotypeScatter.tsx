@@ -143,7 +143,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
     })
     return <>
-        <h2 className={"inter"} ><span onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >Stereotypes</span></h2>
+        <h2><span className={"inter"}  onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >Serial Killer Stereotypes Distribution</span></h2>
         <div ref={plotRef} id={"scatter-stero-container"}
              style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
             <svg id={"scatter-stero"}

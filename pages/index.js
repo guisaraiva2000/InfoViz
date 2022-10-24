@@ -74,7 +74,7 @@ export default function Home() {
           {/* insert visualizations here */}
           <div className={styles.grid}>
             <div className={styles.card}>
-              <h2>U.S. Map</h2>
+              <h2>U.S.A.: Serial Killer Distribution & Victims per State</h2>
               {loading2 && loading3 && <div>loading</div>}
               {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
             </div>
@@ -96,7 +96,7 @@ export default function Home() {
               <StereotypeScatter data={killersData}></StereotypeScatter>
             </div>
             <div className={styles.card}>
-              <h2>Hexagon</h2>
+              <h2>Stereotype Attributes</h2>
               {loading1 && <div>loading</div>}
               {!loading1 && <RadarChart className={styles.chart} data={killersData}/>}
             </div>

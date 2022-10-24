@@ -200,7 +200,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                 ) > standard_deviation(
                     Object.values(key2[1]), killers_for_order.length
                 ) ? -1 : 1
-            ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
+            ).map(v => v[0]))}><span className={"inter"}>Attribute Tracer</span></h2>
             <div ref={sankeyContainerRef} id={"sankeyContainer"}
                  style={{overflow: "show", zIndex: "1000", width: "100%", height: "80%"}}>
 
@@ -292,7 +292,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                 let nextNodeAttr = nodes[i + 1]?.name.slice(0, -2)
                                 let prevNodeAttr = nodes[i - 1]?.name.slice(0, -2)
                                 let isBoundary = thisNodeAttr != nextNodeAttr || thisNodeAttr !== prevNodeAttr
-                                if (isBoundary) final_name = "--------"
+                                if (isBoundary) final_name = ""
                                 let j, k, found=false;
                                 for (j = 0; j <= 4; j++) {
                                     let nextNodeAttr = nodes[i + j]?.name.slice(0, -2)
