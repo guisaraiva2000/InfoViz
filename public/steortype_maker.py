@@ -25,8 +25,8 @@ import numpy as np
 matplotlib.use('TkAgg')
 
 
-datainput = "clean-labeled_w_index.json"
-output = "killers-output.json"
+datainput = "killers/clean-labeled.json"
+output = "js/clean-output.json"
 
 dt = open(datainput, "r")
 data = json.load(dt)
@@ -58,12 +58,12 @@ F = go.Figure()
 F.add_scatter(cliponaxis=True)
 
 
-input = "killers/killers.json"
+input = "killers/clean (1).json"
 _ = open(input, "r", encoding="UTF-8")
 _data = json.load(_,)
 _.close()
-with open("clean-killers.json","r") as f:
-    big_input = json.load(f)
+#with open("clean-killers.json","r") as f:
+#    big_input = json.load(f)
 
 
 print(type(data))
@@ -84,11 +84,11 @@ for x in range(5,6):
         del entry["Stereotype Position"]
         entry["stereotype"] = int(cluster.labels_[i])
         entry["stereotype_pos"] = [float(output[0][i]),float(output[1][i])]
-        for k in ["Gender of victims","Sexual preference","Gender"]:
-            try:
-                entry[k] =  big_input[i][k]
-            except:
-                entry[k] =  None
+#        for k in ["Gender of victims","Sexual preference","Gender"]:
+#            try:
+#                entry[k] =  big_input[i][k]
+#            except:
+#                entry[k] =  None
 
        # entry["stereotype_pos3D"] = [float(output3D[0][i]),float(output3D[1][i]), float(output3D[2][i]) ]
     print(len(set(cluster.labels_)))
@@ -106,5 +106,5 @@ for k in _data:
             pass
 
 
-with open("C:/ist/public/s-killers.json", "w") as wow:
+with open("C:/ist/public/clean_final.json", "w") as wow:
     json.dump(_data, wow)
