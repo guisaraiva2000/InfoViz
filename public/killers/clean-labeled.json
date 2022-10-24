@@ -1,0 +1,2008 @@
+[
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 1,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 5,
+    "Stereotype Position": [
+      56,
+      57,
+      -32
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 15,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 2,
+    "Killing Severity": 2,
+    "Stereotype": 50,
+    "Stereotype Position": [
+      71,
+      -96,
+      22
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 7,
+    "IQ": 106,
+    "Brutality": 1,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 22,
+    "Stereotype Position": [
+      20,
+      67,
+      41
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": 95,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 103,
+    "Stereotype Position": [
+      -7,
+      11,
+      -25
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 20,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 2,
+    "Killing Severity": 2,
+    "Stereotype": 89,
+    "Stereotype Position": [
+      -22,
+      73,
+      -71
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 30,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 103,
+    "Stereotype Position": [
+      60,
+      70,
+      65
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": 80,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 0,
+    "Stereotype": 113,
+    "Stereotype Position": [
+      -29,
+      27,
+      52
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": 81,
+    "Brutality": 1,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 78,
+    "Stereotype Position": [
+      -20,
+      -4,
+      66
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 87,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 4,
+    "Killing Severity": 7,
+    "Stereotype": 42,
+    "Stereotype Position": [
+      -95,
+      85,
+      62
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 8,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 91,
+    "Stereotype Position": [
+      0,
+      92,
+      31
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 133,
+    "IQ": 126,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 9,
+    "Stereotype Position": [
+      26,
+      11,
+      25
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 104,
+    "Stereotype Position": [
+      -38,
+      6,
+      10
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 7,
+    "IQ": null,
+    "Brutality": 4,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 2,
+    "Killing Severity": 2,
+    "Stereotype": 48,
+    "Stereotype Position": [
+      1,
+      -92,
+      -17
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 1,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 0,
+    "Stereotype": 74,
+    "Stereotype Position": [
+      69,
+      -92,
+      41
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 3,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 5,
+    "Stereotype": 15,
+    "Stereotype Position": [
+      15,
+      27,
+      98
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 6,
+    "Stereotype Position": [
+      3,
+      -75,
+      -54
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 3,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 101,
+    "Stereotype Position": [
+      9,
+      32,
+      95
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": 25,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 116,
+    "Stereotype Position": [
+      -99,
+      -65,
+      39
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 13,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 2,
+    "Stereotype": 9,
+    "Stereotype Position": [
+      89,
+      71,
+      -54
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 3,
+    "Stereotype": 26,
+    "Stereotype Position": [
+      93,
+      -33,
+      16
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 173,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 1,
+    "Killing Severity": 2,
+    "Stereotype": 7,
+    "Stereotype Position": [
+      -24,
+      84,
+      -58
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 10,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 69,
+    "Stereotype Position": [
+      89,
+      61,
+      -43
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 62,
+    "Stereotype Position": [
+      -72,
+      -35,
+      -48
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 16,
+    "IQ": 129,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 4,
+    "Stereotype": 4,
+    "Stereotype Position": [
+      -68,
+      24,
+      3
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": 10,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 3,
+    "Stereotype": 98,
+    "Stereotype Position": [
+      -51,
+      -54,
+      92
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 22,
+    "Stereotype Position": [
+      56,
+      16,
+      39
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 50,
+    "Stereotype Position": [
+      -12,
+      69,
+      73
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 8,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 3,
+    "Stereotype": 10,
+    "Stereotype Position": [
+      -80,
+      14,
+      30
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 6,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 37,
+    "Stereotype Position": [
+      -43,
+      -24,
+      45
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 0,
+    "Number of victims": 20,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 90,
+    "Stereotype Position": [
+      -92,
+      -98,
+      47
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 2,
+    "IQ": 80,
+    "Brutality": 3,
+    "Childhood Trauma": 4,
+    "Psychological Perversion": 4,
+    "Killing Severity": 1,
+    "Stereotype": 39,
+    "Stereotype Position": [
+      -43,
+      -90,
+      94
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 3,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 0,
+    "Stereotype": 38,
+    "Stereotype Position": [
+      -52,
+      -38,
+      21
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 10,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 104,
+    "Stereotype Position": [
+      8,
+      -89,
+      -94
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 117,
+    "Stereotype Position": [
+      -43,
+      -96,
+      43
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 12,
+    "IQ": 100,
+    "Brutality": 1,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 82,
+    "Stereotype Position": [
+      43,
+      -50,
+      70
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 17,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 2,
+    "Killing Severity": 2,
+    "Stereotype": 34,
+    "Stereotype Position": [
+      -95,
+      94,
+      79
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 118,
+    "Stereotype Position": [
+      91,
+      -62,
+      -96
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 600,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 69,
+    "Stereotype Position": [
+      48,
+      54,
+      40
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 3,
+    "Killing Severity": 4,
+    "Stereotype": 98,
+    "Stereotype Position": [
+      -96,
+      -7,
+      -24
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 3,
+    "Stereotype Position": [
+      32,
+      -43,
+      46
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 1,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 115,
+    "Stereotype Position": [
+      -54,
+      -86,
+      13
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": 110,
+    "Brutality": 1,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 86,
+    "Stereotype Position": [
+      -97,
+      -43,
+      -5
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 7,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 6,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 80,
+    "Stereotype Position": [
+      94,
+      -75,
+      47
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 11,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 56,
+    "Stereotype Position": [
+      54,
+      -39,
+      -50
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 27,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 46,
+    "Stereotype Position": [
+      -100,
+      45,
+      100
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": 180,
+    "Brutality": 2,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 2,
+    "Killing Severity": 2,
+    "Stereotype": 44,
+    "Stereotype Position": [
+      -36,
+      -40,
+      6
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 16,
+    "IQ": 110,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 25,
+    "Stereotype Position": [
+      79,
+      70,
+      92
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 7,
+    "IQ": null,
+    "Brutality": 3,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 3,
+    "Killing Severity": 1,
+    "Stereotype": 12,
+    "Stereotype Position": [
+      25,
+      -91,
+      -35
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 26,
+    "Stereotype Position": [
+      -51,
+      66,
+      74
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 12,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 61,
+    "Stereotype Position": [
+      67,
+      -62,
+      74
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 16,
+    "IQ": null,
+    "Brutality": 3,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 73,
+    "Stereotype Position": [
+      23,
+      -11,
+      -39
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 50,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 61,
+    "Stereotype Position": [
+      5,
+      -78,
+      -82
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 9,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 1,
+    "Killing Severity": 3,
+    "Stereotype": 32,
+    "Stereotype Position": [
+      -48,
+      8,
+      -21
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 24,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 118,
+    "Stereotype Position": [
+      -18,
+      -9,
+      35
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 40,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 5,
+    "Stereotype": 4,
+    "Stereotype Position": [
+      84,
+      9,
+      -5
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 3,
+    "Number of victims": 4,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 0,
+    "Stereotype": 36,
+    "Stereotype Position": [
+      -87,
+      79,
+      41
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 3,
+    "IQ": 123,
+    "Brutality": 3,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 4,
+    "Stereotype": 17,
+    "Stereotype Position": [
+      71,
+      18,
+      -15
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 8,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 4,
+    "Stereotype": 66,
+    "Stereotype Position": [
+      -12,
+      94,
+      91
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 4,
+    "Stereotype": 74,
+    "Stereotype Position": [
+      37,
+      -29,
+      11
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": 160,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 96,
+    "Stereotype Position": [
+      58,
+      57,
+      -67
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 10,
+    "Stereotype Position": [
+      -85,
+      -2,
+      12
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 1,
+    "Killing Severity": 0,
+    "Stereotype": 95,
+    "Stereotype Position": [
+      -28,
+      69,
+      -70
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 7,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 37,
+    "Stereotype Position": [
+      23,
+      -39,
+      -27
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 112,
+    "Stereotype Position": [
+      52,
+      -1,
+      69
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 3,
+    "IQ": 84,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 1,
+    "Killing Severity": 2,
+    "Stereotype": 18,
+    "Stereotype Position": [
+      -94,
+      3,
+      99
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": null,
+    "IQ": 100,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 39,
+    "Stereotype Position": [
+      -68,
+      76,
+      -21
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 0,
+    "Number of victims": 8,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 3,
+    "Killing Severity": 1,
+    "Stereotype": 60,
+    "Stereotype Position": [
+      -48,
+      -46,
+      -29
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 3,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 55,
+    "Stereotype Position": [
+      63,
+      -11,
+      17
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 6,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 52,
+    "Stereotype Position": [
+      61,
+      -32,
+      -28
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 28,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 2,
+    "Stereotype": 116,
+    "Stereotype Position": [
+      98,
+      -47,
+      2
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 11,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 71,
+    "Stereotype Position": [
+      17,
+      29,
+      -60
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 94,
+    "Stereotype Position": [
+      91,
+      -36,
+      82
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 27,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 8,
+    "Stereotype Position": [
+      63,
+      55,
+      53
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 10,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 0,
+    "Stereotype Position": [
+      -73,
+      76,
+      -58
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": 6,
+    "IQ": 100,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 74,
+    "Stereotype Position": [
+      41,
+      47,
+      72
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 3,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 0,
+    "Stereotype": 110,
+    "Stereotype Position": [
+      -49,
+      15,
+      -2
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 105,
+    "Stereotype Position": [
+      73,
+      -45,
+      53
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": 120,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 69,
+    "Stereotype Position": [
+      94,
+      -31,
+      65
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 4,
+    "Stereotype": 84,
+    "Stereotype Position": [
+      39,
+      91,
+      12
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 17,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 52,
+    "Stereotype Position": [
+      6,
+      -31,
+      -6
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 2,
+    "Number of victims": 16,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 81,
+    "Stereotype Position": [
+      14,
+      41,
+      68
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 7,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 2,
+    "Stereotype": 110,
+    "Stereotype Position": [
+      89,
+      99,
+      15
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 2,
+    "Number of victims": 8,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 102,
+    "Stereotype Position": [
+      -60,
+      -71,
+      -46
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 3,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 4,
+    "Psychological Perversion": 2,
+    "Killing Severity": 0,
+    "Stereotype": 84,
+    "Stereotype Position": [
+      7,
+      17,
+      64
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 61,
+    "Stereotype Position": [
+      74,
+      -86,
+      -23
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 47,
+    "Stereotype Position": [
+      100,
+      23,
+      -5
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": 125,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 3,
+    "Stereotype": 56,
+    "Stereotype Position": [
+      78,
+      -1,
+      77
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 109,
+    "Stereotype Position": [
+      55,
+      43,
+      78
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 12,
+    "IQ": 110,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 4,
+    "Stereotype": 98,
+    "Stereotype Position": [
+      92,
+      -54,
+      -27
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 6,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 52,
+    "Stereotype Position": [
+      -11,
+      -32,
+      -21
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 68,
+    "Stereotype Position": [
+      14,
+      -25,
+      -37
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 0,
+    "Number of victims": 3,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 4,
+    "Stereotype": 67,
+    "Stereotype Position": [
+      -99,
+      -45,
+      -64
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 2,
+    "IQ": 100,
+    "Brutality": 0,
+    "Childhood Trauma": 4,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 91,
+    "Stereotype Position": [
+      62,
+      -97,
+      -1
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 0,
+    "Stereotype": 89,
+    "Stereotype Position": [
+      49,
+      -51,
+      65
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 3,
+    "IQ": 100,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 88,
+    "Stereotype Position": [
+      13,
+      -72,
+      24
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": 80,
+    "Brutality": 1,
+    "Childhood Trauma": 4,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 34,
+    "Stereotype Position": [
+      10,
+      -39,
+      -60
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 12,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 58,
+    "Stereotype Position": [
+      -38,
+      24,
+      92
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 56,
+    "Stereotype Position": [
+      -82,
+      57,
+      -4
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 9,
+    "IQ": null,
+    "Brutality": 3,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 23,
+    "Stereotype Position": [
+      100,
+      -1,
+      -83
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": 3,
+    "IQ": 127,
+    "Brutality": 0,
+    "Childhood Trauma": 3,
+    "Psychological Perversion": 0,
+    "Killing Severity": 2,
+    "Stereotype": 21,
+    "Stereotype Position": [
+      52,
+      22,
+      -8
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 6,
+    "IQ": 90,
+    "Brutality": 1,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 71,
+    "Stereotype Position": [
+      46,
+      -48,
+      56
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": 100,
+    "Brutality": 3,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 2,
+    "Killing Severity": 3,
+    "Stereotype": 51,
+    "Stereotype Position": [
+      19,
+      -63,
+      8
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 0,
+    "Number of victims": 3,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 64,
+    "Stereotype Position": [
+      -47,
+      34,
+      -19
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 36,
+    "IQ": 136,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 73,
+    "Stereotype Position": [
+      68,
+      55,
+      -16
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 94,
+    "Stereotype Position": [
+      49,
+      -71,
+      27
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 3,
+    "IQ": 110,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 4,
+    "Stereotype Position": [
+      -30,
+      -65,
+      -67
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 13,
+    "Stereotype Position": [
+      94,
+      -61,
+      90
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": null,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 1,
+    "Killing Severity": 0,
+    "Stereotype": 59,
+    "Stereotype Position": [
+      33,
+      1,
+      -10
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 6,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 3,
+    "Killing Severity": 1,
+    "Stereotype": 108,
+    "Stereotype Position": [
+      -96,
+      -52,
+      -50
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 0,
+    "Number of victims": null,
+    "IQ": 130,
+    "Brutality": 1,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 5,
+    "Stereotype Position": [
+      50,
+      -38,
+      -82
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 6,
+    "IQ": 95,
+    "Brutality": 1,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 0,
+    "Killing Severity": 3,
+    "Stereotype": 37,
+    "Stereotype Position": [
+      75,
+      -12,
+      -52
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 1,
+    "Marital status": 1,
+    "Number of victims": 13,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 3,
+    "Killing Severity": 1,
+    "Stereotype": 65,
+    "Stereotype Position": [
+      -50,
+      58,
+      -68
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 4,
+    "IQ": null,
+    "Brutality": 1,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 2,
+    "Killing Severity": 3,
+    "Stereotype": 6,
+    "Stereotype Position": [
+      91,
+      -18,
+      87
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 12,
+    "IQ": null,
+    "Brutality": 2,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 1,
+    "Killing Severity": 1,
+    "Stereotype": 14,
+    "Stereotype Position": [
+      -52,
+      -65,
+      7
+    ],
+    "Spent time incarcerated?": 0
+  },
+  {
+    "Served in the military?": 2,
+    "Marital status": 1,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 1,
+    "Stereotype": 96,
+    "Stereotype Position": [
+      -56,
+      57,
+      73
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 0,
+    "Number of victims": 5,
+    "IQ": null,
+    "Brutality": 3,
+    "Childhood Trauma": 0,
+    "Psychological Perversion": 0,
+    "Killing Severity": 5,
+    "Stereotype": 31,
+    "Stereotype Position": [
+      -70,
+      -65,
+      96
+    ],
+    "Spent time incarcerated?": 1
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 2,
+    "Number of victims": 4,
+    "IQ": 130,
+    "Brutality": 0,
+    "Childhood Trauma": 2,
+    "Psychological Perversion": 2,
+    "Killing Severity": 1,
+    "Stereotype": 88,
+    "Stereotype Position": [
+      -22,
+      -62,
+      -49
+    ],
+    "Spent time incarcerated?": null
+  },
+  {
+    "Served in the military?": 0,
+    "Marital status": 1,
+    "Number of victims": 2,
+    "IQ": null,
+    "Brutality": 0,
+    "Childhood Trauma": 1,
+    "Psychological Perversion": 1,
+    "Killing Severity": 6,
+    "Stereotype": 33,
+    "Stereotype Position": [
+      -47,
+      34,
+      73
+    ],
+    "Spent time incarcerated?": null
+  }
+]

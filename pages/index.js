@@ -1,19 +1,67 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+ 
+import RadarChart from "../visualizations/RadarChart.tsx";
+import UsaChart from "../visualizations/USA.tsx";
+
+import {ContextProvider} from "../visualizations/Context"
+
+import {useEffect, useState} from "react";
+ 
 import StereotypePlot from "../visualizations/StereotypePlot";
 import SankeyDiagram from "../visualizations/SankeyDiagram";
-import {useEffect, useState} from "react"
+ 
+
 import * as d3 from "d3";
+import StereotypesFilter from "../visualizations/Stereotypes";
+import StereotypeScatter from "../visualizations/StereotypeScatter";
 
 
 export default function Home() {
 
-  let [data,setData] = useState([])
-  useEffect(() => {d3.json("clean_final.json").then(setData)}, [])
-    return (
-        <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
-        );}
-/*
+  let [killersData, setKillersData] = useState([]);
+  let [mapData, setMapData] = useState([]);
+  let [victimsData, setVictimsData] = useState([]);
+  const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
+  const [loading3, setLoading3] = useState(true);
+
+  useEffect(() => {
+    d3.json("FINAL.json").then((d) => {
+      d.map(k  => {
+        k.stereotype = k.Stereotype
+        k.stereotype_pos = k["Stereotype Position"]
+        k["Served in the military?"] = k["Served in the military?"] == null ? false : k["Served in the military?"]
+        k["Served in the military?"] = typeof k["Served in the military?"] !== "boolean"  ? true : k["Served in the military?"]
+        k["Spent time incarcerated?"] = k["Spent time incarcerated?"] == null ? false : k["Spent time incarcerated?"]
+        k["Marital status"] = k["Marital status"] == null ? "Single" : k["Marital status"]
+        k["Gender of victims"] = k["Gender of victims"] == null ? "Male" : k["Gender of victims"]
+        k["Sexual preference"] = k["Sexual preference"] == null ? "Heterosexual" : k["Sexual preference"]
+        k["Sexual preference"] = k["Sexual preference"].length > 20 ? "Heterosexual" : k["Sexual preference"]
+        if(!  ["Male", "Female"].includes(k["Gender of killer"] ))
+          console.log(k["Gender of killer"])
+
+        if(!  ["Bixesual", "Heterosexual", "Gay"].includes(k["Sexual preference"] ))
+          console.log()//k["Sexual preference"])
+
+
+
+      } )
+      setKillersData(d);
+      setLoading1(false);
+    });
+    d3.json("testmap.json").then((d) => {
+      setMapData(d);
+      setLoading2(false);
+    });
+    d3.csv("victims_by_state.csv").then((d) => {
+      setVictimsData(d);
+      setLoading3(false);
+    });
+    return () => undefined;
+  }, []);
+
+  return (
     <div>
       <Head>
         <title>Create Next App</title>
@@ -22,35 +70,43 @@ export default function Home() {
       </Head>
 
       <main>
-        {/* insert visualizations here
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <h2>U.S. Map</h2>
-            <StereotypePlot/>
+        <ContextProvider>
+          {/* insert visualizations here */}
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <h2>U.S. Map</h2>
+              {loading2 && loading3 && <div>loading</div>}
+              {!loading2 && !loading3 && <UsaChart className={styles.chart} mapData={mapData} victimsData={victimsData}/>}
+            </div>
+            <div className={styles.labels}>
+              <h2>Stereotypes</h2>
+              <div id="stereotypes">
+                {loading1 && <div>loading</div>}
+                {!loading1 && <StereotypesFilter className={styles.chart} data={killersData}/>}
+              </div>
+            </div>
+            <div className={styles.card}>
+              <SankeyDiagram data={killersData} ></SankeyDiagram>
+            </div>
           </div>
-          <div className={styles.card}>
-            <h2>Sankey Diagram</h2>
-            <SankeyDiagram data={data} targets={[]}></SankeyDiagram>
-          </div>
-        </div>
 
-        <div className={styles.grid}>
-          <div className={styles.card}>
-            <h2>Stereotypes</h2>
-            <StereotypePlot/>
-          </div>
-          <div className={styles.card}>
-            <h2>Hexagon</h2>
-            <StereotypePlot/>
-          </div>
-          <div className={styles.card}>
-            <h2>Index Scatter</h2>
-            <StereotypePlot/>
-          </div>
-        </div>
 
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <StereotypeScatter data={killersData}></StereotypeScatter>
+            </div>
+            <div className={styles.card}>
+              <h2>Hexagon</h2>
+              {loading1 && <div>loading</div>}
+              {!loading1 && <RadarChart className={styles.chart} data={killersData}/>}
+            </div>
+            <div className={styles.card}>
+              <h2>Index Scatter</h2>
+            </div>
+          </div>
+        </ContextProvider>
       </main>
     </div>
   )
+
 }
-*/

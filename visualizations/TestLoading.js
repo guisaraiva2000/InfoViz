@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-function TestLoading(){
+function TestLoading() {
   let PlotComponent = useState(null)
   if (!PlotComponent) return <div id={"hi"}>Loading graphics....</div>
 
@@ -15,6 +15,6 @@ function TestLoading(){
       },
       {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
     ]}
-    layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
+    layout={{width: 320, height: 240, title: 'A Fancy Plot'}}
   /></div>
 }

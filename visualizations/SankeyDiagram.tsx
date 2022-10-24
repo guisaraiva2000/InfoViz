@@ -1,585 +1,61 @@
 import * as d3 from "d3";
 
-import {MutableRefObject, useEffect, useRef, useState} from "react";
-import {sankeyJustify, sankeyLinkHorizontal, sankey} from "d3-sankey";
-
-const size = {
-    width: 700,
-    height: 600
-};
-
-const getMousePosition = event => {
-    const CTM = event.target.getScreenCTM();
-
-    return {
-        x: (event.clientX - CTM.e) / CTM.a,
-        y: (event.clientY - CTM.f) / CTM.d
-    };
-};
+import {MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {sankeyJustify, sankeyLinkHorizontal, sankey, SankeyGraph} from "d3-sankey";
+import {group, lab} from "d3";
+import Labels from "./Labels";
+import {Context} from "./Context"
+import Rect from "./components/Rectangle";
+import {Killers} from "../interfaces/killers";
+import Link from "./components/Link"
+import useSize from "./hooks/useSize";
 
 
-const Rect = ({index, x0, x1, y0, y1, name, value, length, colors}) => {
-    return (
-        <>
-            <rect
-                x={x0}
-                y={y0}
-                width={x1 - x0}
-                height={y1 - y0}
-                fill={"#dddddd"} //colors(index / length)}
-                data-index={index}
-            />
-            <text
-                x={x0 < size.width / 2 ? x1 + 6 : x0 - 6}
-                y={(y1 + y0) / 2}
-                style={{
-                    fill: "#dddddd",//d3.rgb(colors(index / length)).darker(),
-                    alignmentBaseline: "middle",
-                    fontSize: 9,
-                    textAnchor: x0 < size.width / 2 ? "start" : "end",
-                    pointerEvents: "none",
-                    userSelect: "none"
-                }}
-            >
-                {name}
-            </text>
-        </>
-    );
-};
-const Link = ({data, width, length, colors}) => {
-    const link = sankeyLinkHorizontal();
-
-    return (
-        <>
-            <defs>
-                <linearGradient
-                    id={`gradient-${data.index}`}
-                    gradientUnits="userSpaceOnUse"
-                    x1={data.source.x1}
-                    x2={data.target.x0}
-                >
-                    <stop offset="0" stopColor={"#dddddd" //colors(data.source.index / length)} />}
-                    }></stop>
-                    <stop offset="100%" stopColor={"red"}/>
-                </linearGradient>
-            </defs>
-            <path
-                d={link(data)}
-                fill={"none"}
-                stroke={`url(#gradient-${data.index})`}
-                strokeOpacity={0.5}
-                strokeWidth={width}
-            />
-        </>
-    );
-};
-
-export interface Killers {
-    name: boolean | string;
-    alias: string;
-    "Mother abused drugs/alcohol "?: boolean | Branch;
-    "Highest grade in school"?: boolean | number | string;
-    "Highest degree"?: boolean | string;
-    "Served in the military?": boolean;
-    Branch?: boolean | string;
-    "Type of discharge"?: boolean | string;
-    "Types of jobs worked"?: boolean | string;
-    "Sexual preference"?: boolean | SexualPreferenceEnum;
-    "Marital status"?: boolean | MaritalStatus;
-    "Number of children": number | string;
-    "Lives with his children": boolean;
-    "Living with"?: boolean | string;
-    "Abused drugs?": boolean;
-    "Abused alcohol?": boolean;
-    "Committed previous crimes? ": boolean;
-    "Spend time in jail? ": boolean;
-    "Spend time in prison? ": boolean;
-    "Number of victims": boolean | number | string;
-    "Victim type"?: boolean | string;
-    "Killer age at start of series": boolean | number | string;
-    "Date of first kill in series"?: boolean | number | string;
-    "Date of final kill in series"?: boolean | number | string;
-    "Gender of victims": boolean | Sex;
-    "Race of victims"?: boolean | string;
-    "Age of victims"?: boolean | number | string;
-    "Method of killing"?: boolean | string;
-    Weapon?: boolean | string;
-    "Was gun used?": boolean;
-    "Did killer have a partner?": boolean;
-    "Type of serial killer"?: boolean | string;
-    "How close did killer live?"?: boolean | string;
-    "Location of first contact"?: boolean | string;
-    "Location of killing"?: boolean | string;
-    "Killing occurred in home of victim?": boolean;
-    "Killing occurred in home of killer?": boolean;
-    "Victim abducted or killed at contact?"?: boolean | string;
-    "Rape?": boolean;
-    "Tortured victims?": boolean;
-    "Bound the victims?": boolean;
-    "Sex with the body?": boolean;
-    "Mutilated body?"?: boolean;
-    "Ate part of the body?"?: boolean;
-    "Drank victim’s blood?"?: boolean;
-    "Posed the body?"?: boolean;
-    "Took totem – body part"?: boolean;
-    "Took totem – personal item": boolean;
-    "Robbed victim or location": boolean;
-    "Left at scene, no attempt to hide": boolean;
-    "Date killer arrested"?: boolean | number | string;
-    "Date convicted"?: boolean | number | string;
-    Sentence: boolean | string;
-    "Killer executed?"?: boolean;
-    "Did killer plead NGRI?": boolean;
-    "Did serial killer confess?"?: boolean | string;
-    "Name and state of prison"?: boolean | string;
-    "Killer committed suicide?"?: boolean;
-    "Killer killed in prison?"?: boolean;
-    "Date of death"?: boolean | number | string;
-    "Left at scene, hidden": boolean;
-    "Left at scene, buried": boolean;
-    "Applied for job as a cop?": boolean;
-    "Overkill?": boolean;
-    "Quick & efficient?": boolean;
-    "Used blindfold?": boolean;
-    "Fired from jobs?": boolean;
-    "Animal torture ": boolean;
-    "Fire setting ": boolean;
-    "Bed wetting ": boolean;
-    "Stalked victims?": boolean;
-    "Cut-op and disposed of": boolean;
-    "Was the NGRI plea successful?": WasTheNgriPleaSuccessful;
-    "Saw combat duty": boolean | WasTheNgriPleaSuccessful;
-    "Been to a psychologist?": boolean;
-    "Moved, too home": boolean;
-    "Time in forensic hospital?": boolean;
-    "Killed prior to series?  Age? ": boolean;
-    "Father abused drugs/alcohol": boolean;
-    "Mother abused drugs/alcohol": boolean;
-    "Sexually abused?": boolean;
-    "Physically abused?": boolean;
-    "Psychologically abused?": boolean;
-    "Physically attractive?": boolean;
-    "Speech defect?": boolean;
-    "Head injury?": boolean;
-    "Physical defect?": boolean;
-    "Problems in school?": boolean;
-    "Teased while in school?": boolean;
-    stereotype: number;
-    stereotype_pos2D: number[];
-    stereotype_pos3D: number[];
-    Sex?: Sex;
-    Race?: Branch;
-    Religion?: string;
-    "Country where killing occurred"?: CountryWhereKillingOccurred;
-    "States where killing occurred"?: boolean | string;
-    "Date of birth"?: boolean | number | string;
-    Location?: string;
-    "Birth order"?: string;
-    "Number of siblings"?: boolean | number | string;
-    "XYY?"?: boolean | DidKillerConfessToThisMurderEnum;
-    "Raised by"?: boolean | string;
-    "Birth category"?: boolean | string;
-    "Parent’s marital status"?: boolean | string;
-    "Family event"?: boolean | string;
-    "Age of family event"?: boolean | number | string;
-    "Father’s occupation"?: boolean | string;
-    "Age of first sexual experience"?: boolean | number | string;
-    "Age when first had intercourse"?: boolean | number | string;
-    "Mother’s occupation"?: boolean | string;
-    "Highest grade in school "?: boolean | number | string;
-    "Highest degree "?: boolean | string;
-    "Grades in school "?: boolean | string;
-    "IQ "?: boolean | number | string;
-    "Killed enemy during service?"?: boolean | DidKillerConfessToThisMurderEnum;
-    "Worked in law enforcement?"?: boolean | string;
-    "Employment status during series"?: boolean | string;
-    Diagnosis?: boolean | string;
-    "Took totem – body part "?: boolean;
-    "Took totem – personal item "?: boolean;
-    "Robbed victim or location "?: boolean | string;
-    "Moved, no attempt to hide"?: boolean;
-    "Moved, buried"?: boolean;
-    C?: string;
-    h?: string;
-    ""?: boolean | number | string;
-    "April 1"?: number;
-    "May 16"?: number;
-    "May 18"?: number;
-    "December "?: number | string;
-    "May 1"?: number;
-    "August 26"?: number;
-    "November "?: number | string;
-    "October 24"?: number;
-    "January 6"?: number;
-    "March 20"?: number;
-    "January 22"?: number;
-    February?: number;
-    "June 27"?: number;
-    "July 26"?: number;
-    "July 27"?: number;
-    "Country where killing "?: string;
-    "States where killing "?: string;
-    "Age of first sexual "?: string;
-    "Age when first had "?: string;
-    "Mother abused "?: string;
-    "Grades in school"?: boolean | string;
-    IQ?: boolean | number | string;
-    "Killed enemy during "?: string;
-    "Worked in law "?: string;
-    "Employment status during "?: string;
-    "Animal torture"?: boolean;
-    "Fire setting"?: boolean | string;
-    "Bed wetting"?: boolean | Branch;
-    "Committed previous "?: string;
-    "Spend time in jail?"?: boolean;
-    "Spend time in prison?"?: boolean | string;
-    "Killed prior to series?  Age?"?: boolean | string;
-    "Killing occurred in home "?: string;
-    "Sex with the body? "?: boolean;
-    "Left at scene, no attempt to "?: string;
-    "Cut-up and disposed of"?: boolean | string;
-    D?: string;
-    W?: string;
-    "Source of IQ information"?: boolean | string;
-    "Been to a psychologist (prior to killing)?"?: boolean | Branch;
-    "Time in forensic hospital (prior to killing)?"?: boolean | string;
-    "Spent time in jail? "?: boolean;
-    "Spent time in prison? "?: boolean;
-    "Number of victims (suspected of) "?: number | string;
-    "Number of victims (confessed to) "?: string;
-    "Number of victims (convicted of) "?: number;
-    "Killer age at end of series"?: number | string;
-    "Type of victim"?: boolean | string;
-    Type?: string;
-    "Name of partner"?: boolean | string;
-    "Sex of partner"?: boolean | string;
-    "Relationship of partner"?: boolean | string;
-    "Intentionally went out that day to kill?"?: boolean | string;
-    "Moved, hidden"?: boolean | string;
-    "Burned body"?: boolean | string;
-    "Dumped body in lake, river, etc."?: boolean | string;
-    "Moved, took home"?: boolean;
-    "Cause of death"?: boolean | string;
-    Name?: string;
-    "Date killed"?: string;
-    "Date body was found"?: string;
-    Gender?: string;
-    Age?: Branch | number;
-    "How killed"?: string;
-    "State killed"?: boolean | string;
-    "City killed"?: string;
-    "County killed"?: boolean | string;
-    "Type of target"?: string;
-    "Did killer confess to this murder?"?: boolean | DidKillerConfessToThisMurderEnum;
-    "Was killer convicted of this murder?"?: boolean | DidKillerConfessToThisMurderEnum;
-    "Committed previous crimes?"?: boolean | string;
-    "Spent time in prison?"?: boolean | string;
-    "Victim abducted or killed at contact? "?: boolean;
-    "In an interview with the Associate Press, Hall claims to have abducted 39 women "?: string;
-    "Time in forensic hospital (prior to "?: string;
-    "Confessed: "?: string;
-    "August 21, "?: number;
-    "Type of killer"?: boolean | string;
-    Height?: boolean | string;
-    A?: string;
-    "Source of IQ information "?: boolean | string;
-    "Killing occurred in home of "?: string;
-    "Rape? "?: boolean | string;
-    "Tortured victims? "?: boolean;
-    "Stalked victims? "?: boolean | string;
-    "Country where killing occurred "?: CountryWhereKillingOccurred;
-    "States where killing occurred "?: string;
-    "Type of killer "?: string;
-    "Bound victims?"?: boolean;
-    "Father abused drugs/alcohol "?: boolean | string;
-    "Drank victim†s blood?"?: boolean;
-    "References "?: boolean | string;
-    "Lives with his children "?: boolean | string;
-    "Living with  "?: string;
-    "Age when first had intercourse "?: boolean | string;
-    "Mother’s occupation "?: boolean | string;
-    "Lives with her children"?: boolean | string;
-    "Moved, to home"?: boolean | string;
-    "Did serial killer live with a step-parent?"?: boolean;
-    "Abused drugs? "?: boolean | string;
-    "4"?: number;
-    "Cut-up and disposed of body"?: boolean;
-    Sentencing?: boolean | string;
-    "Spent time in jail?"?: boolean;
-    "Number of victims "?: boolean | number | string;
-    "Victim type "?: string;
-    "Left at scene, no attempt to hide "?: boolean;
-    "Left at scene, hidden "?: boolean;
-    "Left at scene, buried "?: boolean | string;
-    "Moved, no attempt to hide "?: boolean;
-    P?: string;
-    "Number of victims (suspected of)"?: number | string;
-    "Number of victims (confessed to)"?: boolean | number | string;
-    "Number of victims (convicted of)"?: boolean | number | string;
-    "Killed enemy during     "?: string;
-    "Victim abducted or killed at "?: string;
-    "Quick & efficient? "?: boolean;
-    "Used blindfold? "?: boolean | string;
-    "Bound the victims? "?: boolean | string;
-    "After Death Behavior"?: string;
-    "Killer age at start of series "?: number;
-    "Killer committed suicide? "?: boolean;
-    "Killer killed in prison? "?: boolean;
-    "Date of death "?: boolean | number | string;
-    M?: string;
-    "Age when first had    "?: string;
-    "Mother’s Occupation"?: boolean | string;
-    "Killing occurred in home of   "?: string;
-    "Killing occurred in home of    "?: string;
-    E?: string;
-    "Abused alcohol? "?: boolean | string;
-    "Been to a psychologist? "?: boolean;
-    "Time in forensic hospital? "?: boolean | string;
-    "Diagnosis "?: boolean | string;
-    "How close did killer live? "?: string;
-    "Killing occurred in home of victim? "?: boolean;
-    "Killing occurred in home of killer? "?: boolean;
-    "Weapon "?: boolean | string;
-    "Height "?: boolean | string;
-    B?: string;
-    S?: string;
-    "April 16-"?: string;
-    "April 19, "?: number;
-    "April 30, "?: number;
-    "May 1, "?: number;
-    "May 12, "?: number;
-    "May 23, "?: number;
-    "January 5-"?: string;
-    "February "?: string;
-    "March "?: number;
-    "March 2, "?: number;
-    "April 1, "?: number;
-    "May 5, "?: number;
-    "May 6, "?: number;
-    "May 14, "?: number;
-    "May 16, "?: number;
-    "May 17, "?: number;
-    "May 18, "?: number;
-    "June 28, "?: number;
-    "July 6, "?: number;
-    "October 6, "?: number;
-    "April 28, "?: number;
-    "September "?: string;
-    "March 20, "?: number;
-    "April 5, "?: number;
-    "May "?: string;
-    "Did serial killer spend time in an orphanage?"?: boolean;
-    "Did serial killer spend time in a foster home?"?: boolean;
-    "Was serial killer ever raised by a relative?"?: boolean | string;
-    "Did serial killer ever live with adopted family?"?: boolean;
-    "Cities where killing occurred"?: boolean | string;
-    "Date of first kill in series "?: number | string;
-    "Name and state of prison "?: string;
-    F?: string;
-    N?: string;
-    "Lives with his/her children"?: boolean;
-    "Lives with children"?: boolean;
-    "Did serial killer ever live with a step-parent?"?: boolean;
-    "Been to a psychologist (prior to killing)? "?: boolean;
-    "Time in forensic hospital (prior to killing)? "?: boolean;
-    "Country killed"?: string;
-    "Did killer confess to this murder"?: boolean;
-    "Type of  target"?: string;
-    "Was the killer convicted of this murder?"?: boolean;
-    "Date Killed"?: string;
-    "How Killed"?: string;
-    "State Killed"?: string;
-    "City Killed"?: string;
-    "Did the killer confess to this murder?"?: boolean;
-    "Multiple other victims were unidentified "?: string;
-    K?: string;
-    G?: string;
-    "Date killer arrested "?: boolean;
-    R?: string;
-    "Overkill? "?: boolean;
-    "Cause of death "?: string;
-    "Cities where killing occurred "?: string;
-    T?: boolean | string;
-    "Date of Death"?: Branch;
-    "("?: string;
-    "Time in forensic hospital"?: boolean;
-    "Used blindfold "?: boolean;
-    "Been to a psychologist (prior to "?: string;
-    "3"?: number;
-    "5"?: string;
-    "7"?: string;
-    J?: number;
-    "Books "?: string;
-    O?: string;
-    "Served in the military? "?: boolean;
-    "Branch "?: Branch;
-    "Mutilated body? "?: boolean;
-    "Ate part of the body? "?: boolean;
-    "Introduction to a Serial Killer "?: string;
-    "Marital status "?: MaritalStatus;
-    "Number of children "?: boolean | number;
-    "Counties where killing occurred"?: string;
-    "Victim 2"?: Branch;
-    "Physical defect"?: boolean;
-    "Living at"?: string;
-    "Tortured Victim?"?: boolean;
-    "again, and third marriage ends in divorce.  Hicks then "?: string;
-    "Fired setting "?: boolean;
-    "Types of jobs worked "?: string;
-    "Employment status during series "?: string;
-    "Abused drugs?  "?: boolean;
-    "Killer Psychological "?: string;
-    "Killed prior to series?  "?: string;
-    "Was the NGRI plea "?: string;
-    "room at Boarding Home of Mrs. John Jones and stayed "?: string;
-    H?: string;
-    "September 18, "?: string;
+function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretype) {
+    let line: SVGPathElement = e.target as SVGPathElement
+    let stereotype = line.dataset["stereotype"]
+    setSteoretype(Number(stereotype))
 }
 
-export enum Branch {
-    NA = "N/A",
-    White = "White",
+function standard_deviation(values_by_category, data_length) {
+    let values = values_by_category
+    const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
+    let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
+    //console.log("mean", mean, "res", res)
+    return res
 }
 
-export enum CountryWhereKillingOccurred {
-    England = "England",
-    GreatBritain = "Great Britain",
-    UnitedStates = "United States",
-}
+let keysOfInterst = [
+    "Served in the military?",
+    "Marital status",
+    "Spent time incarcerated?",
+    "Sexual preference", "Gender of victims", "Gender of killer"
+]
 
-export enum DidKillerConfessToThisMurderEnum {
-    DidKillerConfessToThisMurder = "-----",
-    DidKillerConfessToThisMurderNA = "n/a",
-    Empty = "--",
-    NA = "N/A",
-    Na = "NA",
-    PurpleNA = "N/a",
-}
-
-export enum Sex {
-    Both = "both",
-    Female = "Female",
-    Male = "Male",
-}
-
-export enum MaritalStatus {
-    Divorced = "Divorced",
-    Married = "Married",
-    Single = "Single",
-}
-
-export enum WasTheNgriPleaSuccessful {
-    False = "False",
-}
-
-export enum SexualPreferenceEnum {
-    Bisexual = "Bisexual",
-    Heterosexual = "Heterosexual",
-    Homosexual = "Homosexual",
+let simpleKeys = {
+    "Served in the military?": "Military",
+    "Marital status": "Marriage",
+    "Spent time incarcerated?": "Incarcerated",
+    "Sexual preference": "Orientation",
+    "Gender of victims": "Victim's Gender",
+    "Gender of killer": "Gender"
 }
 
 
-function getStandardDeviation(array) {
-    const n = array.length
-    const mean = array.reduce((a, b) => a + b) / n
-    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+function buildLinks() {
+
 }
 
-class Props {
-    data: [Killers] // json with killers data
-    targets: []  // datapoints of interest
+
+function buildOrder() {
+
 }
 
-export default function SankeyDiagram(props: Props) {
-    /* Select killer by line One line -> one killer
-    * Color killers by sterotype
-    * Filter/Reorder&Highlight data according to idxs
-    *
-    * On highlight fade everyone else
-    * Add reorder hability
-    * */
-    const [data, setData] = useState(null);
-    const dragElement = useRef(null);
-    const graph = useRef(null);
-    const offset = useRef(null);
-    useEffect(() => {
-        fetch("https://raw.githubusercontent.com/ozlongblack/d3/master/energy.json")
-            .then(res => res.json())
-            .then(data => setData(data));
-    }, []);
 
-    useEffect(() => {
-        window.addEventListener("mouseup", onMouseUp);
-        window.addEventListener("mousedown", onMouseDown);
-        window.addEventListener("mousemove", onMouseMove);
-
-        return () => {
-            window.removeEventListener("mouseup", onMouseUp);
-            window.removeEventListener("mousedown", onMouseDown);
-            window.removeEventListener("mousemove", onMouseMove);
-        };
-    }, []);
-    let som = "stereotype"
-    let keysOfInterst = ["Served in the military?",
-        "Marital status",
-        //"Sexual preference",
-       // "Gender of victims",
-        //"Gender"
-    ]
-    let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
-    // find the most uniform attributes for the targets
-    let killers: [Killers] = props.data
-    if (killers.length === 1) return <div> Loding</div>
-    let frequencies = {}
-    let data_length = props.data.length
-    for (let k of keysOfInterst) frequencies[k] = {}
-    if (props.targets.length == 0) {// use all data
-        // get frequencies of values
-        for (let i = 0; i < props.data.length; i++) {
-            let person = killers[i]
-            for (let k of keysOfInterst) {
-                let f = frequencies[k]
-                let value = person[k]
-                f[value] = f[value] === undefined ? 1 : f[value] + 1
-            }
-        }
-    }
-    // data keys// values of the data // their frequencies
-
-    if (killers.length == 0) return <div>Loas</div>
-
-    function standard_deviation(values_by_category) {
-        let values = values_by_category
-        const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
-        let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
-        console.log("mean", mean, "res", res)
-        return res
-    }
-
-    let ordered_frequencies = Object.keys(frequencies).map((key) => [key, frequencies[key]]);
-    console.log(ordered_frequencies)
-    let n = ordered_frequencies.sort((key1, key2) =>
-        standard_deviation(
-            Object.values(key1[1])
-        ) > standard_deviation(
-            Object.values(key2[1])
-        ) ? -1 : 1
-    )
-    console.log("Sorted", n)
-
-
-    /*
-    for (let k of keysOfInterst) {
-       let f = frequencies[k]
-       for (let v of f) f[v]= f[v] / data_length
-       }
-    }
-
-     */
-
+function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], selectedSterotypes) {
     let _nodes = []
-    for (let attribute in frequencies){
-        for( let  category in frequencies[attribute]){
+    for (let attribute in frequencies) {
+        for (let category in frequencies[attribute]) {
             _nodes.push(
                 {
                     name: attribute + " " + category
@@ -587,112 +63,288 @@ export default function SankeyDiagram(props: Props) {
             )
         }
     }
+    let _s_nodes = []
+    for (let n of _nodes) {
+        for (let s of sterotypes_types) {
+            _s_nodes.push({...n, name: n.name + " " + s})
+        }
+    }
+    _nodes = _s_nodes
+    // sort so all of the same values are together
+    _nodes = _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
+    _nodes = _nodes.sort((a, b) => {
+        let Aattr = a.name.slice(0, -2)
+        let Battr = b.name.slice(0, -2)
+        let Astero = a.name[a.name.length - 1]
+        let Bstero = b.name[b.name.length - 1]
+        //console.log(Astero, Bstero, Aattr, Battr)
+        // first sort acording to attributes
+        if (Aattr != Battr) return Aattr < Battr ? -1 : 1
+        let Aselected = selectedSterotypes.includes(Number(Astero))
+        let Bselected = selectedSterotypes.includes(Number(Bstero))
+        // if they are of the same "group" normal string ordering
+        if (Aselected && Bselected || !Aselected && !Bselected) return Astero < Bstero ? -1 : 1
+        return Aselected ? 1 : -1 // else give priority to the node selected
 
-    console.log("Frequencies", frequencies)
+    })
+    //console.log(_nodes)
+    //console.log(_nodes.map(n => n.name))
+    return _nodes
+}
+
+export default function SankeyDiagram(props: { data: [Killers] }) {
+    const graph = useRef(null);
+    let context = useContext(Context)
+    let setStereotype = context.setStereotype
+    let setKiller = context.setKill
+    let currentKiller = context.state.currentKiller
+    let currentStereotype = context.state.currentStereotypes.length == 0 ? null : context.state.currentStereotypes[0] // the stereotype which the graph will be ordered by
+    let selectedStereotypes = context.state.currentStereotypes.length == 0 ? [0, 1, 2, 3, 4, 5, 6, 7] : context.state.currentStereotypes
+
+    let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
+    let sankeyContainerRef = useRef(null)
+    let [size, setSize] = useSize({width: 400, height: 300}, sankeyContainerRef)
+
+
+    // find the most uniform attributes for the targets
+    let killers: [Killers] = props.data
+    let frequencies = {}
+    for (let k of keysOfInterst) frequencies[k] = {}
+    let killers_for_order = currentStereotype != null ? killers.filter(k => k.stereotype == currentStereotype) : killers
+    // get frequencies of values
+    for (let i = 0; i < killers.length; i++) {
+        let person = killers[i]
+        for (let k of keysOfInterst) {
+            let f = frequencies[k]
+            let value = person[k]
+            if (killers_for_order.indexOf(person) == -1) {
+                f[value] = f[value] === undefined ? 1 : f[value]
+            } else f[value] = f[value] === undefined ? 1 : f[value] + 1
+        }
+    }
+    // data keys// values of the data // their frequencies
+
+
+    let ordered_frequencies: [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
+
+    ordered_frequencies = ordered_frequencies.sort((key1, key2) =>
+        standard_deviation(
+            Object.values(key1[1]), killers_for_order.length
+        ) > standard_deviation(
+            Object.values(key2[1]), killers_for_order.length
+        ) ? -1 : 1
+    )
+
+    let [attributeOrder, setAttributeOrder] = useState(ordered_frequencies.map(v => v[0]))
+    ordered_frequencies = ordered_frequencies.sort((a, b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
+
+    if (killers.length == 0) return <div>Loading :)</div>
+
+
+    const sterotypes_types = currentStereotype != null ? [0, 1, 2, 3, 4, 5, 6, 7] : [" "]
+    let _nodes = buildNodes(frequencies, sterotypes_types, selectedStereotypes);
+
+
+    //console.log("Frequencies", frequencies)
     let _links = []
     for (let kil of killers) {
-        for (let i = 1; i < ordered_frequencies.length-2; i++) {
+        for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
             let source_value = kil[source_name]
+            //console.log(source_name, source_value)
 
-            let target_name = ordered_frequencies[i ][0]
+            let target_name = ordered_frequencies[i][0]
             let target_value = kil[target_name]
+            // console.log(target_name, target_value)
             _links.push({
-                source: _nodes.findIndex(v => v.name == source_name + " " + source_value),
-                target: _nodes.findIndex(v => v.name == target_name + " " + target_value),
-                value: 1,
-                color: "#ddddd"
+                source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
+                target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
+                value: kil.stereotype,
+                color: "#ddddd",
+                killerid: killers.indexOf(kil),
+                stereotype: kil.stereotype
             })
         }
     }
-    //for (let i = 1; i < ordered_frequencies.length; i++) {
-    //   let l = {
-    //       source: keysOfInterst.indexOf(ordered_frequencies[i - 1][0]),
-    //       target: keysOfInterst.indexOf(ordered_frequencies[i][0]),
-    //       value: 10,
-    //       color: "#ddddd"
-    //   }
-    //   _links.push(l)
-  // }
     let sankeyData = {
         nodes: _nodes,
         links: _links
     }
-    console.log("SUNK", sankeyData)
 
-
-    //sankeyData = data
-    if (data === null) return <div> hi</div>
-    console.log("sank", data)
-
-
-    const _sankey = sankey(sankeyData)
+    let _sankey = sankey(sankeyData)
         .nodeAlign(sankeyJustify)
         .nodeWidth(10)
         .nodePadding(10)
-        .extent([[0, 0], [size.width, size.height]]);
-
-    const onMouseUp = e => {
-        dragElement.current = null;
-    };
-
-    const onMouseDown = e => {
-        if (e.target.tagName === "rect") {
-            dragElement.current = e.target;
-            offset.current = getMousePosition(e);
-            offset.current.y -= parseFloat(e.target.getAttributeNS(null, "y"));
-        }
-    };
-
-    const onMouseMove = e => {
-        if (dragElement.current) {
-            const coord = getMousePosition(e);
-            dragElement.current.setAttributeNS(null, "y", coord.y - offset.current.y);
-        }
-    };
+        .extent([[0, 0], [size.width, size.height]])
+    _sankey = _sankey.iterations(0)
 
 
-    graph.current = _sankey(sankeyData);
+    graph.current = _sankey(sankeyData)
+    //graph.current.linkSort(null);
     const {links, nodes} = graph.current;
-    if (links.map == null || nodes == null) return <div>Loading</div>
+    if (links == null || nodes == null) return <div>Loading</div>
+    console.log(nodes, links)
+
+    //if (size.width != s.clientWidth || size.height != s.clientHeight) setSize({width: s.getBBox().width, height : s.getBBox().height})
+    let r: Element = sankeyContainerRef.current
+    if (r != null && r.getBoundingClientRect().height != size.height && r.getBoundingClientRect().width != size.width) {
+        setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})
+    }
+
 
     return (
-        <svg width={size.width} height={size.height}>
-            <g>
-                {links.map((d, i) => (
-                    <Link
-                        data={d}
-                        width={d.width}
-                        length={nodes.length}
-                        colors={"#dddddd"}
+        <>
+            <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+                standard_deviation(
+                    Object.values(key1[1]), killers_for_order.length
+                ) > standard_deviation(
+                    Object.values(key2[1]), killers_for_order.length
+                ) ? -1 : 1
+            ).map(v => v[0]))}><span className={"inter"}>Sankey Diagram</span></h2>
+            <div ref={sankeyContainerRef} id={"sankeyContainer"}
+                 style={{overflow: "show", zIndex: "1000", width: "100%", height: "80%"}}>
 
-                    />
-                ))}
-            </g>
-            <g>
-                {nodes.map((d, i) => (
-                    <Rect
-                        index={d.index}
-                        x0={d.x0}
-                        x1={d.x1}
-                        y0={d.y0}
-                        y1={d.y1}
-                        name={d.name}
-                        value={d.value}
-                        length={nodes.length}
-                        colors={"#dddddd"}
-                    />
-                ))}
-            </g>
-        </svg>
+                <svg id="sankey" className="sankey" ref={(s) => {
+                    sankeyRef["current"] = s
+                    if (s === null) return
+                    document.querySelectorAll("path").forEach((p) => {
+                        p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
+                    })
+                }
+                } width={size.width} height={size.height}>
+                    <g>
+                        <defs>
+                            <filter id="red-glow" filterUnits="userSpaceOnUse"
+                                    x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur10"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur20"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30"/>
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blur50"/>
+                                <feMerge result="blur-merged">
+                                    <feMergeNode in="blur10"/>
+                                    <feMergeNode in="blur20"/>
+                                    <feMergeNode in="blur30"/>
+                                    <feMergeNode in="blur50"/>
+                                </feMerge>
+                                <feColorMatrix result="red-blur" in="blur-merged" type="matrix"
+                                               values="1 0 0 0 0
+                             0 0.06 0 0 0
+                             0 0 0.44 0 0
+                             0 0 0 1 0"/>
+                                <feMerge>
+                                    <feMergeNode in="red-blur"/>
+                                    <feMergeNode in="blur5"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+
+                        {links.map((d, i) => {
+                            let isCurrentKiller = d.killerid == currentKiller
+                            //console.log(isCurrentKiller, d.killerid, currentKiller)
+                            let allSteortpesSelected = selectedStereotypes.length == 8
+                            //console.log(selectedStereotypes, "JJJJJJJJJJJJJJJJJJJJJJ")
+                            let isFromSelectedStereotye = selectedStereotypes.includes(d.stereotype)
+
+                            // Select stroke color
+                            let strokeColor = `url(#gradient-${d.index})` // default color
+                            if (isCurrentKiller) strokeColor = "white"
+                            else if (allSteortpesSelected) strokeColor = strokeColor
+                            else if (isFromSelectedStereotye) strokeColor = context.state.stereotypes[d.stereotype].color
+
+                            // Select opacity
+                            let opacity = 0.1 // default opacity
+                            if (isCurrentKiller) opacity = 1
+                            else if (allSteortpesSelected) opacity = 0.4
+                            else if (isFromSelectedStereotye) opacity = 0.5
+
+                            // Select stroke width
+                            let strokeWidth = 4
+                            if (isCurrentKiller) strokeWidth = 5
+                            else if (allSteortpesSelected) strokeWidth = 1
+
+
+                            return (
+                                <Link
+                                    data={d}
+                                    width={6}
+                                    length={nodes.length}
+                                    colors={"#dddddd"}
+                                    stopColor={allSteortpesSelected ? "red" : "0"}
+                                    strokeWidth={strokeWidth}
+                                    strokeOpacity={opacity}
+                                    stroke={strokeColor}
+                                    key={i}
+                                />
+                            );
+                        })
+                        }
+                    </g>
+                    <g>
+                        {nodes.map((d, i) => {
+                                let final_name = ""//d.name.split(" ").filter(v => v != "")
+                                let thisSteorotype = d.name.split(" ").filter(v => v != "").filter(v => !isNaN(Number(v)))[0]
+                                let allSteortpesSelected = selectedStereotypes.length == 8
+
+                                let thisNodeAttr = nodes[i]?.name.slice(0, -2)
+                                let nextNodeAttr = nodes[i + 1]?.name.slice(0, -2)
+                                let prevNodeAttr = nodes[i - 1]?.name.slice(0, -2)
+                                let isBoundary = thisNodeAttr != nextNodeAttr || thisNodeAttr !== prevNodeAttr
+                                if (isBoundary) final_name = "--------"
+                                let j, k, found=false;
+                                for (j = 0; j <= 4; j++) {
+                                    let nextNodeAttr = nodes[i + j]?.name.slice(0, -2)
+                                    if (nextNodeAttr != thisNodeAttr) {
+                                        found = true
+                                        break
+                                    }
+                                }
+                                for (k = 0; k < 4; k++) {
+                                    let nextNodeAttr = nodes[i - k]?.name.slice(0, -2)
+                                    if (nextNodeAttr != thisNodeAttr) break
+                                }
+                                if (j == 4 && found || allSteortpesSelected) {
+                                    final_name = thisNodeAttr.split(" ")
+                                    final_name = final_name[final_name.length-1]
+                                }
+                                let yPos1 = d.y1, yPos0 = d.y0;
+                                if(!isBoundary){
+                                        yPos1 = nodes[i+1]?.y1
+                                        yPos1 = yPos1 == undefined ? d.y1 : yPos1
+
+                                        yPos0 = nodes[i-1]?.y0
+                                        yPos0 = yPos0 == undefined ? d.y0 : yPos0
+                                }
+
+
+                                return <Rect
+                                    key={i}
+                                    currentStereotype={currentStereotype}
+                                    index={d.index}
+                                    x0={d.x0}
+                                    x1={d.x1}
+                                    y0={yPos0-2}
+                                    y1={yPos1-2}
+                                    name={final_name}
+                                    value={d.value}
+                                    length={nodes.length}
+                                    colors={"#dddddd"}
+                                    strokeDasharray={` ${d.x0 - d.x1}, ,0,0,00` //} thisSteorotype == 0 ? "10,0,0,0" : thisSteorotype == 8 ? "0,0,0,10" : 0}
+                                    }
+                                    size={size}
+                                />
+                            }
+                        )
+                        }
+                    </g>
+                </svg>
+                {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
+                    Object.keys(simpleKeys).find(key => simpleKeys[key] == v)   // convert to "complex" key name
+                ))
+                } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>}
+            </div>
+        </>
     );
-
-
-    /*
-    console.log(sankey.sankey())
-    if(sankeyRef.current != null)
-    d3.select(sankeyRef.current).append("g").selectAll("path").data(sankeyData.links).join("path").attr("d",sankey.sankeyLinkHorizontal())
-
-       return <svg id={"sankey"} ref={sankeyRef}></svg>
-       */
 }
