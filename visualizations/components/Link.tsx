@@ -2,7 +2,7 @@ import {sankeyLinkHorizontal} from "d3-sankey";
 import {useContext} from "react";
 import {Context} from "../Context";
 
-export default function Link({data, width, length, colors, stroke, strokeOpacity, strokeWidth}){
+export default function Link({data, width, length, colors, stroke, strokeOpacity, strokeWidth, stopColor}){
     const link = sankeyLinkHorizontal();
     let context = useContext(Context)
     let selectedStereotypes = context.state.currentStereotypes
@@ -20,7 +20,7 @@ export default function Link({data, width, length, colors, stroke, strokeOpacity
                 >
                     <stop offset="0"
                           stopColor={
-                              0 //colors(data.source.index / length)} />}
+                              stopColor //colors(data.source.index / length)} />}
                           }></stop>
                     < stop
                         offset="100%"

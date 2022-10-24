@@ -32,6 +32,7 @@ export default function Home() {
         k.stereotype = k.Stereotype
         k.stereotype_pos = k["Stereotype Position"]
         k["Served in the military?"] = k["Served in the military?"] == null ? false : k["Served in the military?"]
+        k["Served in the military?"] = typeof k["Served in the military?"] !== "boolean"  ? true : k["Served in the military?"]
         k["Spent time incarcerated?"] = k["Spent time incarcerated?"] == null ? false : k["Spent time incarcerated?"]
         k["Marital status"] = k["Marital status"] == null ? "Single" : k["Marital status"]
         k["Gender of victims"] = k["Gender of victims"] == null ? "Male" : k["Gender of victims"]

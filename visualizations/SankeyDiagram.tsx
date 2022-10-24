@@ -72,22 +72,22 @@ function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], sele
     _nodes = _s_nodes
     // sort so all of the same values are together
     _nodes = _nodes.sort((a, b) => a.name.slice(0, -2) == b.name.slice(0, -2) ? 0 : -1)
-    _nodes = _nodes.sort((a,b) =>{
+    _nodes = _nodes.sort((a, b) => {
         let Aattr = a.name.slice(0, -2)
         let Battr = b.name.slice(0, -2)
-        let Astero = a.name[a.name.length-1]
-        let Bstero = b.name[b.name.length-1]
+        let Astero = a.name[a.name.length - 1]
+        let Bstero = b.name[b.name.length - 1]
         console.log(Astero, Bstero, Aattr, Battr)
         // first sort acording to attributes
-        if(Aattr != Battr) return Aattr < Battr ? -1 : 1
+        if (Aattr != Battr) return Aattr < Battr ? -1 : 1
         let Aselected = selectedSterotypes.includes(Number(Astero))
         let Bselected = selectedSterotypes.includes(Number(Bstero))
         debugger;
         // if they are of the same "group" normal string ordering
-        if(Aselected && Bselected || !Aselected && !Bselected) return Astero < Bstero ? -1 : 1
+        if (Aselected && Bselected || !Aselected && !Bselected) return Astero < Bstero ? -1 : 1
         return Aselected ? 1 : -1 // else give priority to the node selected
 
-    } )
+    })
     console.log(_nodes)
     console.log(_nodes.map(n => n.name))
     return _nodes
@@ -100,7 +100,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     let setKiller = context.setKill
     let currentKiller = context.state.currentKiller
     let currentStereotype = context.state.currentStereotypes.length == 0 ? null : context.state.currentStereotypes[0] // the stereotype which the graph will be ordered by
-    let selectedStereotypes = context.state.currentStereotypes
+    let selectedStereotypes = context.state.currentStereotypes.length == 0 ? [0, 1, 2, 3, 4, 5, 6, 7] : context.state.currentStereotypes
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
@@ -246,22 +246,25 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                             let isCurrentKiller = d.killerid == currentKiller
                             console.log(isCurrentKiller, d.killerid, currentKiller)
                             let allSteortpesSelected = selectedStereotypes.length == 8
+                            console.log(selectedStereotypes, "JJJJJJJJJJJJJJJJJJJJJJ")
                             let isFromSelectedStereotye = selectedStereotypes.includes(d.stereotype)
 
                             // Select stroke color
                             let strokeColor = `url(#gradient-${d.index})` // default color
                             if (isCurrentKiller) strokeColor = "white"
+                            else if (allSteortpesSelected) strokeColor = strokeColor
                             else if (isFromSelectedStereotye) strokeColor = context.state.stereotypes[d.stereotype].color
 
                             // Select opacity
                             let opacity = 0.1 // default opacity
-                            if(isCurrentKiller) opacity = 1
-                            else if(allSteortpesSelected) opacity = 0.4
-                            else if(isFromSelectedStereotye) opacity = 0.25
+                            if (isCurrentKiller) opacity = 1
+                            else if (allSteortpesSelected) opacity = 0.4
+                            else if (isFromSelectedStereotye) opacity = 0.25
 
                             // Select stroke width
                             let strokeWidth = 4
-                            if(currentKiller) strokeWidth = 5
+                            if (isCurrentKiller) strokeWidth = 5
+                            else if (allSteortpesSelected) strokeWidth = 1
 
 
                             return (
@@ -270,6 +273,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     width={6}
                                     length={nodes.length}
                                     colors={"#dddddd"}
+                                    stopColor={allSteortpesSelected ? "red" : "0"}
                                     strokeWidth={strokeWidth}
                                     strokeOpacity={opacity}
                                     stroke={strokeColor}
@@ -281,19 +285,29 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                     </g>
                     <g>
                         {nodes.map((d, i) => {
-                                let final_name = d.name.split(" ").filter(v => v != "")
-                                let thisSteorotype = final_name.filter(v => !isNaN(Number(v)))[0]
+                                let final_name = ""//d.name.split(" ").filter(v => v != "")
+                                let thisSteorotype = d.name.split(" ").filter(v => v != "").filter(v => !isNaN(Number(v)))[0]
 
-                                if (currentStereotype === null) {
-                                    final_name = final_name[final_name.length - 1]
-                                    debugger
-                                } else {
-                                    final_name = currentStereotype == null ? final_name.slice(final_name.length - 2, final_name.length - 1) : // -2 to take the stereotype
-                                        final_name.slice(final_name.length - 2, final_name.length).join(" ")
-                                    if (final_name.indexOf("4") != -1) final_name = final_name.split(" ")[0] + ""
-                                    else if (final_name.indexOf("0") != -1 || final_name.indexOf("7") != -1) {
-                                        final_name = "----------"
-                                    } else final_name = ""
+                                let thisNodeAttr = nodes[i]?.name.slice(0, -2)
+                                let nextNodeAttr = nodes[i + 1]?.name.slice(0, -2)
+                                let prevNodeAttr = nodes[i - 1]?.name.slice(0, -2)
+                                let isBoundary = thisNodeAttr != nextNodeAttr || thisNodeAttr !== prevNodeAttr
+                                if (isBoundary) final_name = "--------"
+                                let j, k, found=false;
+                                for (j = 0; j <= 4; j++) {
+                                    let nextNodeAttr = nodes[i + j]?.name.slice(0, -2)
+                                    if (nextNodeAttr != thisNodeAttr) {
+                                        found = true
+                                        break
+                                    }
+                                }
+                                for (k = 0; k < 4; k++) {
+                                    let nextNodeAttr = nodes[i - k]?.name.slice(0, -2)
+                                    if (nextNodeAttr != thisNodeAttr) break
+                                }
+                                if (j == 4 && found) {
+                                    final_name = thisNodeAttr.split(" ")
+                                    final_name = final_name[final_name.length-1]
                                 }
 
                                 return <Rect
