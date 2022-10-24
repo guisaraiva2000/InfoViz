@@ -4,7 +4,7 @@ export const Context = createContext()
 
 const initialState = {
   currentKiller: null,
-  currentStereotypes: [0, 1, 2],
+  currentStereotypes: [0, 1, 4],
   stereotypes: {
     0: {color: "#CC333F"},
     1: {color: "#CC6E33"},
