@@ -27,7 +27,16 @@ export default function Home() {
   const [loading3, setLoading3] = useState(true);
 
   useEffect(() => {
-    d3.json("clean_final.json").then((d) => {
+    d3.json("FINAL.json").then((d) => {
+      d.map(k  => {
+        k.stereotype = k.Stereotype
+        k.stereotype_pos = k["Stereotype Position"]
+        k["Served in the military?"] = k["Served in the military?"] == null ? false : k["Served in the military?"]
+        k["Spent time incarcerated?"] = k["Spent time incarcerated?"] == null ? false : k["Spent time incarcerated?"]
+        k["Marital status"] = k["Marital status"] == null ? "Single" : k["Marital status"]
+        k["Gender of victims"] = k["Gender of victims"] == null ? "Male" : k["Gender of victims"]
+
+      } )
       setKillersData(d);
       setLoading1(false);
     });

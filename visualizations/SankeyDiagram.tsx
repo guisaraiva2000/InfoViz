@@ -561,17 +561,17 @@ function standard_deviation(values_by_category, data_length) {
 let keysOfInterst = [
     "Served in the military?",
     "Marital status",
-    "Spend time in jail?",
-    "Sexual preference", "Gender of victims", "Gender"
+    "Spent time incarcerated?",
+    "Sexual preference", "Gender of victims", "Gender of killer"
 ]
 
 let simpleKeys = {
     "Served in the military?": "Military",
     "Marital status": "Marriage",
-    "Spend time in jail?": "Jail",
+    "Spent time incarcerated?": "Incarcerated",
     "Sexual preference": "Orientation",
     "Gender of victims": "Victim's Gender",
-    "Gender": "Gender"
+    "Gender of killer": "Gender"
 }
 
 
