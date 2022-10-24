@@ -20,7 +20,7 @@ export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray
                     style={{
                         fill: "#dddddd",//d3.rgb(colors(index / length)).darker(),
                         alignmentBaseline: "middle",
-                        fontSize: 9,
+                        fontSize: 13,
                         textAnchor: x0 < size.width / 2 ? "start" : "end",
                         zIndex: 1330,
                     }}

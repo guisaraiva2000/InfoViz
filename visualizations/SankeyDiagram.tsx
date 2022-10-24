@@ -309,6 +309,15 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     final_name = thisNodeAttr.split(" ")
                                     final_name = final_name[final_name.length-1]
                                 }
+                                let yPos1 = d.y1, yPos0 = d.y0;
+                                if(!isBoundary){
+                                        yPos1 = nodes[i+1]?.y1
+                                        yPos1 = yPos1 == undefined ? d.y1 : yPos1
+
+                                        yPos0 = nodes[i-1]?.y0
+                                        yPos0 = yPos0 == undefined ? d.y0 : yPos0
+                                }
+
 
                                 return <Rect
                                     key={i}
@@ -316,8 +325,8 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     index={d.index}
                                     x0={d.x0}
                                     x1={d.x1}
-                                    y0={d.y0}
-                                    y1={d.y1}
+                                    y0={yPos0-2}
+                                    y1={yPos1-2}
                                     name={final_name}
                                     value={d.value}
                                     length={nodes.length}
