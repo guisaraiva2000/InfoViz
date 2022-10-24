@@ -258,7 +258,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                             let opacity = 0.1 // default opacity
                             if (isCurrentKiller) opacity = 1
                             else if (allSteortpesSelected) opacity = 0.4
-                            else if (isFromSelectedStereotye) opacity = 0.25
+                            else if (isFromSelectedStereotye) opacity = 0.5
 
                             // Select stroke width
                             let strokeWidth = 4
@@ -286,6 +286,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                         {nodes.map((d, i) => {
                                 let final_name = ""//d.name.split(" ").filter(v => v != "")
                                 let thisSteorotype = d.name.split(" ").filter(v => v != "").filter(v => !isNaN(Number(v)))[0]
+                                let allSteortpesSelected = selectedStereotypes.length == 8
 
                                 let thisNodeAttr = nodes[i]?.name.slice(0, -2)
                                 let nextNodeAttr = nodes[i + 1]?.name.slice(0, -2)
@@ -304,7 +305,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     let nextNodeAttr = nodes[i - k]?.name.slice(0, -2)
                                     if (nextNodeAttr != thisNodeAttr) break
                                 }
-                                if (j == 4 && found) {
+                                if (j == 4 && found || allSteortpesSelected) {
                                     final_name = thisNodeAttr.split(" ")
                                     final_name = final_name[final_name.length-1]
                                 }
