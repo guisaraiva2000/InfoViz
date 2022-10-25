@@ -1,27 +1,122 @@
 html,
 body {
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  cursor: default;
+}
+
+
+.sankey div {
+    font-size: 10px;
+}
+
+.sankey text {
+    display: none;
+
+}
+
+:root {
+    --theme-color: #ff1e1e
+}
+#sankey:hover text{
+    display: block !important;
+   /* filter: url(#red-glow);
+    fill: white;
+    font-family: Helvetica, Arial, sansserif;
+
+    */
+
+}
+
+.inter:hover {
+    color: var(--theme-color)
+}
+.inter {
+    color:white
+}
+
+
+#scatter-stero > g > circle{
+transform: scale(1);
+transform-origin: center center;
+transition:.3s;
+    transform-box:fill-box;
+    stroke: black;
+    stroke-width: 0.3px;
+}
+
+.tooltip {
+    /* From https://css.glass */
+    border-radius: 16px;
+    color: green;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(13.1px);
+    -webkit-backdrop-filter: blur(13.1px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+#scatter-stero > g > circle.pre-selected{
+    transform: scale(2.5);
+    transform-origin: center center;
+    transition:.3s;
+    z-index: 10;
+}
+
+#scatter-stero > g > circle#selectedKiller{
+    transform: scale(4) !important;
+    animation: none!important;
+    transform-origin: center center;
+    stroke: white !important;
+    stroke-width: 1px !important;
+
+
+    /*transition:.3s;
+
+     */
+    z-index: 10;
+}
+
+#scatter-stero > g > circle.selectedS{
+    transition:1s;
+    stroke: none;
+    stroke-width: 0px;
+    animation: selectedSterAnim 0.5s infinite alternate ease-in;
+}
+
+@keyframes selectedSterAnim {
+    from  {
+        transform: scale(1);
+        stroke: white;
+        stroke-width: 0.2px;
+    }
+    to {
+        transform: scale(2);
+        stroke: white;
+        stroke-width: 0.2px;
+    }
+
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
+
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        color: white;
+        background: black;
+    }
 }
