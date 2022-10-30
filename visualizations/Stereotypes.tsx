@@ -3,7 +3,7 @@ import {useContext, useEffect} from "react";
 import styles from '../styles/Home.module.css'
 import {Context} from "./Context"
 
-function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereotypes) {
+function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
   const stereotypesDiv = d3.select("#stereotypes")
 
   const everything = stereotypesDiv.selectAll("*");
@@ -20,7 +20,7 @@ function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereoty
     .style("-moz-box-shadow", d => `${currentStereotypes.includes(Number(d)) ? "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("color", (d) => "white") //stereotypes[d].color)
-    .html((d: string) => d)
+    .html((d: string) => String.fromCharCode(Number(d) + 1 + 64))
     .on('click', (e, d: any) => {
       let remove = currentStereotypes.includes(Number(d))
       setStereotype(d, remove)
@@ -41,15 +41,15 @@ function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereoty
     })
 }
 
-const StereotypesFilter = (props) => {
+const StereotypesFilter = () => {
   const context = useContext(Context);
   let stereotypes = context.state.stereotypes
   let currentStereotypes = context.state.currentStereotypes
   const setStereotype = context.setStereotype
 
   useEffect(() => {
-    DrawStereotypesFilter(props.data, stereotypes, setStereotype, currentStereotypes);
-  },  [props.data, stereotypes, context])
+    DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes);
+  },  [stereotypes, context])
 }
 
 export default StereotypesFilter;

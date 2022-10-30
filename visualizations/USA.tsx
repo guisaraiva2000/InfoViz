@@ -1,22 +1,12 @@
 import * as d3 from "d3";
-import {feature, mesh} from "topojson-client";
+import {feature} from "topojson-client";
 import {FunctionComponent, useContext, useEffect, useRef} from "react";
 import styles from '../styles/Home.module.css'
-import {Context} from "./Context";
-
-function centroid()
-{
-  const path = d3.geoPath();
-  return feature => path.centroid(feature);
-}
-
-function DrawUsaChart(svgRef, killersData, victimsData) {
+import {initialState} from "./Context";
+import {Killers} from "../interfaces/killers";
 
 
-  return _chart(svgRef, killersData, victimsData);
-}
-
-function _chart(svgRef, us, victimsData) {
+function DrawUsaChart(svgRef, usMap, killersData: [Killers], victimsData) {
   const colorScale = d3.scaleLinear()
     .domain([
       d3.min(victimsData, (d:any): number => d.serialKillersVictims),
@@ -47,7 +37,7 @@ function _chart(svgRef, us, victimsData) {
   g.append("g")
     .attr("cursor", "pointer")
     .selectAll("path")
-      .data(feature(us, us.objects.states).features)
+      .data(feature(usMap, usMap.objects.states).features)
       .join("path")
       .attr("d", d3.geoPath())
       .on("click", clicked)
@@ -61,7 +51,33 @@ function _chart(svgRef, us, victimsData) {
       .append("title")
       .text((d: any) => d.properties.name)
 
+  g.append("g")
+    .attr("class", "bubble")
+    .selectAll("circle")
+    .data(killersData)
+    .enter()
+    .append("circle")
+    .attr("data-killerid", (d, i) => i)
+    .attr("transform", (d:any) => "translate(" + getPosition(d) + ")")
+    .attr("r", 3)
+    .style("fill", (d) => initialState.stereotypes[d.stereotype].color)
+    //.on("hover",  )
+
   svg.call(zoom);
+
+  function getPosition(d) {
+    const loc = d.Location.split(",");
+    const state = loc.slice(-1)[0].trim()
+    let county = loc.length > 1 ? loc.slice(-2)[0].trim() : ""
+
+    if (county) {
+      let countyEl = feature(usMap, usMap.objects.counties).features.find(c => (c.properties.name === county))
+      return countyEl && path.centroid(countyEl);
+    } else {
+      let stateEl = feature(usMap, usMap.objects.states).features.find(s => (s.properties.name === state))
+      return stateEl && path.centroid(stateEl);
+    }
+  }
 
   function reset() {
     g.selectAll("path")
@@ -113,16 +129,23 @@ function _chart(svgRef, us, victimsData) {
 const UsaChart: FunctionComponent = (props: any) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const context = useContext(Context);
-  let currentStereotypes = context.state.currentStereotypes
-  const setStereotype = context.setStereotype
-
   useEffect(() => {
-    DrawUsaChart(svgRef, props.mapData, props.victimsData);
-  }, [props.mapData, props.victimsData, currentStereotypes])
+    DrawUsaChart(
+      svgRef,
+      props.mapData,
+      props.killersData,
+      props.victimsData,
+    );
+  }, [
+    props.mapData,
+    props.killersData,
+    props.victimsData,
+    props.currentStereotypes,
+    props.stereotypes]
+  )
 
   return (
-    <svg ref={svgRef} className={styles.chart}/>
+    <svg ref={svgRef} className={styles.chart} id="usaChart"/>
   );
 }
 
