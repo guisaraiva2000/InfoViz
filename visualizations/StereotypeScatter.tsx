@@ -30,6 +30,10 @@ function handleMouseMove(event, currentKiller, setKiller,) {
             return aDist - bDist
         }
     )[0]
+    let [ax, ay] = [Number(closest_circle.getAttribute("cx")), Number(closest_circle.getAttribute("cy"))]
+    let aDist = Math.sqrt((ax - mouse[0]) ** 2 + (ay - mouse[1]) ** 2) // Norm distance
+    if(aDist > 100) return setKiller(null)
+
     closest_circle.classList.add("pre-selected")
     if (currentKiller !== closest_circle.dataset["killerid"]) setKiller(closest_circle.dataset["killerid"])
 }
@@ -143,7 +147,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
     })
     return <>
-        <h2><span className={"inter"}  onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >Serial Killer Stereotypes Distribution</span></h2>
+        <h2><span className={"inter"}  onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >All serial killers</span></h2>
         <div ref={plotRef} id={"scatter-stero-container"}
              style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
             <svg id={"scatter-stero"}
@@ -154,6 +158,19 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                  onMouseLeave={e => handleOnMouseOut(e, setKiller)}
                  onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
                 <g>{points}</g>
+                <g style={{transform: "translateY(-10px) translateX(10px)"}}>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"70%"} cy={"105%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"65%"} cy={"105%"}/>
+                    <text fill={"white"} x={"75%"} y={"107%"}>
+                        Less alike
+                    </text>
+
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"69%"} cy={"100%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"66%"} cy={"100%"}/>
+                    <text fill={"white"} x={"75%"} y={"102%"}>
+                        More alike
+                    </text>
+                </g>
             </svg>
         </div>
     </>
