@@ -15,15 +15,14 @@ function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
     .join("div")
     .attr("class", `w3-container ${styles["labels-container"]}`)
     .style("outline", (d) => `1px solid ${stereotypes[d].color}`)
-    /*.style("background", d => `${currentStereotypes.includes(Number(d)) ?  stereotypes[d].color : ' '}` )*/
     .style("-webkit-box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("-moz-box-shadow", d => `${currentStereotypes.includes(Number(d)) ? "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
-    .style("color", (d) => "white") //stereotypes[d].color)
+    .style("color", "white")
     .html((d: string) => String.fromCharCode(Number(d) + 1 + 64))
     .on('click', (e, d: any) => {
       let remove = currentStereotypes.includes(Number(d))
-      setStereotype(d, remove)
+      setStereotype(d, remove || currentStereotypes.length === 3)
     })
     .on('mouseover', function (e, d) {
       d3.select(styles["labels-container"])
@@ -37,7 +36,6 @@ function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
       d3.select(this)
         .style("outline", `1px solid ${stereotypes[d].color}`)
         .style("font-weight", "normal")
-
     })
 }
 

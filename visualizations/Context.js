@@ -22,14 +22,11 @@ export const initialState = {
 export function ContextProvider(props) {
   let [state, setState] = useState(initialState)
 
-
-
   const _setStereotype = (s, remove) => {
     s = Number(s)
     let currentStereotypes = state.currentStereotypes
 
     for(let s of currentStereotypes){
-      console.log(s)
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "") // remove class
     }
 
@@ -61,8 +58,6 @@ export function ContextProvider(props) {
       if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
-
-
 
   return <Context.Provider value={{setKiller: _setKiller, setStereotype: _setStereotype, state: state}}>
     {props.children}
