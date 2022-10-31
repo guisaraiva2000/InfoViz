@@ -167,6 +167,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                  onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
                 <g>{points}</g>
                 <g style={{transform: "translateY(-10px) translateX(10px)"}}>
+                   <rect x={"63%"} y={"97%"} width={"30%"} height={"12%"} strokeWidth={0.3} stroke={"white"} ></rect>
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"70%"} cy={"105%"}/>
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"65%"} cy={"105%"}/>
                     <text fill={"white"} x={"75%"} y={"107%"}>
