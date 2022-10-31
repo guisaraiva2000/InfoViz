@@ -94,7 +94,7 @@ export default function Home() {
               <StereotypeScatter data={killersData}></StereotypeScatter>
             </div>
             <div className={styles.card}>
-              <h2>Stereotype Attributes</h2>
+              <h2>Stereotype Indexes</h2>
               {loading1 && <div>loading</div>}
               {!loading1 && <RadarChart className={styles.chart} data={killersData}/>}
             </div>

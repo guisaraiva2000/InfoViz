@@ -42,7 +42,7 @@ circle{
     transform-origin: center center;
     transform-box:fill-box;
 
-    transition:1s;
+    transition:0.3s;
     transform-box:fill-box; /*properties regarding size are applied*/
     stroke: black;
     stroke-width: 0.3px;
@@ -69,7 +69,7 @@ transform-origin: center center;
     transform: scale(3.5);
     transform-origin: center center;
     transition:.3s;
-    z-index: 10;
+    z-index: 10001 !important;
 }
 
 #scatter-stero > g > circle#selectedKiller{
@@ -78,12 +78,12 @@ transform-origin: center center;
     transform-origin: center center;
     stroke: white !important;
     stroke-width: 1px !important;
+    z-index: 1000 !important;
 
 
     /*transition:.3s;
 
      */
-    z-index: 10;
 }
 
 
@@ -96,19 +96,21 @@ transform-origin: center center;
 
 #usaChart circle.selectedKiller {
     transform-origin: center center!important;
-    transform: scale(2) !important;
+    transform: scale(4) !important;
     animation: none!important;
     transform-origin: center center;
     stroke: white !important;
     stroke-width: 1px !important;
+    z-index: 100;
 }
 
 #scatter-stero > g > circle.selectedS{
-    transition:1s;
+    transition:0.3s;
     /*animation: selectedSterAnim 0.5s infinite alternate ease-in;
 
      */
     transform: scale(2);
+
 
 }
 
