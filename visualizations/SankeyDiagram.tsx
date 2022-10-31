@@ -103,7 +103,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
     let sankeyRef = useRef<MutableRefObject<SVGElement>>(null)
     let sankeyContainerRef = useRef(null)
-    let [size, setSize] = useSize({width: 400, height: 300}, sankeyContainerRef)
+    let [size, setSize] = useSize({width: 40, height: 100}, sankeyContainerRef)
 
 
     // find the most uniform attributes for the targets
@@ -201,8 +201,9 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                     Object.values(key2[1]), killers_for_order.length
                 ) ? -1 : 1
             ).map(v => v[0]))}><span className={"inter"}>Attribute Tracer</span></h2>
+            <div style={{display: "flex", flexFlow: "column", width:"100%", height:"100%", alignItems: "center"}}>
             <div ref={sankeyContainerRef} id={"sankeyContainer"}
-                 style={{overflow: "show", zIndex: "1000", width: "100%", height: "80%"}}>
+                 style={{overflow: "show", zIndex: "1000", flex:1, width: "100%" }}>
 
                 <svg id="sankey" className="sankey" ref={(s) => {
                     sankeyRef["current"] = s
@@ -340,6 +341,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                         }
                     </g>
                 </svg>
+            </div>
                 {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
                     Object.keys(simpleKeys).find(key => simpleKeys[key] == v)   // convert to "complex" key name
                 ))

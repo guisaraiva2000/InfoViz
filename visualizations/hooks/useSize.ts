@@ -5,10 +5,14 @@ export default function useSize(initial_state, ref) {
     useEffect(
         () => {
             let r = ref.current
-            if (r == null) return
-            setSize({width: size.width, height: r.getBoundingClientRect().height})
+            if (r == null || r == undefined) return
+            let dim = r.getBoundingClientRect()
+            setSize({width: dim.width, height: dim.height})
+            console.log("R CURRNT",r.current)
+            r.getElementsByTagName("svg")[0].setAttributeNS(null,"width",  dim.width)
+            r.getElementsByTagName("svg")[0].setAttributeNS(null,"height",dim.height)
         }
-        , [ref]
+        , [ref.current]
     )
     return [size, setSize]
 }

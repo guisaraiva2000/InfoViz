@@ -38,6 +38,9 @@ body {
     color:white
 }
 
+circle{
+    transform-origin: center center;
+}
 
 #scatter-stero > g > circle{
 transform: scale(1);
@@ -76,6 +79,11 @@ transition:.3s;
 
      */
     z-index: 10;
+}
+
+.selectedKiller {
+    transform: scale(10);
+    transform-origin: center center;
 }
 
 #scatter-stero > g > circle.selectedS{

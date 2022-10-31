@@ -62,7 +62,7 @@ export default function Home() {
 
       <main>
         <div className={styles.title}>
-          <h2>Comprehensive Overview of a Group of Serial Killers in the U.S.A.</h2>
+          <h2>Known Serial Killers in the U.S.A</h2>
         </div>
         <ContextProvider>
           {/* insert visualizations here */}

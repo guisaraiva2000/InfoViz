@@ -45,6 +45,14 @@ export function ContextProvider(props) {
   }
 
   const _setKiller = (k) => {
+    d3.select("#usaChart circle.selectedKiller")
+      .attr("className", "")
+
+    let targetKiller = state.currentKiller // old
+    document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)?.classList.remove("selectedKiller")
+    targetKiller = k // new
+    let newCircle = document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)
+      if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
 
