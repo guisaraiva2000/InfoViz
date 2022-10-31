@@ -139,6 +139,9 @@ const UsaChart: FunctionComponent = (props: any) => {
       props.killersData,
       props.victimsData,
     );
+    setTimeout(        () => { for(let s of initialState.currentStereotypes) {
+          d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
+        }}, 1000)
   }, [
     props.mapData,
     props.killersData,

@@ -321,6 +321,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
 
                                 return <Rect
+                                    d = {d}
                                     key={i}
                                     currentStereotype={currentStereotype}
                                     index={d.index}

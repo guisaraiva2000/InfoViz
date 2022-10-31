@@ -1,5 +1,5 @@
 
-export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray, value, length, colors, currentStereotype}) {
+export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray, value, length, colors, currentStereotype,d}) {
     return (
         <>
             <g>
@@ -12,6 +12,7 @@ export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray
                     data-index={index}
                     strokeDasharray={`0, ${5 - y1 - y0} ,${x1 - x0} `}
                     stroke={""}
+                    onClick={() => console.log(d)}
                 />
                 <text
                     xmlSpace={"preserve"}

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import {createContext, useEffect, useState} from "react";
 import * as d3 from "d3";
 
 export const Context = createContext()
@@ -18,14 +18,17 @@ export const initialState = {
   }
 };
 
+
 export function ContextProvider(props) {
   let [state, setState] = useState(initialState)
+
+
 
   const _setStereotype = (s, remove) => {
     s = Number(s)
     let currentStereotypes = state.currentStereotypes
 
-    for(let s in currentStereotypes){
+    for(let s of currentStereotypes){
       console.log(s)
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "") // remove class
     }
@@ -42,7 +45,7 @@ export function ContextProvider(props) {
         currentStereotypes = [s, ...currentStereotypes].slice(0, -1);
     }
     setState({...state, currentStereotypes: currentStereotypes})
-    for(let s in currentStereotypes){
+    for(let s of currentStereotypes){
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
       console.log(d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`))
     }
@@ -62,6 +65,8 @@ export function ContextProvider(props) {
       if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
+
+
 
   return <Context.Provider value={{setKiller: _setKiller, setStereotype: _setStereotype, state: state}}>
     {props.children}
