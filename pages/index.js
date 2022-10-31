@@ -64,6 +64,7 @@ export default function Home() {
         <div className={styles.title}>
           <h2>Comprehensive Overview of a Group of Serial Killers in the U.S.A.</h2>
         </div>
+        <ContextProvider>
           {/* insert visualizations here */}
           <div className={styles.grid}>
             <div className={styles.card}>
@@ -77,7 +78,6 @@ export default function Home() {
               />
               }
             </div>
-            <ContextProvider>
             <div className={styles.labels}>
               <h2>Stereotypes</h2>
               <div id="stereotypes">
@@ -88,9 +88,7 @@ export default function Home() {
             <div className={styles.card}>
               <SankeyDiagram data={killersData}></SankeyDiagram>
             </div>
-            </ContextProvider>
           </div>
-        <ContextProvider>
         <div className={styles.grid}>
             <div className={styles.card}>
               <StereotypeScatter data={killersData}></StereotypeScatter>
