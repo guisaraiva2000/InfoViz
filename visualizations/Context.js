@@ -24,6 +24,12 @@ export function ContextProvider(props) {
   const _setStereotype = (s, remove) => {
     s = Number(s)
     let currentStereotypes = state.currentStereotypes
+
+    for(let s in currentStereotypes){
+      console.log(s)
+      d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "") // remove class
+    }
+
     if (remove === true) { // remove
       let i = currentStereotypes.indexOf(s)
       if (i !== -1) currentStereotypes.splice(i, 1)
@@ -36,9 +42,10 @@ export function ContextProvider(props) {
         currentStereotypes = [s, ...currentStereotypes].slice(0, -1);
     }
     setState({...state, currentStereotypes: currentStereotypes})
-
-    d3.select("#usaChart circle.selectedS")
-      .attr("className", "")
+    for(let s in currentStereotypes){
+      d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
+      console.log(d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`))
+    }
 
     /*d3.select(`#usaChart circle[killerid=${context.currentKiller}]`)
       .attr("className", "selectedS")*/

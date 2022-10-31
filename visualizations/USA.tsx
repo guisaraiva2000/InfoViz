@@ -58,6 +58,7 @@ function DrawUsaChart(svgRef, usMap, killersData: [Killers], victimsData) {
     .enter()
     .append("circle")
     .attr("data-killerid", (d, i) => i)
+      .attr("data-stereotype", (d, i) => d["stereotype"])
       .attr("cx", d => getPosition(d)[0])
       .attr("cy", d=> getPosition(d)[1])
 
