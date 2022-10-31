@@ -87,7 +87,7 @@ transition:.3s;
 
 @keyframes selectedSterAnim {
     from  {
-        transform: scale(1);
+        transform: scale(2);
         stroke: white;
         stroke-width: 0.2px;
     }
