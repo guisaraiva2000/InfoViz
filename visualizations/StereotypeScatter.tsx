@@ -70,6 +70,14 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
     if (data != props.data) setData(props.data)
 
     useEffect(() => {
+        d3.select("#usaChart circle.selectedKiller")
+          .attr("className", "")
+
+        d3.select(`#usaChart circle[killerid=${context.currentKiller}]`)
+          .attr("className", "selectedKiller")
+    }, [context.currentKiller])
+
+    useEffect(() => {
             sync("selectedSterAnim")
             let Tooltip = d3.select("#scatter-stero-container   typo to disablethis")
                 .append("div")

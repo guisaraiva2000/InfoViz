@@ -8,7 +8,7 @@ export interface Killers {
   "Number of victims":        number | null;
   Weapon:                     boolean | null | string;
   IQ:                         number | null;
-  Location:                   boolean | string;
+  Location:                   string;
   Brutality:                  number;
   "Childhood Trauma":         number;
   "Psychological Perversion": number;
