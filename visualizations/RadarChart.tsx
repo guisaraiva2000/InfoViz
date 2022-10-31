@@ -102,7 +102,7 @@ function getParsedData(data: [Killers]) {
   return parsedData;
 }
 
-function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes, setStereotype) {
+function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes) {
   const data = currentStereotypes.length ?
     parsedData.data.filter(x => currentStereotypes.includes(x[0].stereotype))
     :
@@ -242,7 +242,6 @@ function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes, set
         .duration(200)
         .style('fill-opacity', config.opacityArea)
     })
-    .on('click', (e, d: any) => {setStereotype(d[0].stereotype)})
 
   //Create outlines
   blobWrapper.append('path')
@@ -317,7 +316,6 @@ const RadarChart: FunctionComponent = (props: Props) => {
   const context = useContext(Context);
   const stereotypes = context.state.stereotypes
   let currentStereotypes = context.state.currentStereotypes
-  const setStereotype = context.setStereotype
 
   const [parsedData, setParsedData] = useState(null)
 
@@ -326,7 +324,7 @@ const RadarChart: FunctionComponent = (props: Props) => {
   }, [props.data])
 
   if (svgRef.current !== null && parsedData !== null)
-    DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes, setStereotype);
+    DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes);
 
   return (
     <svg ref={svgRef} className={styles.chart}/>

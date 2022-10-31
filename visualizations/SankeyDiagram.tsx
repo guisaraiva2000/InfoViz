@@ -208,7 +208,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                 <svg id="sankey" className="sankey" ref={(s) => {
                     sankeyRef["current"] = s
                     if (s === null) return
-                    document.querySelectorAll("path").forEach((p) => {
+                    document.querySelectorAll("#sankey path").forEach((p) => {
                         p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
                     })
                 }

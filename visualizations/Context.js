@@ -47,11 +47,7 @@ export function ContextProvider(props) {
     setState({...state, currentStereotypes: currentStereotypes})
     for(let s of currentStereotypes){
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
-      console.log(d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`))
     }
-
-    /*d3.select(`#usaChart circle[killerid=${context.currentKiller}]`)
-      .attr("className", "selectedS")*/
   }
 
   const _setKiller = (k) => {
