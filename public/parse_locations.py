@@ -18,7 +18,7 @@ def get_county_from_city(killer):
 
 
 if __name__ == '__main__':
-    killers_json = open('FINAL.json', 'r', encoding='utf8')
+    killers_json = open('datasets/serial_killers.json', 'r', encoding='utf8')
     us_json = open('us_counties.json', 'r')
 
     us = json.load(us_json)

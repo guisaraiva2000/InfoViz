@@ -167,16 +167,16 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                  onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
                 <g>{points}</g>
                 <g style={{transform: "translateY(-10px) translateX(10px)"}}>
-                   <rect x={"63%"} y={"97%"} width={"30%"} height={"12%"} strokeWidth={0.3} stroke={"white"} ></rect>
-                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"70%"} cy={"105%"}/>
-                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"65%"} cy={"105%"}/>
-                    <text fill={"white"} x={"75%"} y={"107%"}>
+                   <rect x={"63%"} y={"95%"} width={"30%"} height={"12%"} strokeWidth={0.5} stroke={"white"} rx={10} ry={10}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"72%"} cy={"103%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"67%"} cy={"103%"}/>
+                    <text fill={"white"} x={"75%"} y={"105%"}>
                         Less alike
                     </text>
 
-                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"69%"} cy={"100%"}/>
-                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"66%"} cy={"100%"}/>
-                    <text fill={"white"} x={"75%"} y={"102%"}>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"71%"} cy={"98%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"68%"} cy={"98%"}/>
+                    <text fill={"white"} x={"75%"} y={"100%"}>
                         More alike
                     </text>
                 </g>

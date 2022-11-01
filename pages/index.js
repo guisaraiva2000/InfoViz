@@ -8,7 +8,6 @@ import {ContextProvider} from "../visualizations/Context"
 
 import {useEffect, useState} from "react";
  
-import StereotypePlot from "../visualizations/StereotypePlot";
 import SankeyDiagram from "../visualizations/SankeyDiagram";
  
 
@@ -27,7 +26,7 @@ export default function Home() {
   const [loading3, setLoading3] = useState(true);
 
   useEffect(() => {
-    d3.json("FINAL.json").then((d) => {
+    d3.json("datasets/serial_killers.json").then((d) => {
       d.map(k  => {
         k.stereotype = k.Stereotype
         k.stereotype_pos = k["Stereotype Position"]
@@ -42,11 +41,11 @@ export default function Home() {
       setKillersData(d);
       setLoading1(false);
     });
-    d3.json("us_w_counties.json").then((d) => {
+    d3.json("datasets/us_w_counties.json").then((d) => {
       setMapData(d);
       setLoading2(false);
     });
-    d3.csv("victims_by_state.csv").then((d) => {
+    d3.csv("datasets/victims_by_state.csv").then((d) => {
       setVictimsData(d);
       setLoading3(false);
     });
@@ -86,12 +85,12 @@ export default function Home() {
               </div>
             </div>
             <div className={styles.card}>
-              <SankeyDiagram data={killersData}></SankeyDiagram>
+              <SankeyDiagram data={killersData}/>
             </div>
           </div>
         <div className={styles.grid}>
             <div className={styles.card}>
-              <StereotypeScatter data={killersData}></StereotypeScatter>
+              <StereotypeScatter data={killersData}/>
             </div>
             <div className={styles.card}>
               <h2>Stereotype Indexes</h2>
