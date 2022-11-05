@@ -18,6 +18,7 @@ export const initialState = {
   }
 };
 
+export let contextValue = null;
 
 export function ContextProvider(props) {
   let [state, setState] = useState(initialState)
@@ -58,8 +59,8 @@ export function ContextProvider(props) {
       if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
-
-  return <Context.Provider value={{setKiller: _setKiller, setStereotype: _setStereotype, state: state}}>
+  contextValue = {setKiller: _setKiller, setStereotype: _setStereotype, state: state}
+  return <Context.Provider value={contextValue}>
     {props.children}
   </Context.Provider>;
 }

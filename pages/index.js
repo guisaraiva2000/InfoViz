@@ -1,15 +1,15 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
- 
+
 import RadarChart from "../visualizations/RadarChart.tsx";
 import UsaChart from "../visualizations/USA.tsx";
 
 import {ContextProvider} from "../visualizations/Context"
 
 import {useEffect, useState} from "react";
- 
+
 import SankeyDiagram from "../visualizations/SankeyDiagram";
- 
+
 
 import * as d3 from "d3";
 import StereotypesFilter from "../visualizations/Stereotypes";
@@ -20,7 +20,7 @@ export default function Home() {
 
   let [killersData, setKillersData] = useState([]);
   let [mapData, setMapData] = useState([]);
-  let [victimsData, setVictimsData] = useState([]);
+  let [victimsData, setVictimsData] = useState(null);
   const [loading1, setLoading1] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [loading3, setLoading3] = useState(true);
@@ -46,7 +46,14 @@ export default function Home() {
       setLoading2(false);
     });
     d3.csv("datasets/victims_by_state.csv").then((d) => {
-      setVictimsData(d);
+      const victimsData = new Map()
+      d.forEach(s =>
+        victimsData.set(s.State, {
+            "serialKillersVictims": s.serialKillersVictims,
+            "serialKillersVictimsPerCapita": s.serialKillersVictimsPerCapita
+        })
+      )
+      setVictimsData(victimsData);
       setLoading3(false);
     });
     return () => undefined;
