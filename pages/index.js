@@ -16,6 +16,8 @@ import * as d3 from "d3";
 import StereotypesFilter from "../visualizations/Stereotypes";
 import StereotypeScatter from "../visualizations/StereotypeScatter";
 
+import IndexScatter from "../visualizations/IndexScatter";
+
 
 export default function Home() {
 
@@ -102,6 +104,8 @@ export default function Home() {
             </div>
             <div className={styles.card}>
               <h2>Index Scatter</h2>
+              {loading1 && <div>loading</div>}
+              {!loading1 && <IndexScatter className={styles.chart} data={killersData} />}
             </div>
           </div>
         </ContextProvider>
