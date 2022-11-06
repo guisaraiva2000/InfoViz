@@ -66,9 +66,7 @@ export  default function Labels(props : LabelsProps) {
             });
         }
     }
-    return <div className={"sankeylabels"} style={{ display: "flex",width:
-        document.getElementById("sankey")?.offsetWidth
-        , fontSize: "10px", justifyContent: "space-between"}}>
+    return <div className={"sankeylabels"} style={{ display: "flex", width: "100%",fontSize: "13px", justifyContent: "space-between"}}>
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}

@@ -1,8 +1,9 @@
-import { createContext, useState } from "react";
+import {createContext, useEffect, useState} from "react";
+import * as d3 from "d3";
 
 export const Context = createContext()
 
-const initialState = {
+export const initialState = {
   currentKiller: null,
   currentStereotypes: [0, 1, 4],
   stereotypes: {
@@ -17,12 +18,19 @@ const initialState = {
   }
 };
 
+export let contextValue = null;
+
 export function ContextProvider(props) {
   let [state, setState] = useState(initialState)
 
   const _setStereotype = (s, remove) => {
     s = Number(s)
     let currentStereotypes = state.currentStereotypes
+
+    for(let s of currentStereotypes){
+      d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "") // remove class
+    }
+
     if (remove === true) { // remove
       let i = currentStereotypes.indexOf(s)
       if (i !== -1) currentStereotypes.splice(i, 1)
@@ -35,13 +43,24 @@ export function ContextProvider(props) {
         currentStereotypes = [s, ...currentStereotypes].slice(0, -1);
     }
     setState({...state, currentStereotypes: currentStereotypes})
+    for(let s of currentStereotypes){
+      d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
+    }
   }
 
   const _setKiller = (k) => {
+    d3.select("#usaChart circle.selectedKiller")
+      .attr("className", "")
+
+    let targetKiller = state.currentKiller // old
+    document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)?.classList.remove("selectedKiller")
+    targetKiller = k // new
+    let newCircle = document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)
+      if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
-
-  return <Context.Provider value={{setKiller: _setKiller, setStereotype: _setStereotype, state: state}}>
+  contextValue = {setKiller: _setKiller, setStereotype: _setStereotype, state: state}
+  return <Context.Provider value={contextValue}>
     {props.children}
   </Context.Provider>;
 }

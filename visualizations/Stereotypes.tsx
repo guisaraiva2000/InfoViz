@@ -3,7 +3,7 @@ import {useContext, useEffect} from "react";
 import styles from '../styles/Home.module.css'
 import {Context} from "./Context"
 
-function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereotypes) {
+function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
   const stereotypesDiv = d3.select("#stereotypes")
 
   const everything = stereotypesDiv.selectAll("*");
@@ -14,42 +14,42 @@ function DrawStereotypesFilter(data, stereotypes, setStereotype, currentStereoty
     .data(Object.keys(stereotypes))
     .join("div")
     .attr("class", `w3-container ${styles["labels-container"]}`)
-    .style("border", (d) => `1px solid ${stereotypes[d].color}`)
-    /*.style("background", d => `${currentStereotypes.includes(Number(d)) ?  stereotypes[d].color : ' '}` )*/
+    .style("outline", (d) => `${currentStereotypes.includes(Number(d)) ? "2px solid" : "1px solid"}` + `${stereotypes[d].color}`)
     .style("-webkit-box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("-moz-box-shadow", d => `${currentStereotypes.includes(Number(d)) ? "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
-    .style("color", (d) => "white") //stereotypes[d].color)
-    .html((d: string) => d)
+    .style("color", "white")
+    .style("font-weight", d => `${currentStereotypes.includes(Number(d)) ? "bold" : "normal"}`)
+    .html((d: string) => String.fromCharCode(Number(d) + 1 + 64))
     .on('click', (e, d: any) => {
       let remove = currentStereotypes.includes(Number(d))
-      setStereotype(d, remove)
+      setStereotype(d, remove || currentStereotypes.length === 3)
     })
     .on('mouseover', function (e, d) {
       d3.select(styles["labels-container"])
-        .style("border", `1px solid ${stereotypes[d].color}`)
+        .style("outline", `1px solid ${stereotypes[d].color}`)
         .style("font-weight", "normal")
       d3.select(this)
-        .style("border", `2px solid ${stereotypes[d].color}`)
+        .style("outline", `2px solid ${stereotypes[d].color}`)
         .style("font-weight", "bold")
     })
     .on('mouseout', function(e, d) {
-      d3.select(this)
-        .style("border", `1px solid ${stereotypes[d].color}`)
-        .style("font-weight", "normal")
-
+      if(!currentStereotypes.includes(Number(d)))
+        d3.select(this)
+          .style("outline", `1px solid ${stereotypes[d].color}`)
+          .style("font-weight", "normal")
     })
 }
 
-const StereotypesFilter = (props) => {
+const StereotypesFilter = () => {
   const context = useContext(Context);
   let stereotypes = context.state.stereotypes
   let currentStereotypes = context.state.currentStereotypes
   const setStereotype = context.setStereotype
 
   useEffect(() => {
-    DrawStereotypesFilter(props.data, stereotypes, setStereotype, currentStereotypes);
-  },  [props.data, stereotypes, context])
+    DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes);
+  },  [stereotypes, context])
 }
 
 export default StereotypesFilter;

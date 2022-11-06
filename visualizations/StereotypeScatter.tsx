@@ -30,6 +30,10 @@ function handleMouseMove(event, currentKiller, setKiller,) {
             return aDist - bDist
         }
     )[0]
+    let [ax, ay] = [Number(closest_circle.getAttribute("cx")), Number(closest_circle.getAttribute("cy"))]
+    let aDist = Math.sqrt((ax - mouse[0]) ** 2 + (ay - mouse[1]) ** 2) // Norm distance
+    if(aDist > 100) return setKiller(null)
+
     closest_circle.classList.add("pre-selected")
     if (currentKiller !== closest_circle.dataset["killerid"]) setKiller(closest_circle.dataset["killerid"])
 }
@@ -64,6 +68,14 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
     let [size, setSize] = useState({width: 400, height: 300})
     let [selectedKiller, setSelectedKiller] = useState("selectedKiller")
     if (data != props.data) setData(props.data)
+
+    useEffect(() => {
+        d3.select("#usaChart circle.selectedKiller")
+          .attr("className", "")
+
+        d3.select(`#usaChart circle[killerid=${context.currentKiller}]`)
+          .attr("className", "selectedKiller")
+    }, [context.currentKiller])
 
     useEffect(() => {
             sync("selectedSterAnim")
@@ -143,7 +155,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
     })
     return <>
-        <h2 className={"inter"} ><span onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >Stereotypes</span></h2>
+        <h2><span className={"inter"}  onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >All killers</span></h2>
         <div ref={plotRef} id={"scatter-stero-container"}
              style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
             <svg id={"scatter-stero"}
@@ -154,6 +166,20 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                  onMouseLeave={e => handleOnMouseOut(e, setKiller)}
                  onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
                 <g>{points}</g>
+                <g style={{transform: "translateY(-10px) translateX(10px)"}}>
+                   <rect x={"63%"} y={"95%"} width={"30%"} height={"12%"} strokeWidth={0.5} stroke={"white"} rx={10} ry={10}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"72%"} cy={"103%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"67%"} cy={"103%"}/>
+                    <text fill={"white"} x={"75%"} y={"105%"}>
+                        Less alike
+                    </text>
+
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"71%"} cy={"98%"}/>
+                    <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"68%"} cy={"98%"}/>
+                    <text fill={"white"} x={"75%"} y={"100%"}>
+                        More alike
+                    </text>
+                </g>
             </svg>
         </div>
     </>
