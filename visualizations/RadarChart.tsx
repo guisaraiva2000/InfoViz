@@ -102,14 +102,12 @@ function getParsedData(data: [Killers]) {
   return parsedData;
 }
 
-function DrawRadarChart(svgRef, parsedData, currentStereotypes, currentKiller, stereotypes) {
+function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes) {
   const data = currentStereotypes.length ?
     parsedData.data.filter(x => currentStereotypes.includes(x[0].stereotype))
     :
     parsedData.data
 
-  console.log(data)
-  console.log(currentKiller)
   const svg = d3.select(svgRef.current)
 
   const everything = svg.selectAll("*");
@@ -318,7 +316,6 @@ const RadarChart: FunctionComponent = (props: Props) => {
   const context = useContext(Context);
   const stereotypes = context.state.stereotypes
   let currentStereotypes = context.state.currentStereotypes
-  let currentKiller = context.state.currentKiller
 
   const [parsedData, setParsedData] = useState(null)
 
@@ -327,7 +324,7 @@ const RadarChart: FunctionComponent = (props: Props) => {
   }, [props.data])
 
   if (svgRef.current !== null && parsedData !== null)
-    DrawRadarChart(svgRef, parsedData, currentStereotypes, currentKiller, stereotypes);
+    DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes);
 
   return (
     <svg ref={svgRef} className={styles.chart}/>
