@@ -8,7 +8,7 @@ import sync from 'css-animation-sync';
 //remove preselection
 function handleOnMouseOut(event, setKiller) {
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
-    let selected = document.querySelector("#scatter-stero>g>circle#selectedKiller")
+    let selected: HTMLElement = document.querySelector("#scatter-stero>g>circle#selectedKiller")
 
     if (preselected !== null) preselected.classList.remove("pre-selected")
     selected != null ? setKiller(selected.dataset["killerid"]) : setKiller(null)
@@ -19,9 +19,9 @@ function handleOnMouseOut(event, setKiller) {
 function handleMouseMove(event, currentKiller, setKiller,) {
     let chart = event.target.closest("svg").getBoundingClientRect()
     let mouse = [event.pageX - chart.left, event.pageY - chart.top]
-    let circles = Array(...document.querySelectorAll("#scatter-stero>g>circle"))
+    let circles = Array.prototype.slice.call(document.querySelectorAll("#scatter-stero>g>circle"))
     circles.map(e => e.classList.remove("pre-selected"))
-    let closest_circle: Element = circles.sort((a: SVGCircleElement, b: SVGCircleElement) => {
+    let closest_circle: HTMLElement = circles.sort((a: SVGCircleElement, b: SVGCircleElement) => {
             let [ax, ay] = [Number(a.getAttribute("cx")), Number(a.getAttribute("cy"))]
             let [bx, by] = [Number(b.getAttribute("cx")), Number(b.getAttribute("cy"))]
             let aDist = Math.sqrt((ax - mouse[0]) ** 2 + (ay - mouse[1]) ** 2) // Norm distance
@@ -42,7 +42,7 @@ function handleMouseMove(event, currentKiller, setKiller,) {
 function handleClick(event, setKiller, setSelectedKiller) {
     let line: SVGPathElement = event.target as SVGPathElement
     let stereotype = line.dataset["stereotype"]
-    let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
+    let preselected: HTMLElement = document.querySelector("#scatter-stero>g>circle.pre-selected")
     let killer_id = preselected?.dataset["killerid"]
     let previousKiller = document.querySelector("#scatter-stero>g>circle#selectedKiller")
 

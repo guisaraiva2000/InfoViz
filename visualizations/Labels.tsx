@@ -36,6 +36,7 @@ export function SortableItem(props) {
 interface LabelsProps {
     label_names :string[],
     setLabels: (any) => null
+    onLabelChange : any
 }
 
 
@@ -59,7 +60,7 @@ export  default function Labels(props : LabelsProps) {
                 const oldIndex = items.indexOf(active.id);
                 const newIndex = items.indexOf(over.id);
 
-                let new_items =   arrayMove(items, oldIndex, newIndex);
+                let new_items = arrayMove(items, oldIndex, newIndex);
                 props.onLabelChange(new_items)
                 return new_items
             });

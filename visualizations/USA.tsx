@@ -15,9 +15,10 @@ function getColorScale(perCapita) {
     [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
     :
     [100, 200, 300, 400, 500, 600, 700, 800, 900]
+  const range: any = ["#f9e5e5", "#f4cccc", "#efb2b2", "#ea9999", "#e57f7f", "#e06666", "#db4c4c", "#d63232", "#d11919", "#cc0000"]
   return d3.scaleThreshold()
       .domain(domain)
-      .range(["#f9e5e5", "#f4cccc", "#efb2b2", "#ea9999", "#e57f7f", "#e06666", "#db4c4c", "#d63232", "#d11919", "#cc0000"])
+      .range(range)
 }
 
 function getColor(victimsData, d, perCapita) {
@@ -258,7 +259,8 @@ function DrawUsaChart(svgRef, usMap, killersData: [Killers], victimsData) {
   function clicked(event, d) {
     const [[x0, y0], [x1, y1]] = path.bounds(d);
     event.stopPropagation();
-    const state = d3.select(this).data()[0].properties.name
+    const stateInfo: any = d3.select(this).data()[0]
+    const state = stateInfo.properties.name
     drawStateStats(
       svg,
       width,

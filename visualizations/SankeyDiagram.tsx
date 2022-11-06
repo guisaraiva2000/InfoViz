@@ -49,7 +49,7 @@ function buildOrder() {
 }
 
 
-function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], selectedSterotypes) {
+function buildNodes(frequencies: {}, stereotypes_types: any, selectedSterotypes) {
     let _nodes = []
     for (let attribute in frequencies) {
         for (let category in frequencies[attribute]) {
@@ -62,7 +62,7 @@ function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], sele
     }
     let _s_nodes = []
     for (let n of _nodes) {
-        for (let s of sterotypes_types) {
+        for (let s of stereotypes_types) {
             _s_nodes.push({...n, name: n.name + " " + s})
         }
     }
@@ -119,7 +119,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     // data keys// values of the data // their frequencies
 
 
-    let ordered_frequencies: [string, any] = Object.keys(frequencies).map((key) => [key, frequencies[key]])
+    let ordered_frequencies = Object.keys(frequencies).map((key) => [key, frequencies[key]])
 
     ordered_frequencies = ordered_frequencies.sort((key1, key2) =>
         standard_deviation(
@@ -132,11 +132,11 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     let [attributeOrder, setAttributeOrder] = useState(ordered_frequencies.map(v => v[0]))
     ordered_frequencies = ordered_frequencies.sort((a, b) => attributeOrder.indexOf(a[0]) - attributeOrder.indexOf(b[0]))
 
-    if (killers.length == 0) return <div>Loading :)</div>
+    if (!killers.length) return <div>Loading</div>
 
 
-    const sterotypes_types = currentStereotype != null ? [0, 1, 2, 3, 4, 5, 6, 7] : [" "]
-    let _nodes = buildNodes(frequencies, sterotypes_types, selectedStereotypes);
+    const stereotypes_types = currentStereotype != null ? [0, 1, 2, 3, 4, 5, 6, 7] : [" "]
+    let _nodes = buildNodes(frequencies, stereotypes_types, selectedStereotypes);
 
 
     let _links = []
@@ -162,7 +162,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
         links: _links
     }
 
-    let _sankey = sankey(sankeyData)
+    let _sankey = sankey()
         .nodeAlign(sankeyJustify)
         .nodeWidth(10)
         .nodePadding(10)
@@ -193,10 +193,10 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
             <div ref={sankeyContainerRef} id={"sankeyContainer"}
                  style={{overflow: "show", zIndex: "1000", flex:1, width: "100%" }}>
 
-                <svg id="sankey" className="sankey" ref={(s) => {
-                    sankeyRef["current"] = s
+                <svg id="sankey" className="sankey" ref={(s:any) => {
+                    sankeyRef.current = s
                     if (s === null) return
-                    document.querySelectorAll("#sankey path").forEach((p) => {
+                    document.querySelectorAll("#sankey path").forEach((p:any) => {
                         p.onclick = (e) => handleClick(e, graph.current, (new_stereotype) => setStereotype(new_stereotype))
                     })
                 }
@@ -330,9 +330,8 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                 </svg>
             </div>
                 {<Labels onLabelChange={(items) => setAttributeOrder(items.map(v =>
-                    Object.keys(simpleKeys).find(key => simpleKeys[key] == v)   // convert to "complex" key name
-                ))
-                } label_names={ordered_frequencies.map(f => simpleKeys[f[0]])}></Labels>}
+                  Object.keys(simpleKeys).find(key => simpleKeys[key] == v)   // convert to "complex" key name
+                ))} label_names={ordered_frequencies.map(f => simpleKeys[f[0]])} setLabels={null}/>}
             </div>
         </>
     );

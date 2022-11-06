@@ -93,13 +93,6 @@ function DrawIndexScatter(svgRef, data: [Killers], stereotypes, labels) {
         .style("stroke", "white")
         .style("stroke-width", 1)
     })
-    .on("click", function () {
-      d3.select(this)
-        .transition()
-        .attr("r", 16)
-        .style("stroke", "white")
-        .style("stroke-width", 2)
-    })
   return svg.node()
 }
 
