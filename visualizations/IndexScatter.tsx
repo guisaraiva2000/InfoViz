@@ -4,11 +4,9 @@ import {Killers} from "../interfaces/killers";
 import {Context} from "./Context";
 import Props from "../interfaces/killers"
 import sync from 'css-animation-sync';
-import {ScaleLinear, zip} from "d3";
+import {ScaleLinear, select, zip} from "d3";
 import styles from '../styles/Home.module.css'
-
-
-
+import { handleClientScriptLoad } from "next/script";
 
 
 // get the axis 
@@ -88,11 +86,38 @@ function DrawIndexScatter(svgRef, data: [Killers]) {
        .data(data)
        .enter()
        .append("circle")
-       .attr("cx", (d) => x(d[x_data]) || -1000000)
+       .attr("cx", (d) => x(d[x_data]) || -1000000) // null values get out of the plot
        .attr("cy", (d) => y(d[y_data]) || -1000000)
        .attr("r", 4)
        .attr("fill", (d) => context.state.stereotypes[d.stereotype].color)
-
+       .on("mouseout", function() {
+            d3.select(this)
+              .style("stroke", "black")
+              .style("stroke-width", 0.3)
+              .transition()
+              .duration(1200)
+              .attr("r", 4)
+       })
+       .on("mouseover", function() {
+            d3.select(this)
+              .style("stroke", "white")
+              .style("stroke-width", 1)
+              .transition()
+              .duration(1200)
+              .attr("r", 8)
+       })
+       .on("click", function() {
+            d3.select(this)
+              .transition()
+              .duration(1200)
+              .attr("r", 16)
+              .style("stroke", "white")
+              .style("stroke-width", 2)
+            
+       })
+       .on("mousemove", function(event, d) {
+            
+       })
     return svg.node()
 }
 
