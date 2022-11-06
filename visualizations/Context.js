@@ -6,6 +6,8 @@ export const Context = createContext()
 export const initialState = {
   currentKiller: null,
   currentStereotypes: [0, 1, 4],
+  labels: {x: "Childhood Trauma", y: "Brutality"},
+  nextLabel: "x",
   stereotypes: {
     0: {color: "#CC333F"},
     1: {color: "#CC6E33"},
@@ -29,6 +31,7 @@ export function ContextProvider(props) {
 
     for(let s of currentStereotypes){
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "") // remove class
+      d3.selectAll(`#indexScatter circle[data-stereotype="${s}"]`).attr("class", "") // remove class
     }
 
     if (remove === true) { // remove
@@ -45,21 +48,45 @@ export function ContextProvider(props) {
     setState({...state, currentStereotypes: currentStereotypes})
     for(let s of currentStereotypes){
       d3.selectAll(`#usaChart circle[data-stereotype="${s}"]`).attr("class", "selectedS")
+      d3.selectAll(`#indexScatter circle[data-stereotype="${s}"]`).attr("class", "selectedS")
     }
   }
 
   const _setKiller = (k) => {
-    d3.select("#usaChart circle.selectedKiller")
-      .attr("className", "")
+    d3.select("#usaChart circle.selectedKiller").attr("className", "")
+    d3.select("#indexScatter circle.selectedKiller").attr("className", "")
 
     let targetKiller = state.currentKiller // old
     document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)?.classList.remove("selectedKiller")
+    document.querySelector(`#indexScatter circle[data-killerid="${targetKiller}"]`)?.classList.remove("selectedKiller")
     targetKiller = k // new
     let newCircle = document.querySelector(`#usaChart circle[data-killerid="${targetKiller}"]`)
-      if(newCircle) newCircle.classList.add("selectedKiller")
+    if(newCircle) newCircle.classList.add("selectedKiller")
+
+    newCircle = document.querySelector(`#indexScatter circle[data-killerid="${targetKiller}"]`)
+    if(newCircle) newCircle.classList.add("selectedKiller")
     setState({...state, currentKiller: k})
   }
-  contextValue = {setKiller: _setKiller, setStereotype: _setStereotype, state: state}
+
+  const _setLabel = (label) => {
+    let newLabels = state.labels
+    let nextLabel = state.nextLabel
+    if (newLabels.x === label) {
+      newLabels.x = null;
+      nextLabel = "x"
+    } else if (newLabels.y === label) {
+      newLabels.y = null;
+      nextLabel = "y"
+    } else if (newLabels[nextLabel] == null) {
+      newLabels[nextLabel] = label
+      nextLabel = nextLabel === "x" ? "y" : "x"
+    } else {
+      return;
+    }
+    setState({...state, labels: newLabels, nextLabel: nextLabel})
+  }
+
+  contextValue = {setKiller: _setKiller, setStereotype: _setStereotype, setLabel: _setLabel, state: state}
   return <Context.Provider value={contextValue}>
     {props.children}
   </Context.Provider>;

@@ -7,7 +7,6 @@ import sync from 'css-animation-sync';
 
 //remove preselection
 function handleOnMouseOut(event, setKiller) {
-    console.log("outt")
     let preselected = document.querySelector("#scatter-stero>g>circle.pre-selected")
     let selected = document.querySelector("#scatter-stero>g>circle#selectedKiller")
 
@@ -91,7 +90,6 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                 .style("z-index", "10000")
                 .style("position", "absolute")
                 .html("HH")
-            console.log(Tooltip)
 
             d3.selectAll("#scatter-stero")
                 .on("mouseover", d => Tooltip.style("opacity", 1))
@@ -111,7 +109,6 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
     if ((element !== null) && data !== null) {
         let dims = element.getBoundingClientRect()
         if (dims.height != size.height || dims.width != size.width) setSize({width: dims.width, height: dims.height})
-        //DrawPlot(size.width, size.height, data, element.current)
     }
     if (data == null) return <div>Loading...</div>
 
@@ -128,7 +125,6 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
     if (isNaN(y_max)) return
     y_max += Math.round(y_max * 0.10)
-    var margin = {top: 10, right: 10, bottom: 10, left: 10}
     let x = d3.scaleLinear()
         .domain([x_min, x_max])
         .range([0, size.width]);
@@ -155,7 +151,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
 
     })
     return <>
-        <h2><span className={"inter"}  onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >All killers</span></h2>
+        <h2 className={"inter"} onClick={() => {setKiller(null);setSelectedKiller(null); d3.select("#selectedKiller").attr("id", "")}} >All Killers</h2>
         <div ref={plotRef} id={"scatter-stero-container"}
              style={{overflow: "display", width: "95%", height: "95%", transform: "translate(45px, -20px)"}}>
             <svg id={"scatter-stero"}
@@ -167,16 +163,16 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
                  onMouseMove={e => handleMouseMove(e, context.state.currentKiller, setKiller)}>
                 <g>{points}</g>
                 <g style={{transform: "translateY(-10px) translateX(10px)"}}>
-                   <rect x={"63%"} y={"95%"} width={"30%"} height={"12%"} strokeWidth={0.5} stroke={"white"} rx={10} ry={10}/>
+                   <rect x={"63%"} y={"95%"} width={"30%"} height={"12%"} strokeWidth={0.5} stroke={"white"} rx={15} ry={15}/>
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"72%"} cy={"103%"}/>
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"} cx={"67%"} cy={"103%"}/>
-                    <text fill={"white"} x={"75%"} y={"105%"}>
+                    <text fill={"white"} x={"76%"} y={"105%"} fontSize={"13px"}>
                         Less alike
                     </text>
 
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"71%"} cy={"98%"}/>
                     <circle strokeWidth={"10px"} fill={"white"} strokeOpacity={1} stroke={"red"} r={5} color={"red"}  cx={"68%"} cy={"98%"}/>
-                    <text fill={"white"} x={"75%"} y={"100%"}>
+                    <text fill={"white"} x={"76%"} y={"100%"} fontSize={"13px"}>
                         More alike
                     </text>
                 </g>

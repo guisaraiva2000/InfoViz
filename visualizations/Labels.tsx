@@ -50,7 +50,6 @@ export  default function Labels(props : LabelsProps) {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
-    console.log("items",items)
 
     function handleDragEnd(event) {
         const {active, over} = event;
@@ -86,14 +85,11 @@ export  default function Labels(props : LabelsProps) {
 
     let final_labels = []
     let i = 0
-    console.log("Labels",labels)
     for (let group of Object.values(labels)) {
-        console.log(group)
         let t = group.innerHTML.split(" ")
         t.pop()
         t.pop()
         final_labels.push(<div key={i}>{t.join(" ")}</div>)
         i++
-        console.log(final_labels)
     }
 }

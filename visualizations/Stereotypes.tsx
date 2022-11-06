@@ -14,7 +14,7 @@ function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
     .data(Object.keys(stereotypes))
     .join("div")
     .attr("class", `w3-container ${styles["labels-container"]}`)
-    .style("outline", (d) => `${currentStereotypes.includes(Number(d)) ? "2px solid" : "1px solid"}` + `${stereotypes[d].color}`)
+    .style("outline", (d) => `1px solid ${stereotypes[d].color}`)
     .style("-webkit-box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("-moz-box-shadow", d => `${currentStereotypes.includes(Number(d)) ? "inset 0 0 30px " + stereotypes[d].color : ' '}` )
     .style("box-shadow", d => `${currentStereotypes.includes(Number(d)) ?  "inset 0 0 30px " + stereotypes[d].color : ' '}` )
@@ -26,18 +26,19 @@ function DrawStereotypesFilter(stereotypes, setStereotype, currentStereotypes) {
       setStereotype(d, remove || currentStereotypes.length === 3)
     })
     .on('mouseover', function (e, d) {
-      d3.select(styles["labels-container"])
-        .style("outline", `1px solid ${stereotypes[d].color}`)
-        .style("font-weight", "normal")
-      d3.select(this)
-        .style("outline", `2px solid ${stereotypes[d].color}`)
-        .style("font-weight", "bold")
-    })
-    .on('mouseout', function(e, d) {
-      if(!currentStereotypes.includes(Number(d)))
-        d3.select(this)
+      if(currentStereotypes.includes(Number(d)) || currentStereotypes.length < 3) {
+        d3.select(styles["labels-container"])
           .style("outline", `1px solid ${stereotypes[d].color}`)
           .style("font-weight", "normal")
+        d3.select(this)
+          .style("outline", `2px solid ${stereotypes[d].color}`)
+          .style("font-weight", "bold")
+      }
+    })
+    .on('mouseout', function(e, d) {
+        d3.select(this)
+          .style("outline", `1px solid ${stereotypes[d].color}`)
+          .style("font-weight", currentStereotypes.includes(Number(d)) ? "bold" : "normal")
     })
 }
 

@@ -195,9 +195,9 @@ function DrawUsaChart(svgRef, usMap, killersData: [Killers], victimsData) {
     .enter()
     .append("circle")
     .attr("data-killerid", (d, i) => i)
-      .attr("data-stereotype", (d, i) => d["stereotype"])
-      .attr("cx", d => getPosition(d)[0])
-      .attr("cy", d=> getPosition(d)[1])
+    .attr("data-stereotype", (d, i) => d["stereotype"])
+    .attr("cx", d => getPosition(d)[0])
+    .attr("cy", d=> getPosition(d)[1])
     .attr("r", 3)
     .style("fill", (d) => initialState.stereotypes[d.stereotype].color)
     .on("click", (evt,d) => {

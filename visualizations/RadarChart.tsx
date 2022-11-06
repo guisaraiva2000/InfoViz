@@ -102,7 +102,7 @@ function getParsedData(data: [Killers]) {
   return parsedData;
 }
 
-function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes) {
+function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes, labels, setLabel) {
   const data = currentStereotypes.length ?
     parsedData.data.filter(x => currentStereotypes.includes(x[0].stereotype))
     :
@@ -160,13 +160,32 @@ function DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes) {
     .attr('class', 'legend')
     .attr('font-size', '13px')
     .attr('text-anchor', 'middle')
-    .style('fill', "white")
+    .style('font-weight', (d:any) => Object.values(labels).includes(d.axis) ? "bold" : "normal")
+    .style('fill', (d:any) => Object.values(labels).includes(d.axis) ? "red" : "white")
     .attr('dy', '0.35em')
     .attr('x', (d:any, i) => r(maxValue * d.scaleFactor) * Math.cos(angleSlice * i - Math.PI / 2))
     .attr('y', (d:any, i) => r(maxValue * d.scaleFactor) * Math.sin(angleSlice * i - Math.PI / 2))
     .text(function(d: any) {
       const tokens = d.axis.split(" ")
       return tokens.length === 1 ? tokens.toString() : tokens.slice(0, -1).toString().replace(",", " ")
+    })
+    .on("click", (evt, d:any) => setLabel(d.axis))
+    .on('mouseover', function (evt, d:any) {
+      const lbls = Object.values(labels).filter(x => x !== null)
+      if (lbls.length < 2 && !lbls.includes(d.axis))
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .style('fill', "red")
+      if (lbls.includes(d.axis))
+        d3.select(this).style('font-weight', 'normal')
+    })
+    .on('mouseout', () => {
+      d3.selectAll(".legend")
+        .transition()
+        .duration(200)
+        .style('font-weight', (d:any) => Object.values(labels).includes(d.axis) ? "bold" : "normal")
+        .style('fill', (d:any) => Object.values(labels).includes(d.axis) ? "red" : "white")
     })
     .append('tspan')
     .attr('dy', '0.35em')
@@ -316,6 +335,8 @@ const RadarChart: FunctionComponent = (props: Props) => {
   const context = useContext(Context);
   const stereotypes = context.state.stereotypes
   let currentStereotypes = context.state.currentStereotypes
+  const labels = context.state.labels
+  const setLabel = context.setLabel
 
   const [parsedData, setParsedData] = useState(null)
 
@@ -324,7 +345,7 @@ const RadarChart: FunctionComponent = (props: Props) => {
   }, [props.data])
 
   if (svgRef.current !== null && parsedData !== null)
-    DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes);
+    DrawRadarChart(svgRef, parsedData, currentStereotypes, stereotypes, labels, setLabel);
 
   return (
     <svg ref={svgRef} className={styles.chart}/>

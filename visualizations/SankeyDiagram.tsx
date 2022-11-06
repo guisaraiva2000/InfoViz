@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 
-import {MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {sankeyJustify, sankeyLinkHorizontal, sankey, SankeyGraph} from "d3-sankey";
-import {group, lab} from "d3";
+import {MutableRefObject, useContext, useRef, useState} from "react";
+import {sankey, SankeyGraph, sankeyJustify} from "d3-sankey";
 import Labels from "./Labels";
 import {Context} from "./Context"
 import Rect from "./components/Rectangle";
@@ -20,9 +19,7 @@ function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretyp
 function standard_deviation(values_by_category, data_length) {
     let values = values_by_category
     const mean = d3.reduce(values, (prev, current, index) => (prev + index * current), 0) / data_length
-    let res = values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
-    //console.log("mean", mean, "res", res)
-    return res
+    return values.map((x, index) => Math.pow(x - mean, 2)).reduce((p, n) => p + n, 0)
 }
 
 let keysOfInterst = [
@@ -77,7 +74,6 @@ function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], sele
         let Battr = b.name.slice(0, -2)
         let Astero = a.name[a.name.length - 1]
         let Bstero = b.name[b.name.length - 1]
-        //console.log(Astero, Bstero, Aattr, Battr)
         // first sort acording to attributes
         if (Aattr != Battr) return Aattr < Battr ? -1 : 1
         let Aselected = selectedSterotypes.includes(Number(Astero))
@@ -87,8 +83,6 @@ function buildNodes(frequencies: {}, sterotypes_types: number[] | [string], sele
         return Aselected ? 1 : -1 // else give priority to the node selected
 
     })
-    //console.log(_nodes)
-    //console.log(_nodes.map(n => n.name))
     return _nodes
 }
 
@@ -145,17 +139,14 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     let _nodes = buildNodes(frequencies, sterotypes_types, selectedStereotypes);
 
 
-    //console.log("Frequencies", frequencies)
     let _links = []
     for (let kil of killers) {
         for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
             let source_value = kil[source_name]
-            //console.log(source_name, source_value)
 
             let target_name = ordered_frequencies[i][0]
             let target_value = kil[target_name]
-            // console.log(target_name, target_value)
             _links.push({
                 source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
                 target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
@@ -180,10 +171,8 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
 
     graph.current = _sankey(sankeyData)
-    //graph.current.linkSort(null);
     const {links, nodes} = graph.current;
     if (links == null || nodes == null) return <div>Loading</div>
-    console.log(nodes, links)
 
     //if (size.width != s.clientWidth || size.height != s.clientHeight) setSize({width: s.getBBox().width, height : s.getBBox().height})
     let r: Element = sankeyContainerRef.current
@@ -191,16 +180,15 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
         setSize({width: r.getBoundingClientRect().width, height: r.getBoundingClientRect().height})
     }
 
-
     return (
         <>
-            <h2 onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
+            <h2 className={"inter"} onClick={() => setAttributeOrder(ordered_frequencies.sort((key1, key2) =>
                 standard_deviation(
                     Object.values(key1[1]), killers_for_order.length
                 ) > standard_deviation(
                     Object.values(key2[1]), killers_for_order.length
                 ) ? -1 : 1
-            ).map(v => v[0]))}><span className={"inter"}>Attribute Tracer</span></h2>
+            ).map(v => v[0]))}>Attribute Trace</h2>
             <div style={{display: "flex", flexFlow: "column", width:"100%", height:"100%", alignItems: "center"}}>
             <div ref={sankeyContainerRef} id={"sankeyContainer"}
                  style={{overflow: "show", zIndex: "1000", flex:1, width: "100%" }}>
@@ -244,9 +232,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
                         {links.map((d, i) => {
                             let isCurrentKiller = d.killerid == currentKiller
-                            //console.log(isCurrentKiller, d.killerid, currentKiller)
                             let allSteortpesSelected = selectedStereotypes.length == 8
-                            //console.log(selectedStereotypes, "JJJJJJJJJJJJJJJJJJJJJJ")
                             let isFromSelectedStereotye = selectedStereotypes.includes(d.stereotype)
 
                             // Select stroke color

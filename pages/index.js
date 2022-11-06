@@ -1,25 +1,19 @@
+import * as d3 from "d3";
 import Head from 'next/head'
+import {useEffect, useState} from "react";
+
 import styles from '../styles/Home.module.css'
 
 import RadarChart from "../visualizations/RadarChart.tsx";
 import UsaChart from "../visualizations/USA.tsx";
-
-import {ContextProvider} from "../visualizations/Context"
-
-import {useEffect, useState} from "react";
-
 import SankeyDiagram from "../visualizations/SankeyDiagram";
-
-
-import * as d3 from "d3";
 import StereotypesFilter from "../visualizations/Stereotypes";
 import StereotypeScatter from "../visualizations/StereotypeScatter";
-
 import IndexScatter from "../visualizations/IndexScatter";
+import {ContextProvider} from "../visualizations/Context"
 
 
 export default function Home() {
-
   let [killersData, setKillersData] = useState([]);
   let [mapData, setMapData] = useState([]);
   let [victimsData, setVictimsData] = useState(null);
@@ -39,7 +33,7 @@ export default function Home() {
         k["Gender of victims"] = k["Gender of victims"] == null ? "Male" : k["Gender of victims"]
         k["Sexual preference"] = k["Sexual preference"] == null ? "Heterosexual" : k["Sexual preference"]
         k["Sexual preference"] = k["Sexual preference"].length > 20 ? "Heterosexual" : k["Sexual preference"]
-      } )
+      })
       setKillersData(d);
       setLoading1(false);
     });
@@ -109,7 +103,7 @@ export default function Home() {
             <div className={styles.card}>
               <h2>Index Scatter</h2>
               {loading1 && <div>loading</div>}
-              {!loading1 && <IndexScatter className={styles.chart} data={killersData} />}
+              {!loading1 && <IndexScatter className={styles.chart} data={killersData}/>}
             </div>
           </div>
         </ContextProvider>

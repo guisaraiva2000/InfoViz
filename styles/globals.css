@@ -5,7 +5,7 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  cursor: default;
+    cursor: default;
 }
 
 
@@ -15,7 +15,6 @@ body {
 
 .sankey text {
     display: none;
-
 }
 
 :root {
@@ -23,28 +22,17 @@ body {
 }
 #sankey:hover text{
     display: block !important;
-   /* filter: url(#red-glow);
-    fill: white;
-    font-family: Helvetica, Arial, sansserif;
-
-    */
-
 }
 
 .inter:hover {
-    color: var(--theme-color)
-}
-.inter {
-    color:white
+    font-weight: normal;
 }
 
 
 circle{
     transform-origin: center center;
     transform-box:fill-box;
-
     transition:0.3s;
-    transform-box:fill-box; /*properties regarding size are applied*/
     stroke: black;
     stroke-width: 0.3px;
 }
@@ -59,8 +47,8 @@ circle{
 }
 
 #scatter-stero > g > circle{
-transform: scale(1);
-transform-origin: center center;
+    transform: scale(1);
+    transform-origin: center center;
     transform-box:fill-box; /*properties regarding size are applied*/
     stroke: black;
     stroke-width: 0.3px;
@@ -89,26 +77,34 @@ transform-origin: center center;
     stroke: white !important;
     stroke-width: 1px !important;
     z-index: 1000 !important;
-
-
-    /*transition:.3s;
-
-     */
 }
 
 
 #usaChart .selectedS{
-   transform-origin: center center;
+    transform-origin: center center;
     transform: scale(2);
     transition: 0.3s;
-
 }
 
 #usaChart circle.selectedKiller {
     transform-origin: center center!important;
     transform: scale(4) !important;
     animation: none!important;
+    stroke: white !important;
+    stroke-width: 1px !important;
+    z-index: 100;
+}
+
+#indexScatter .selectedS{
     transform-origin: center center;
+    transform: scale(2);
+    transition: 0.3s;
+}
+
+#indexScatter circle.selectedKiller {
+    transform-origin: center center!important;
+    transform: scale(4) !important;
+    animation: none!important;
     stroke: white !important;
     stroke-width: 1px !important;
     z-index: 100;
@@ -116,12 +112,7 @@ transform-origin: center center;
 
 #scatter-stero > g > circle.selectedS{
     transition:0.3s;
-    /*animation: selectedSterAnim 0.5s infinite alternate ease-in;
-
-     */
     transform: scale(2);
-
-
 }
 
 @keyframes selectedSterAnim {
