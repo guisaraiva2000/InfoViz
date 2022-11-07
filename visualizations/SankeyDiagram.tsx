@@ -53,6 +53,7 @@ function buildNodes(frequencies: {}, stereotypes_types: any, selectedSterotypes)
     let _nodes = []
     for (let attribute in frequencies) {
         for (let category in frequencies[attribute]) {
+            category =  category == String(false) ? "No" : category == String(true) ? "Yes" : category
             _nodes.push(
                 {
                     name: attribute + " " + category
@@ -144,9 +145,11 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
         for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
             let source_value = kil[source_name]
+            source_value = source_value == false ? "No" : source_value == true ? "Yes" : source_value
 
             let target_name = ordered_frequencies[i][0]
             let target_value = kil[target_name]
+            target_value = target_value == false ? "No" : target_value == true ? "Yes" : target_value
             _links.push({
                 source: _nodes.findIndex(v => v.name == source_name + " " + source_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
                 target: _nodes.findIndex(v => v.name == target_name + " " + target_value + " " + (currentStereotype == null ? " " : kil.stereotype)),
@@ -244,7 +247,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                             // Select opacity
                             let opacity = 0.1 // default opacity
                             if (isCurrentKiller) opacity = 1
-                            else if (allSteortpesSelected) opacity = 0.4
+                            else if (allSteortpesSelected) opacity = 0.1
                             else if (isFromSelectedStereotye) opacity = 0.5
 
                             // Select stroke width
@@ -260,7 +263,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     length={nodes.length}
                                     colors={"#dddddd"}
                                     stopColor={allSteortpesSelected ? "red" : "0"}
-                                    strokeWidth={strokeWidth}
+                                    strokeWidth={4}
                                     strokeOpacity={opacity}
                                     stroke={strokeColor}
                                     key={i}
