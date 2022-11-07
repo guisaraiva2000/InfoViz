@@ -108,12 +108,14 @@ const IndexScatter: FunctionComponent = (props: Props) => {
     DrawIndexScatter(svgRef, props.data, stereotypes, labels);
     setTimeout(() => { for(let s of initialState.currentStereotypes) {
       d3.selectAll(`#indexScatter circle[data-stereotype="${s}"]`).attr("class", "selectedS")
-    }}, 1000)
+    }
+      d3.select(`#indexScatter circle[data-killerid="${context.state.currentKiller}"]`).attr("class", "selectedKiller")
+    }, 1000)
     }, [
       svgRef,
       stereotypes,
       labels,
-      nextLabel
+      nextLabel,
     ]
   )
 
