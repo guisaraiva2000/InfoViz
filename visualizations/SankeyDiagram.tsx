@@ -145,7 +145,9 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
     let killer_group = group(killers, k => k.stereotype)
     debugger
     // @ts-ignore
-    for( let set of killer_group.values()){
+    let _ =  Array(...killer_group.values()).sort(group => group[0].stereotype)
+    for( let set of _){
+        set = set.sort((a,b) => killers.indexOf(a) - killers.indexOf(b))
     for (let kil of set) {
         for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
@@ -252,7 +254,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                             // Select opacity
                             let opacity = 0.1 // default opacity
                             if (isCurrentKiller) opacity = 1
-                            else if (allSteortpesSelected) opacity = 0.1
+                            else if (allSteortpesSelected) opacity = 0.2
                             else if (isFromSelectedStereotye) opacity = 0.5
 
                             // Select stroke width
