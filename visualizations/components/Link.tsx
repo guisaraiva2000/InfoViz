@@ -2,7 +2,7 @@ import {sankeyLinkHorizontal} from "d3-sankey";
 import {useContext} from "react";
 import {Context} from "../Context";
 
-export default function Link({data, width, length, colors, stroke, strokeOpacity, strokeWidth, stopColor}){
+export default function Link({data, width, length, colors, stroke, strokeOpacity, strokeWidth, stopColor, zIndex}){
     const link = sankeyLinkHorizontal();
     let context = useContext(Context)
     let selectedStereotypes = context.state.currentStereotypes
@@ -31,7 +31,7 @@ export default function Link({data, width, length, colors, stroke, strokeOpacity
             < path
                 data-killerid={data.killerid}
                 data-stereotype={data.stereotype}
-
+                style={{zIndex: zIndex}}
                 d={link(data)}
                 fill={"none"}
                 stroke={stroke}

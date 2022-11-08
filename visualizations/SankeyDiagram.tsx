@@ -241,7 +241,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                             // Select stroke color
                             let strokeColor = `url(#gradient-${d.index})` // default color
                             if (isCurrentKiller) strokeColor = "white"
-                            else if (allSteortpesSelected) strokeColor = strokeColor
+                            else if (allSteortpesSelected) strokeColor =context.state.stereotypes[d.stereotype].color
                             else if (isFromSelectedStereotye) strokeColor = context.state.stereotypes[d.stereotype].color
 
                             // Select opacity
@@ -252,8 +252,8 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
                             // Select stroke width
                             let strokeWidth = 4
-                            if (isCurrentKiller) strokeWidth = 5
-                            else if (allSteortpesSelected) strokeWidth = 1
+                            if (isCurrentKiller) strokeWidth = 8
+                            else if (allSteortpesSelected) strokeWidth = 4
 
 
                             return (
@@ -263,9 +263,10 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     length={nodes.length}
                                     colors={"#dddddd"}
                                     stopColor={allSteortpesSelected ? "red" : "0"}
-                                    strokeWidth={4}
+                                    strokeWidth={strokeWidth}
                                     strokeOpacity={opacity}
                                     stroke={strokeColor}
+                                    zIndex={isCurrentKiller ? 100000 : "inherit"}
                                     key={i}
                                 />
                             );
@@ -324,6 +325,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                                     colors={"#dddddd"}
                                     strokeDasharray={` ${d.x0 - d.x1}, ,0,0,00` //} thisSteorotype == 0 ? "10,0,0,0" : thisSteorotype == 8 ? "0,0,0,10" : 0}
                                     }
+                                    all={allSteortpesSelected}
                                     size={size}
                                 />
                             }

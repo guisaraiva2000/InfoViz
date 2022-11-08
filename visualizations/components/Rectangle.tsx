@@ -1,5 +1,7 @@
 
-export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray, value, length, colors, currentStereotype,d}) {
+export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray, value, length, colors, currentStereotype,d, all}) {
+    let height = 5 + y1 - y0
+    if (height > 200 && !all) height = 200
     return (
         <>
             <g>
@@ -7,7 +9,7 @@ export default function Rect({index, x0, x1, y0, y1, name, size, strokeDasharray
                     x={x0}
                     y={y0 - 2.5}
                     width={x1 - x0}
-                    height={5 + y1 - y0}
+                    height={height}
                     fill={"#dddddd"} //colors(index / length)}
                     data-index={index}
                     strokeDasharray={`0, ${5 - y1 - y0} ,${x1 - x0} `}
