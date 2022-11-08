@@ -93,10 +93,11 @@ function DrawIndexScatter(svgRef, data: [Killers], stereotypes, labels, setKille
         .style("stroke", "white")
         .style("stroke-width", 1)
     })
-      .on("click",
+     .on("click",
     (evt,d) => {
     contextValue.setKiller(data.indexOf(d))
   })
+
   return svg.node()
 }
 

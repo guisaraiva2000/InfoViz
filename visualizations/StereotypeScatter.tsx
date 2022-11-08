@@ -66,6 +66,7 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
     let [data, setData] = useState(null)
     let [size, setSize] = useState({width: 400, height: 300})
     let [selectedKiller, setSelectedKiller] = useState("selectedKiller")
+    //if(selectedKiller != context.currentKiller) setSelectedKiller(context.currentKiller)
     if (data != props.data) setData(props.data)
 
     useEffect(() => {
@@ -136,14 +137,14 @@ export default function StereotypeScatter(props: { data: [Killers] }) {
         let isSelectedStereo = context.state.currentStereotypes.includes(k.stereotype)
         let isCurrentKiller = context.state.currentKiller == i
         let isSelectedKiller = selectedKiller == i
+        if (isCurrentKiller) isSelectedKiller = true
         return <circle key={i}
-
                        data-killerid={i}
                        data-stereotype={k.stereotype}
                        cx={x(k.stereotype_pos[0])}
                        cy={y(k.stereotype_pos[1])}
                        r={4} fill={context.state.stereotypes[k.stereotype].color}
-                       className={(isSelectedKiller ? "selectedKiller" : "") + (isSelectedStereo ? "selectedS" : "") + (isCurrentKiller ? "currentKiller" : "")}
+                       className={(isSelectedKiller ? "selectedKiller " : " ") + (isSelectedStereo ? "selectedS " : " ") + (isCurrentKiller ? "currentKiller " : " ")}
                        stroke={isCurrentKiller ? "white" : "none"}
                        strokeWidth={isCurrentKiller ? "3px" : "none"}
         />

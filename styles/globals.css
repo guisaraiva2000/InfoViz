@@ -79,6 +79,15 @@ circle{
     z-index: 1000 !important;
 }
 
+#scatter-stero > g > circle.selectedKiller{
+    transform: scale(4) !important;
+    animation: none!important;
+    transform-origin: center center;
+    stroke: white !important;
+    stroke-width: 1px !important;
+    z-index: 1000 !important;
+}
+
 
 #usaChart .selectedS{
     transform-origin: center center;
