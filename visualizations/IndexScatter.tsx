@@ -6,12 +6,12 @@ import {
   useRef,
 } from "react";
 import {Killers} from "../interfaces/killers";
-import {Context, initialState} from "./Context";
+import {Context, contextValue, initialState} from "./Context";
 import Props from "../interfaces/killers"
 import styles from '../styles/Home.module.css'
 
 
-function DrawIndexScatter(svgRef, data: [Killers], stereotypes, labels) {
+function DrawIndexScatter(svgRef, data: [Killers], stereotypes, labels, setKiller) {
   let x_coor = data.map(k => k[labels.x])
   let y_coor = data.map(k => k[labels.y])
   // any null values removes row from plot
@@ -93,6 +93,10 @@ function DrawIndexScatter(svgRef, data: [Killers], stereotypes, labels) {
         .style("stroke", "white")
         .style("stroke-width", 1)
     })
+      .on("click",
+    (evt,d) => {
+    contextValue.setKiller(data.indexOf(d))
+  })
   return svg.node()
 }
 
@@ -105,7 +109,7 @@ const IndexScatter: FunctionComponent = (props: Props) => {
   const nextLabel = context.state.nextLabel
 
   useEffect(() => {
-    DrawIndexScatter(svgRef, props.data, stereotypes, labels);
+    DrawIndexScatter(svgRef, props.data, stereotypes, labels,context.setKiller);
     setTimeout(() => { for(let s of initialState.currentStereotypes) {
       d3.selectAll(`#indexScatter circle[data-stereotype="${s}"]`).attr("class", "selectedS")
     }
