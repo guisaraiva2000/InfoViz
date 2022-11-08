@@ -8,6 +8,7 @@ import Rect from "./components/Rectangle";
 import {Killers} from "../interfaces/killers";
 import Link from "./components/Link"
 import useSize from "./hooks/useSize";
+import {group} from "d3";
 
 
 function handleClick(e: PointerEvent, graph: SankeyGraph<any, any>, setSteoretype) {
@@ -141,7 +142,11 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
 
 
     let _links = []
-    for (let kil of killers) {
+    let killer_group = group(killers, k => k.stereotype)
+    debugger
+    // @ts-ignore
+    for( let set of killer_group.values()){
+    for (let kil of set) {
         for (let i = 1; i < ordered_frequencies.length; i++) {
             let source_name = ordered_frequencies[i - 1][0]
             let source_value = kil[source_name]
@@ -159,7 +164,7 @@ export default function SankeyDiagram(props: { data: [Killers] }) {
                 stereotype: kil.stereotype
             })
         }
-    }
+    }}
     let sankeyData = {
         nodes: _nodes,
         links: _links
